@@ -13,6 +13,7 @@
         <SolidColorBrush x:Key="BackgroundColor" Color="#2c2c2d" />
         <SolidColorBrush x:Key="ButtonBackground" Color="#232322" />
         <SolidColorBrush x:Key="ButtonForeground" Color="White" />
+        <SolidColorBrush x:Key="DisabledColor" Color="#808080" />
     </Window.Resources>
 
     <Grid>
@@ -143,21 +144,38 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="Data" FontWeight="Bold" HorizontalAlignment="Center" Padding="8" FontSize="16" FontFamily="Segoe UI"  VerticalAlignment="Center" Foreground="{StaticResource ButtonForeground}" Grid.Row="0"/>
-                                <TextBox x:Name="ParamTextbox" Width="200" Height="30" Grid.Row="1" TextChanged="ParamTextbox_TextChanged"
-                                 Background="{StaticResource ButtonBackground}" 
-                                 Foreground="{StaticResource ButtonForeground}" 
-                                 BorderBrush="{StaticResource ButtonForeground}"
-                                 FontSize="17" 
-                                 VerticalContentAlignment="Center"
-                                 TextAlignment="Center">
+                                <TextBlock Text="Parameter" x:Name="ParamText" IsEnabled="False" FontWeight="Bold" HorizontalAlignment="Center" Padding="8" FontSize="16" FontFamily="Segoe UI"  VerticalAlignment="Center" Grid.Row="0">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ParamTextbox, Path=IsEnabled}" Value="False">
+                                                    <Setter Property="Foreground" Value="{StaticResource DisabledColor}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBox x:Name="ParamTextbox" IsEnabled="False" Width="200" Height="30" Grid.Row="1" TextChanged="ParamTextbox_TextChanged"
+                                     Background="{StaticResource ButtonBackground}" 
+                                     Foreground="{StaticResource ButtonForeground}" 
+                                     BorderBrush="{StaticResource ButtonForeground}"
+                                     FontSize="17" 
+                                     VerticalContentAlignment="Center"
+                                     TextAlignment="Center">
                                     <TextBox.Template>
                                         <ControlTemplate TargetType="{x:Type TextBox}">
                                             <Border Background="{TemplateBinding Background}" 
-                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            x:Name="border"
                                             BorderThickness="1">
                                                 <ScrollViewer x:Name="PART_ContentHost" />
                                             </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsEnabled" Value="false">
+                                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DisabledColor}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                     </TextBox.Template>
                                 </TextBox>
@@ -171,14 +189,20 @@
                                     <Setter Property="HorizontalAlignment" Value="Center" />
                                     <Setter Property="Width" Value="300" />
                                     <Setter Property="Height" Value="30" />
-                                    <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
                                     <Setter Property="FontSize" Value="16" />
                                     <Setter Property="FontFamily" Value="Segoe UI" />
+                                    <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type Button}">
                                                 <Border Name="border" Background="{StaticResource ButtonBackground}" BorderBrush="{StaticResource ButtonForeground}" BorderThickness="1" CornerRadius="3">
-                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                    <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                                        <ContentPresenter.ContentTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock Text="{Binding}" Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+                                                            </DataTemplate>
+                                                        </ContentPresenter.ContentTemplate>
+                                                    </ContentPresenter>
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver" Value="true">
@@ -186,6 +210,10 @@
                                                     </Trigger>
                                                     <Trigger Property="IsPressed" Value="true">
                                                         <Setter TargetName="border" Property="Background" Value="{StaticResource ButtonBackground}" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="false">
+                                                        <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DisabledColor}" />
+                                                        <Setter Property="Foreground" Value="{StaticResource DisabledColor}" />
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
                                             </ControlTemplate>
@@ -206,7 +234,7 @@
             </Grid>
 
             <Grid Grid.Column="1">
-                <TreeView Background="{StaticResource ButtonBackground}" Foreground="{StaticResource ButtonForeground}" BorderThickness="0">
+                <TreeView x:Name="MainTreeView" Background="{StaticResource ButtonBackground}" Foreground="{StaticResource ButtonForeground}" BorderThickness="0">
                     <TreeView.Resources>
                         <Style TargetType="{x:Type TreeViewItem}">
                             <Setter Property="FontFamily" Value="Segoe UI" />
