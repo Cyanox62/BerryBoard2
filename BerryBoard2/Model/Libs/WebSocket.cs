@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
@@ -19,24 +20,30 @@ namespace BerryBoard2.Model.Libs
 			Task.Run(() => Init(url));
 		}
 
-		private async void Init(string u)
+		private async Task Init(string u)
 		{
 			var url = new Uri(u);
 
 			try
 			{
-				clientWebSocket = new ClientWebSocket();
-				await clientWebSocket.ConnectAsync(url, CancellationToken.None);
-
-				// Send initial request
-				await Send(ObsReqGen.Identify());
-
-				// Handle received messages
-				while (clientWebSocket.State == WebSocketState.Open)
+				if (IsServerReachable(u))
 				{
-					var receivedMessage = await ReceiveWebSocketMessage();
-					Debug.WriteLine("Received message: " + receivedMessage);
-					DataReceivedEvent?.Invoke(receivedMessage);
+					clientWebSocket = new ClientWebSocket();
+					await clientWebSocket.ConnectAsync(url, CancellationToken.None);
+
+					if (clientWebSocket.State == WebSocketState.Open)
+					{
+						// Send initial request
+						await Send(ObsReqGen.Identify());
+
+						// Handle received messages
+						while (clientWebSocket.State == WebSocketState.Open)
+						{
+							var receivedMessage = await ReceiveWebSocketMessage();
+							Debug.WriteLine("Received message: " + receivedMessage);
+							DataReceivedEvent?.Invoke(receivedMessage);
+						}
+					}
 				}
 			}
 			catch (Exception ex)
@@ -51,6 +58,24 @@ namespace BerryBoard2.Model.Libs
 					clientWebSocket = null;
 				}
 			}
+		}
+
+		private bool IsServerReachable(string host)
+		{
+			try
+			{
+				Ping ping = new Ping();
+				PingReply reply = ping.Send(host, 3000); // 3 seconds timeout
+				if (reply.Status == IPStatus.Success)
+				{
+					return true;
+				}
+			}
+			catch (Exception)
+			{
+				// Ignored: any exception will assume the server is unreachable
+			}
+			return false;
 		}
 
 		public void SendWebSocketMessage(string message)

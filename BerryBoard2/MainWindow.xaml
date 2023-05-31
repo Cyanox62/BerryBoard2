@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="Berry Board Configuration" Height="450" Width="700"
         WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" Loaded="Window_Loaded"
+        MinHeight="420" MinWidth="620"
         Background="#2c2c2d">
 
     <Window.Resources>
