@@ -10,6 +10,14 @@
 	{
 		None,
 
+		// OBS
+		ChangeScene,
+		StartStreaming,
+		StopStreaming,
+		StartRecording,
+		StopRecording,
+		PauseRecording,
+
 		// Media
 		VolumeUp,
 		VolumeDown,
@@ -20,14 +28,6 @@
 
 		// System
 		StartProcess,
-		MuteMicrophone,
-
-		// OBS
-		ChangeScene,
-		StartStreaming,
-		StopStreaming,
-		StartRecording,
-		StopRecording,
-		PauseRecording
+		MuteMicrophone
 	}
 }

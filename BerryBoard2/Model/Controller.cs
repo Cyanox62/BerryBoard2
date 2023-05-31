@@ -1,13 +1,9 @@
 ﻿using BerryBoard2.Model.Libs;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace BerryBoard2.Model
@@ -17,24 +13,24 @@ namespace BerryBoard2.Model
 		private Window window;
 		private IntPtr handle;
 
-        // DLL Imports
-        [DllImport("user32.dll")]
-        public static extern IntPtr SendMessageW(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+		// DLL Imports
+		[DllImport("user32.dll")]
+		public static extern IntPtr SendMessageW(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
-        // App Command Codes
-        internal const int WM_APPCOMMAND = 0x319;
-        internal const int APPCOMMAND_VOLUME_MUTE = 0x80000;
-        internal const int APPCOMMAND_VOLUME_UP = 0xA0000;
-        internal const int APPCOMMAND_VOLUME_DOWN = 0x90000;
-        internal const int APPCOMMAND_MEDIA_PLAY_PAUSE = 0xE0000;
-        internal const int APPCOMMAND_MEDIA_NEXTTRACK = 0xB0000;
-        internal const int APPCOMMAND_MEDIA_PREVIOUSTRACK = 0xC0000;
-        internal const int APPCOMMAND_BROWSER_BACKWARD = 0x100000;
-        internal const int APPCOMMAND_BROWSER_FORWARD = 0x200000;
-        internal const int APPCOMMAND_MIC_ON_OFF_TOGGLE = 0x180000;
+		// App Command Codes
+		internal const int WM_APPCOMMAND = 0x319;
+		internal const int APPCOMMAND_VOLUME_MUTE = 0x80000;
+		internal const int APPCOMMAND_VOLUME_UP = 0xA0000;
+		internal const int APPCOMMAND_VOLUME_DOWN = 0x90000;
+		internal const int APPCOMMAND_MEDIA_PLAY_PAUSE = 0xE0000;
+		internal const int APPCOMMAND_MEDIA_NEXTTRACK = 0xB0000;
+		internal const int APPCOMMAND_MEDIA_PREVIOUSTRACK = 0xC0000;
+		internal const int APPCOMMAND_BROWSER_BACKWARD = 0x100000;
+		internal const int APPCOMMAND_BROWSER_FORWARD = 0x200000;
+		internal const int APPCOMMAND_MIC_ON_OFF_TOGGLE = 0x180000;
 
-        // Fields
-        private Serial serial = new Serial();
+		// Fields
+		private Serial serial = new Serial();
 		private WebSocket ws = new WebSocket();
 		private const string configFile = "config.json";
 		private ButtonAction[]? buttons;
@@ -67,22 +63,38 @@ namespace BerryBoard2.Model
 			ws.SetupWebSocket("ws://localhost:4455");
 		}
 
-        private void DataReceived(string msg)
-        {
+		private void DataReceived(string msg)
+		{
 			if (int.TryParse(msg, out int num))
 			{
 				num--;
 
 				ButtonAction data = buttons[num];
 
-				Debug.WriteLine("getting data: " + num);
-				Debug.WriteLine("action: " + data.action);
-				Debug.WriteLine("param: " + data.param);
-
 				SafeWrite(window, () =>
 				{
 					switch (data.action)
 					{
+						// OBS
+						case Action.ChangeScene:
+							ws.SendWebSocketMessage(ObsReqGen.ChangeScene(data.param));
+							break;
+						case Action.StartStreaming:
+							// Not implemented
+							break;
+						case Action.StopStreaming:
+							// Not implemented
+							break;
+						case Action.StartRecording:
+							ws.SendWebSocketMessage(ObsReqGen.StartRecording());
+							break;
+						case Action.PauseRecording:
+							ws.SendWebSocketMessage(ObsReqGen.StopRecording());
+							break;
+						case Action.StopRecording:
+							ws.SendWebSocketMessage(ObsReqGen.PauseRecording());
+							break;
+
 						// Media
 						case Action.VolumeUp:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_VOLUME_UP);
@@ -110,38 +122,16 @@ namespace BerryBoard2.Model
 						case Action.StartProcess:
 							Process.Start(data.param);
 							break;
-
-						// OBS
-						case Action.ChangeScene:
-							ws.SendWebSocketMessage(ObsReqGen.ChangeScene(data.param));
-							break;
-						case Action.StartStreaming:
-							// Not implemented
-							break;
-						case Action.StopStreaming:
-							// Not implemented
-							break;
-						case Action.StartRecording:
-							ws.SendWebSocketMessage(ObsReqGen.StartRecording());
-							break;
-						case Action.PauseRecording:
-							ws.SendWebSocketMessage(ObsReqGen.StopRecording());
-							break;
-						case Action.StopRecording:
-							ws.SendWebSocketMessage(ObsReqGen.PauseRecording());
-							break;
 					}
 				});
 			}
-        }
+		}
 
 		public void ChangeButtonAction(int button, Action action = Action.None, string? param = null)
 		{
 			ButtonAction data = buttons[button];
 			if (action != Action.None) data.action = action;
 			if (param != null) data.param = param;
-
-			Debug.WriteLine(button + " | " + action.ToString() + " | " + param ?? "null");
 		}
 
 		public ButtonAction GetButtonAction(int button)

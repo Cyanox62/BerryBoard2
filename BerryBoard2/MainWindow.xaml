@@ -224,11 +224,9 @@
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Button Content="Save Configuration" Grid.Row="3" Width="200" Height="30" Click="SaveButton_Click" Style="{StaticResource ExtraButtonStyle}" Margin="0 0 10 0"/>
-                                <Button Content="Clear Button" x:Name="ClearButton" IsEnabled="False" Grid.Row="3" Width="200" Height="30" Click="ClearButton_Click" Style="{StaticResource ExtraButtonStyle}" Margin="10 0 0 0"/>
+                                <Button Content="Clear Action" x:Name="ClearButton" IsEnabled="False" Grid.Row="3" Width="200" Height="30" Click="ClearButton_Click" Style="{StaticResource ExtraButtonStyle}" Margin="10 0 0 0"/>
                             </StackPanel>
-
                         </Grid>
-
                     </Grid>
                 </Grid>
             </Grid>

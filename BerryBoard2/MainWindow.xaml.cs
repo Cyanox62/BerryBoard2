@@ -1,19 +1,9 @@
 ﻿using BerryBoard2.Model;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace BerryBoard2
 {
@@ -24,158 +14,159 @@ namespace BerryBoard2
 	{
 		private Controller? controller;
 
-        private const string paramText = "Parameter";
+		private const string paramText = "Parameter";
 
 		public MainWindow()
 		{
 			InitializeComponent();
 
-            ParamText.Text = paramText;
+			ParamText.Text = paramText;
 		}
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            controller = new Controller(this);
-        }
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			controller = new Controller(this);
+		}
 
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
+		private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+		{
+			WindowState = WindowState.Minimized;
+		}
 
-        private void MaximizeRestoreButton_Click(object sender, RoutedEventArgs e)
-        {
+		private void MaximizeRestoreButton_Click(object sender, RoutedEventArgs e)
+		{
 			WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-        }
+		}
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
+		private void CloseButton_Click(object sender, RoutedEventArgs e)
+		{
+			Application.Current.Shutdown();
+		}
 
 		private void Menu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-            DragMove();
+			DragMove();
 		}
 
 		private void TreeViewItem_MouseMove(object sender, MouseEventArgs e)
 		{
-            if (e.LeftButton == MouseButtonState.Pressed)
+			if (e.LeftButton == MouseButtonState.Pressed)
 			{
-                TreeViewItem item = (TreeViewItem)sender;
-                DragDrop.DoDragDrop(item, item, DragDropEffects.Move);
+				TreeViewItem item = (TreeViewItem)sender;
+				DragDrop.DoDragDrop(item, item, DragDropEffects.Move);
 			}
 		}
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = (Button)sender;
-            SelectButton(button);
-        }
-
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            controller?.Save();
-        }
-
-        private Button? selectedButton = null;
-        private void SelectButton(Button button)
+		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-            if (selectedButton != null)
-            {
-                selectedButton.Background = (SolidColorBrush)FindResource("ButtonBackground");
-            }
+			Button button = (Button)sender;
+			SelectButton(button);
+		}
 
-            button.Background = Brushes.DarkOrange;
-            selectedButton = button;
+		private void SaveButton_Click(object sender, RoutedEventArgs e)
+		{
+			controller?.Save();
+		}
 
-            // Load data
-            ButtonAction? data = controller?.GetButtonAction(int.Parse(button.Tag.ToString()));
-
-            if (data.action != Model.Action.None)
+		private Button? selectedButton = null;
+		private void SelectButton(Button button)
+		{
+			if (selectedButton != null)
 			{
-                ClearButton.IsEnabled = true;
-                foreach (TreeViewItem item in MainTreeView.Items)
-                {
-                    string header = GetHeaderByAction(item, data.action);
-                    if (header != null)
-                    {
-                        ActionLabel.Text = header;
-                        break;
-                    }
-                }
-            }
-            else
+				selectedButton.Background = (SolidColorBrush)FindResource("ButtonBackground");
+			}
+
+			button.Background = Brushes.DarkOrange;
+			selectedButton = button;
+
+			// Load data
+			ButtonAction? data = controller?.GetButtonAction(int.Parse(button.Tag.ToString()));
+
+			if (data?.action != Model.Action.None)
 			{
-                ActionLabel.Text = data.action.ToString();
-                ClearButton.IsEnabled = false;
-            }
-            ParamTextbox.Text = data.param.ToString();
-
-            switch (data.action)
+				ClearButton.IsEnabled = true;
+				foreach (TreeViewItem item in MainTreeView.Items)
+				{
+					string header = GetHeaderByAction(item, data?.action);
+					if (header != null)
+					{
+						ActionLabel.Text = header;
+						break;
+					}
+				}
+			}
+			else
 			{
-                case Model.Action.ChangeScene:
-                    ParamText.Text = "Scene Name";
-                    ParamTextbox.IsEnabled = true;
-                    break;
-                case Model.Action.StartProcess:
-                    ParamText.Text = "Filepath";
-                    ParamTextbox.IsEnabled = true;
-                    break;
-                default:
-                    ParamText.Text = paramText;
-                    ParamTextbox.IsEnabled = false;
-                    break;
-            }
-        }
+				ActionLabel.Text = data.action.ToString();
+				ClearButton.IsEnabled = false;
+			}
 
-        private string GetHeaderByAction(TreeViewItem item, Model.Action action)
-        {
-            if ((string)item.Tag == action.ToString())
-                return (string)item.Header;
+			ParamTextbox.Text = data?.param.ToString();
 
-            string foundHeader = null;
+			switch (data?.action)
+			{
+				case Model.Action.ChangeScene:
+					ParamText.Text = "Scene Name";
+					ParamTextbox.IsEnabled = true;
+					break;
+				case Model.Action.StartProcess:
+					ParamText.Text = "Filepath";
+					ParamTextbox.IsEnabled = true;
+					break;
+				default:
+					ParamText.Text = paramText;
+					ParamTextbox.IsEnabled = false;
+					break;
+			}
+		}
 
-            foreach (TreeViewItem child in item.Items)
-            {
-                foundHeader = GetHeaderByAction(child, action);
-                if (foundHeader != null)
-                    break;
-            }
+		private string GetHeaderByAction(TreeViewItem item, Model.Action? action)
+		{
+			if ((string)item.Tag == action.ToString())
+				return (string)item.Header;
 
-            return foundHeader;
-        }
+			string foundHeader = null;
 
-        private void Button_Drop(object sender, DragEventArgs e)
-        {
-            TreeViewItem item = (TreeViewItem)e.Data.GetData(typeof(TreeViewItem));
-            Button button = (Button)sender;
+			foreach (TreeViewItem child in item.Items)
+			{
+				foundHeader = GetHeaderByAction(child, action);
+				if (foundHeader != null)
+					break;
+			}
 
-            Model.Action action = (Model.Action)Enum.Parse(typeof(Model.Action), item.Tag.ToString());
-            controller?.ChangeButtonAction(int.Parse(button.Tag.ToString()), action, ParamTextbox.Text);
+			return foundHeader;
+		}
 
-            SelectButton(button);
-        }
+		private void Button_Drop(object sender, DragEventArgs e)
+		{
+			TreeViewItem item = (TreeViewItem)e.Data.GetData(typeof(TreeViewItem));
+			Button button = (Button)sender;
+
+			Model.Action action = (Model.Action)Enum.Parse(typeof(Model.Action), item.Tag.ToString());
+			controller?.ChangeButtonAction(int.Parse(button.Tag.ToString()), action, ParamTextbox.Text);
+
+			SelectButton(button);
+		}
 
 		private void ParamTextbox_TextChanged(object sender, TextChangedEventArgs e)
 		{
-            if (selectedButton != null)
+			if (selectedButton != null)
 			{
-                controller?.ChangeButtonAction(int.Parse(selectedButton.Tag.ToString()), Model.Action.None, ParamTextbox.Text);
-            }
+				controller?.ChangeButtonAction(int.Parse(selectedButton.Tag.ToString()), Model.Action.None, ParamTextbox.Text);
+			}
 		}
 
 		private void ClearButton_Click(object sender, RoutedEventArgs e)
 		{
-            if (selectedButton != null)
+			if (selectedButton != null)
 			{
-                controller?.ClearButton(int.Parse(selectedButton.Tag.ToString()));
-                ActionLabel.Text = "None";
-                ParamText.Text = paramText;
-                ParamTextbox.Text = string.Empty;
-                ClearButton.IsEnabled = false;
-                ParamTextbox.IsEnabled = false;
-            }
+				controller?.ClearButton(int.Parse(selectedButton.Tag.ToString()));
+				ActionLabel.Text = "None";
+				ParamText.Text = paramText;
+				ParamTextbox.Text = string.Empty;
+				ClearButton.IsEnabled = false;
+				ParamTextbox.IsEnabled = false;
+			}
 		}
 	}
 }
