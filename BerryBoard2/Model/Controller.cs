@@ -88,10 +88,10 @@ namespace BerryBoard2.Model
 						case Action.StartRecording:
 							ws.SendWebSocketMessage(ObsReqGen.StartRecording());
 							break;
-						case Action.PauseRecording:
+						case Action.StopRecording:
 							ws.SendWebSocketMessage(ObsReqGen.StopRecording());
 							break;
-						case Action.StopRecording:
+						case Action.PauseRecording:
 							ws.SendWebSocketMessage(ObsReqGen.PauseRecording());
 							break;
 
