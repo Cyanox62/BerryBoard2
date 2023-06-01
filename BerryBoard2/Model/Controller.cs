@@ -57,7 +57,7 @@ namespace BerryBoard2.Model
 		private const string settingsFile = "settings.json";
 		private ButtonAction[]? buttons;
 		private SettingsData? settings;
-		private Dictionary<Action, BitmapImage>? images;
+		private Dictionary<KeyAction, BitmapImage>? images;
 
 		public Controller(Window window, Grid buttonGrid)
 		{
@@ -67,32 +67,32 @@ namespace BerryBoard2.Model
 			buttons = new ButtonAction[12];
 
 			// Load images
-			images = new Dictionary<Action, BitmapImage>()
+			images = new Dictionary<KeyAction, BitmapImage>()
 			{
-				{ Action.ChangeScene, new BitmapImage(new Uri("/Images/changescene.png", UriKind.Relative))},
-				{ Action.StartStreaming, new BitmapImage(new Uri("/Images/startstreaming.png", UriKind.Relative))},
-				{ Action.StopStreaming, new BitmapImage(new Uri("/Images/stopstreaming.png", UriKind.Relative))},
-				{ Action.StartRecording, new BitmapImage(new Uri("/Images/startrecording.png", UriKind.Relative))},
-				{ Action.StopRecording, new BitmapImage(new Uri("/Images/stoprecording.png", UriKind.Relative))},
-				{ Action.PauseRecording, new BitmapImage(new Uri("/Images/pauserecording.png", UriKind.Relative))},
+				{ KeyAction.ChangeScene, new BitmapImage(new Uri("/Images/changescene.png", UriKind.Relative))},
+				{ KeyAction.StartStreaming, new BitmapImage(new Uri("/Images/startstreaming.png", UriKind.Relative))},
+				{ KeyAction.StopStreaming, new BitmapImage(new Uri("/Images/stopstreaming.png", UriKind.Relative))},
+				{ KeyAction.StartRecording, new BitmapImage(new Uri("/Images/startrecording.png", UriKind.Relative))},
+				{ KeyAction.StopRecording, new BitmapImage(new Uri("/Images/stoprecording.png", UriKind.Relative))},
+				{ KeyAction.PauseRecording, new BitmapImage(new Uri("/Images/pauserecording.png", UriKind.Relative))},
 
-				{ Action.VolumeUp, new BitmapImage(new Uri("/Images/volumeup.png", UriKind.Relative))},
-				{ Action.VolumeDown, new BitmapImage(new Uri("/Images/volumedown.png", UriKind.Relative))},
-				{ Action.MuteAudio, new BitmapImage(new Uri("/Images/muteaudio.png", UriKind.Relative))},
-				{ Action.PlayPause, new BitmapImage(new Uri("/Images/pauseplay.png", UriKind.Relative))},
-				{ Action.NextTrack, new BitmapImage(new Uri("/Images/next.png", UriKind.Relative))},
-				{ Action.PreviousTrack, new BitmapImage(new Uri("/Images/previous.png", UriKind.Relative))},
+				{ KeyAction.VolumeUp, new BitmapImage(new Uri("/Images/volumeup.png", UriKind.Relative))},
+				{ KeyAction.VolumeDown, new BitmapImage(new Uri("/Images/volumedown.png", UriKind.Relative))},
+				{ KeyAction.MuteAudio, new BitmapImage(new Uri("/Images/muteaudio.png", UriKind.Relative))},
+				{ KeyAction.PlayPause, new BitmapImage(new Uri("/Images/pauseplay.png", UriKind.Relative))},
+				{ KeyAction.NextTrack, new BitmapImage(new Uri("/Images/next.png", UriKind.Relative))},
+				{ KeyAction.PreviousTrack, new BitmapImage(new Uri("/Images/previous.png", UriKind.Relative))},
 
-				{ Action.Cut, new BitmapImage(new Uri("/Images/cut.png", UriKind.Relative))},
-				{ Action.Copy, new BitmapImage(new Uri("/Images/copy.png", UriKind.Relative))},
-				{ Action.Paste, new BitmapImage(new Uri("/Images/paste.png", UriKind.Relative))},
-				{ Action.CustomText, new BitmapImage(new Uri("/Images/customtext.png", UriKind.Relative))},
+				{ KeyAction.Cut, new BitmapImage(new Uri("/Images/cut.png", UriKind.Relative))},
+				{ KeyAction.Copy, new BitmapImage(new Uri("/Images/copy.png", UriKind.Relative))},
+				{ KeyAction.Paste, new BitmapImage(new Uri("/Images/paste.png", UriKind.Relative))},
+				{ KeyAction.CustomText, new BitmapImage(new Uri("/Images/customtext.png", UriKind.Relative))},
 
-				{ Action.StartProcess, new BitmapImage(new Uri("/Images/launchprogram.png", UriKind.Relative))},
-				{ Action.PlayAudio, new BitmapImage(new Uri("/Images/playaudio.png", UriKind.Relative))},
-				{ Action.OpenWebsite, new BitmapImage(new Uri("/Images/openwebsite.png", UriKind.Relative))},
-				{ Action.MuteMicrophone, new BitmapImage(new Uri("/Images/mutemicrophone.png", UriKind.Relative))},
-				{ Action.PowerOff, new BitmapImage(new Uri("/Images/poweroff.png", UriKind.Relative))}
+				{ KeyAction.StartProcess, new BitmapImage(new Uri("/Images/launchprogram.png", UriKind.Relative))},
+				{ KeyAction.PlayAudio, new BitmapImage(new Uri("/Images/playaudio.png", UriKind.Relative))},
+				{ KeyAction.OpenWebsite, new BitmapImage(new Uri("/Images/openwebsite.png", UriKind.Relative))},
+				{ KeyAction.MuteMicrophone, new BitmapImage(new Uri("/Images/mutemicrophone.png", UriKind.Relative))},
+				{ KeyAction.PowerOff, new BitmapImage(new Uri("/Images/poweroff.png", UriKind.Relative))}
 			};
 
 			// Load Config
@@ -113,7 +113,7 @@ namespace BerryBoard2.Model
 					if (element is Button button)
 					{
 						ButtonAction data = buttons[i];
-						if (data?.action != Action.None)
+						if (data?.action != KeyAction.None)
 						{
 							button.Content = CreateImage(images[data.action]);
 						}
@@ -164,61 +164,61 @@ namespace BerryBoard2.Model
 					switch (data.action)
 					{
 						// OBS
-						case Action.ChangeScene:
+						case KeyAction.ChangeScene:
 							ws.SendWebSocketMessage(ObsReqGen.ChangeScene(data.param));
 							break;
-						case Action.StartStreaming:
+						case KeyAction.StartStreaming:
 							ws.SendWebSocketMessage(ObsReqGen.StartStreaming());
 							break;
-						case Action.StopStreaming:
+						case KeyAction.StopStreaming:
 							ws.SendWebSocketMessage(ObsReqGen.StopStreaming());
 							break;
-						case Action.StartRecording:
+						case KeyAction.StartRecording:
 							ws.SendWebSocketMessage(ObsReqGen.StartRecording());
 							break;
-						case Action.StopRecording:
+						case KeyAction.StopRecording:
 							ws.SendWebSocketMessage(ObsReqGen.StopRecording());
 							break;
-						case Action.PauseRecording:
+						case KeyAction.PauseRecording:
 							ws.SendWebSocketMessage(ObsReqGen.PauseRecording());
 							break;
 
 						// Media
-						case Action.VolumeUp:
+						case KeyAction.VolumeUp:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_VOLUME_UP);
 							break;
-						case Action.VolumeDown:
+						case KeyAction.VolumeDown:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_VOLUME_DOWN);
 							break;
-						case Action.MuteAudio:
+						case KeyAction.MuteAudio:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_VOLUME_MUTE);
 							break;
-						case Action.PlayPause:
+						case KeyAction.PlayPause:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MEDIA_PLAY_PAUSE);
 							break;
-						case Action.NextTrack:
+						case KeyAction.NextTrack:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MEDIA_NEXTTRACK);
 							break;
-						case Action.PreviousTrack:
+						case KeyAction.PreviousTrack:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MEDIA_PREVIOUSTRACK);
 							break;
 
 						// Keyboard
-						case Action.Cut:
+						case KeyAction.Cut:
 							SendKeys.Send("x", true);
 							break;
-						case Action.Copy:
+						case KeyAction.Copy:
 							SendKeys.Send("c", true);
 							break;
-						case Action.Paste:
+						case KeyAction.Paste:
 							SendKeys.Send("v", true);
 							break;
-						case Action.CustomText:
+						case KeyAction.CustomText:
 							SendKeys.Send(data.param);
 							break;
 
 						// System
-						case Action.PlayAudio:
+						case KeyAction.PlayAudio:
 							// If audio is currently playing, cancel the task and stop the playback
 							if (audioTask != null && audioTask.Status == TaskStatus.Running)
 							{
@@ -264,14 +264,14 @@ namespace BerryBoard2.Model
 								}, audioCancellationTokenSource.Token);
 							}
 							break;
-						case Action.OpenWebsite:
+						case KeyAction.OpenWebsite:
 							Process.Start(new ProcessStartInfo
 							{
 								FileName = data.param,
 								UseShellExecute = true
 							});
 							break;
-						case Action.StartProcess:
+						case KeyAction.StartProcess:
 							string exe = data.param;
 							ProcessStartInfo processInfo = new ProcessStartInfo();
 							processInfo.WorkingDirectory = Path.GetDirectoryName(data.param);
@@ -279,10 +279,10 @@ namespace BerryBoard2.Model
 							processInfo.UseShellExecute = true;
 							Process.Start(processInfo);
 							break;
-						case Action.MuteMicrophone:
+						case KeyAction.MuteMicrophone:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MIC_ON_OFF_TOGGLE);
 							break;
-						case Action.PowerOff:
+						case KeyAction.PowerOff:
 							var p = new ProcessStartInfo("shutdown", "/s /t 0");
 							p.CreateNoWindow = true;
 							p.UseShellExecute = false;
@@ -317,10 +317,10 @@ namespace BerryBoard2.Model
 			isCheckingObs = false;
 		}
 
-		public void ChangeButtonAction(int button, Action action = Action.None, string? param = null)
+		public void ChangeButtonAction(int button, KeyAction action = KeyAction.None, string? param = null)
 		{
 			ButtonAction data = buttons[button];
-			if (action != Action.None) data.action = action;
+			if (action != KeyAction.None) data.action = action;
 			if (param != null) data.param = param;
 		}
 
@@ -338,7 +338,7 @@ namespace BerryBoard2.Model
 		public void ClearButton(int button)
 		{
 			ButtonAction data = buttons[button];
-			data.action = Action.None;
+			data.action = KeyAction.None;
 			data.param = string.Empty;
 		}
 
@@ -362,9 +362,9 @@ namespace BerryBoard2.Model
 			}
 		}
 
-		public BitmapImage GetImage(Action action)
+		public BitmapImage GetImage(KeyAction action)
 		{
-			if (action != Action.None) return images[action];
+			if (action != KeyAction.None) return images[action];
 			return null;
 		}
 

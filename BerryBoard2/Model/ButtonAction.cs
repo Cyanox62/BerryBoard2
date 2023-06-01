@@ -4,11 +4,11 @@ namespace BerryBoard2.Model
 {
 	internal class ButtonAction
 	{
-		public Action action = Action.None;
+		public KeyAction action = KeyAction.None;
 		public string param = string.Empty;
 	}
 
-	internal enum Action
+	internal enum KeyAction
 	{
 		None,
 

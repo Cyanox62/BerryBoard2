@@ -85,7 +85,7 @@ namespace BerryBoard2
 			// Load data
 			selectedButtonData = controller?.GetButtonAction(int.Parse(button.Tag.ToString()));
 
-			if (selectedButtonData?.action != Model.Action.None)
+			if (selectedButtonData?.action != Model.KeyAction.None)
 			{
 				ClearButton.IsEnabled = true;
 				foreach (TreeViewItem item in MainTreeView.Items)
@@ -113,24 +113,24 @@ namespace BerryBoard2
 
 			switch (selectedButtonData?.action)
 			{
-				case Model.Action.ChangeScene:
+				case Model.KeyAction.ChangeScene:
 					ParamText.Text = "Scene Name";
 					ParamTextbox.IsEnabled = true;
 					break;
-				case Model.Action.StartProcess:
+				case Model.KeyAction.StartProcess:
 					ParamText.Text = "Application Path";
 					ParamTextbox.IsEnabled = true;
 					FolderButton.IsEnabled = true;
 					break;
-				case Model.Action.CustomText:
+				case Model.KeyAction.CustomText:
 					ParamText.Text = "Text";
 					ParamTextbox.IsEnabled = true;
 					break;
-				case Model.Action.OpenWebsite:
+				case Model.KeyAction.OpenWebsite:
 					ParamText.Text = "Website URL";
 					ParamTextbox.IsEnabled = true;
 					break;
-				case Model.Action.PlayAudio:
+				case Model.KeyAction.PlayAudio:
 					ParamText.Text = "Audio Path";
 					ParamTextbox.IsEnabled = true;
 					FolderButton.IsEnabled = true;
@@ -143,7 +143,7 @@ namespace BerryBoard2
 			}
 		}
 
-		private string GetHeaderByAction(TreeViewItem i, Model.Action? action)
+		private string GetHeaderByAction(TreeViewItem i, Model.KeyAction? action)
 		{
 			foreach (TreeViewItem item in i.Items)
 			{
@@ -169,7 +169,7 @@ namespace BerryBoard2
 			TreeViewItem item = (TreeViewItem)e.Data.GetData(typeof(TreeViewItem));
 			Button button = (Button)sender;
 
-			Model.Action action = (Model.Action)Enum.Parse(typeof(Model.Action), item.Tag.ToString());
+			Model.KeyAction action = (Model.KeyAction)Enum.Parse(typeof(Model.KeyAction), item.Tag.ToString());
 			controller?.ChangeButtonAction(int.Parse(button.Tag.ToString()), action, ParamTextbox.Text);
 
 			SelectButton(button);
@@ -179,7 +179,7 @@ namespace BerryBoard2
 		{
 			if (selectedButton != null)
 			{
-				controller?.ChangeButtonAction(int.Parse(selectedButton.Tag.ToString()), Model.Action.None, ParamTextbox.Text);
+				controller?.ChangeButtonAction(int.Parse(selectedButton.Tag.ToString()), Model.KeyAction.None, ParamTextbox.Text);
 			}
 		}
 
@@ -203,12 +203,12 @@ namespace BerryBoard2
 		{
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
-			if (selectedButtonData?.action == Model.Action.StartProcess)
+			if (selectedButtonData?.action == Model.KeyAction.StartProcess)
 			{
 				dlg.DefaultExt = ".exe";
 				dlg.Filter = "Executable Files (*.exe)|*.exe";
 			}
-			else if (selectedButtonData?.action == Model.Action.PlayAudio)
+			else if (selectedButtonData?.action == Model.KeyAction.PlayAudio)
 			{
 				dlg.DefaultExt = ".mp3";
 				dlg.Filter = "Audio Files (*.mp3;*.wav)|*.mp3;*.wav";
