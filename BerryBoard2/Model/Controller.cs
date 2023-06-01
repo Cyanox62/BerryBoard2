@@ -167,10 +167,10 @@ namespace BerryBoard2.Model
 							ws.SendWebSocketMessage(ObsReqGen.ChangeScene(data.param));
 							break;
 						case Action.StartStreaming:
-							// Not implemented
+							ws.SendWebSocketMessage(ObsReqGen.StartStreaming());
 							break;
 						case Action.StopStreaming:
-							// Not implemented
+							ws.SendWebSocketMessage(ObsReqGen.StopStreaming());
 							break;
 						case Action.StartRecording:
 							ws.SendWebSocketMessage(ObsReqGen.StartRecording());
@@ -286,8 +286,10 @@ namespace BerryBoard2.Model
 			}
 		}
 
+		private bool isCheckingObs = false;
 		private async Task ObsChecker()
 		{
+			isCheckingObs = true;
 			while (settings?.ObsEnable ?? false)
 			{
 				Debug.WriteLine("checking obs");
@@ -296,7 +298,7 @@ namespace BerryBoard2.Model
 					Debug.WriteLine("found");
 					if (!ws.IsWebSocketOpen())
 					{
-						await Task.Run(() => ws.SetupWebSocket($"ws://localhost:{settings.ObsPort}"));
+						await Task.Run(() => ws.SetupWebSocket($"ws://localhost:{settings.ObsPort}", settings.ObsAuth));
 					}
 				}
 				else
@@ -305,6 +307,7 @@ namespace BerryBoard2.Model
 				}
 				await Task.Delay(5000); // Wait 5 seconds before trying again
 			}
+			isCheckingObs = false;
 		}
 
 		public void ChangeButtonAction(int button, Action action = Action.None, string? param = null)
@@ -342,9 +345,9 @@ namespace BerryBoard2.Model
 			File.WriteAllText(settingsFile, JsonConvert.SerializeObject(settings, Formatting.Indented));
 			this.settings = settings;
 
-			if (settings.ObsEnable ?? false)
+			if ((settings.ObsEnable ?? false))
 			{
-				Task.Run(() => ObsChecker());
+				if (!isCheckingObs) Task.Run(() => ObsChecker());
 			}
 			else if (ws.IsWebSocketOpen())
 			{

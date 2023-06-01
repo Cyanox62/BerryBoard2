@@ -20,9 +20,9 @@ namespace BerryBoard2.Model.Libs
 
 		private ClientWebSocket? clientWebSocket;
 
-		public void SetupWebSocket(string url)
+		public void SetupWebSocket(string url, string auth)
 		{
-			Task.Run(() => Init(url));
+			Task.Run(() => Init(url, auth));
 		}
 
 		public bool IsWebSocketOpen()
@@ -39,7 +39,7 @@ namespace BerryBoard2.Model.Libs
 			clientWebSocket = null;
 		}
 
-		private async Task Init(string u)
+		private async Task Init(string u, string auth)
 		{
 			var url = new Uri(u);
 
@@ -51,7 +51,7 @@ namespace BerryBoard2.Model.Libs
 				if (clientWebSocket.State == WebSocketState.Open)
 				{
 					// Send initial request
-					await Send(ObsReqGen.Identify());
+					await Send(ObsReqGen.Identify(auth));
 
 					// Handle received messages
 					while (clientWebSocket.State == WebSocketState.Open)

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace BerryBoard2.Model.Libs
 {
@@ -6,17 +7,22 @@ namespace BerryBoard2.Model.Libs
 	{
 		private const string requestId = "f819dcf0-89cc-11eb-8f0e-382c4ac93b9c"; // idk what this means
 
-		internal static string Identify()
+		internal static string Identify(string auth)
 		{
-			var req = new
+			var req = new Dictionary<string, object>
 			{
-				op = 1,
-				d = new
+				["op"] = 1,
+				["d"] = new Dictionary<string, object>
 				{
-					rpcVersion = 1,
-					eventSubscriptions = 33
+					["rpcVersion"] = 1,
+					["eventSubscriptions"] = 33
 				}
 			};
+
+			if (auth != null)
+			{
+				((Dictionary<string, object>)req["d"]).Add("authentication", auth);
+			}
 
 			return JsonConvert.SerializeObject(req);
 		}
@@ -34,6 +40,36 @@ namespace BerryBoard2.Model.Libs
 					{
 						sceneName
 					}
+				}
+			};
+
+			return JsonConvert.SerializeObject(req);
+		}
+
+		internal static string StartStreaming()
+		{
+			var req = new
+			{
+				op = 6,
+				d = new
+				{
+					requestType = "StartStream",
+					requestId
+				}
+			};
+
+			return JsonConvert.SerializeObject(req);
+		}
+
+		internal static string StopStreaming()
+		{
+			var req = new
+			{
+				op = 6,
+				d = new
+				{
+					requestType = "StopStream",
+					requestId
 				}
 			};
 
