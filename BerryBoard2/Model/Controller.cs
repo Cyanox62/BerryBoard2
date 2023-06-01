@@ -194,7 +194,7 @@ namespace BerryBoard2.Model
 
 		private async Task ObsChecker()
 		{
-			while (settings.ObsEnable ?? false)
+			while (settings?.ObsEnable ?? false)
 			{
 				Debug.WriteLine("checking obs");
 				if (Process.GetProcesses().Any(p => p.ProcessName.Equals("obs64")))

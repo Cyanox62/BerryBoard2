@@ -31,11 +31,11 @@ while True:
     
     for i in range(button_count):
         if buttons[i] != history[i]:
-            if not buttons[i]:
+            if buttons[i]:
                 print(i)
-                #print(f"Button {i + 1} was released")
-            #else:
                 #print(f"Button {i + 1} was pressed")
+            #else:
+                #print(f"Button {i + 1} was released")
             history[i] = buttons[i]
             
         # Handle LED blinking
