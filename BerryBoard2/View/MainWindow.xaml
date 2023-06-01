@@ -30,7 +30,7 @@
             </Border>
             <StackPanel Orientation="Horizontal">
                 <Button Content="Settings" HorizontalAlignment="Left" Margin="5 0 0 0" FontSize="16" Width="60" BorderBrush="Transparent" Background="Transparent" Foreground="{StaticResource ButtonForeground}"/>
-                <Button Content="About" HorizontalAlignment="Left" Margin="5 0 0 0"  FontSize="16" Width="60" BorderBrush="Transparent" Background="Transparent" Foreground="{StaticResource ButtonForeground}"/>
+                <Button Content="About" HorizontalAlignment="Left" Margin="5 0 0 0" Click="AboutButton_Click" FontSize="16" Width="60" BorderBrush="Transparent" Background="Transparent" Foreground="{StaticResource ButtonForeground}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="btnMinimize" Content="_" Width="25" Height="25" Foreground="White"

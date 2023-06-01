@@ -1,4 +1,5 @@
 ﻿using BerryBoard2.Model;
+using BerryBoard2.View;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -196,6 +197,11 @@ namespace BerryBoard2
 				ParamTextbox.Text = dlg.FileName;
 			}
 
+		}
+
+		private void AboutButton_Click(object sender, RoutedEventArgs e)
+		{
+			new About().Show();
 		}
 	}
 }
