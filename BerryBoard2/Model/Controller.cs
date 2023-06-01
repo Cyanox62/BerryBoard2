@@ -10,7 +10,10 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using NAudio.Wave;
+using System.Threading;
 
 namespace BerryBoard2.Model
 {
@@ -86,6 +89,7 @@ namespace BerryBoard2.Model
 				{ Action.CustomText, new BitmapImage(new Uri("/Images/customtext.png", UriKind.Relative))},
 
 				{ Action.StartProcess, new BitmapImage(new Uri("/Images/launchprogram.png", UriKind.Relative))},
+				{ Action.PlayAudio, new BitmapImage(new Uri("/Images/playaudio.png", UriKind.Relative))},
 				{ Action.MuteMicrophone, new BitmapImage(new Uri("/Images/mutemicrophone.png", UriKind.Relative))}
 			};
 
@@ -141,6 +145,11 @@ namespace BerryBoard2.Model
 		{
 			Task.Run(() => ObsChecker());
 		}
+
+		private static AudioFileReader audioFile;
+		private static WaveOutEvent outputDevice;
+		private static CancellationTokenSource audioCancellationTokenSource;
+		private static Task audioTask;
 
 		private void DataReceived(string msg)
 		{
@@ -209,6 +218,52 @@ namespace BerryBoard2.Model
 						// System
 						case Action.MuteMicrophone:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MIC_ON_OFF_TOGGLE);
+							break;
+						case Action.PlayAudio:
+							// If audio is currently playing, cancel the task and stop the playback
+							if (audioTask != null && audioTask.Status == TaskStatus.Running)
+							{
+								audioCancellationTokenSource?.Cancel();
+								outputDevice?.Stop();
+								audioFile?.Dispose();
+								outputDevice?.Dispose();
+								audioTask = null;
+							}
+							// If no audio is playing, start playing
+							else
+							{
+								// Start a new cancellation token source for the new audio task
+								audioCancellationTokenSource = new CancellationTokenSource();
+
+								audioTask = Task.Run(() =>
+								{
+									try
+									{
+										audioFile = new AudioFileReader(data.param);
+										outputDevice = new WaveOutEvent();
+										outputDevice.Init(audioFile);
+										outputDevice.Play();
+
+										// We use SpinWait to hold the Task open until the PlaybackStopped event is fired.
+										while (outputDevice.PlaybackState == PlaybackState.Playing)
+										{
+											Task.Delay(1000).Wait();
+											// Throw if cancellation is requested
+											audioCancellationTokenSource.Token.ThrowIfCancellationRequested();
+										}
+									}
+									catch (OperationCanceledException)
+									{
+										// Handle the cancellation
+										outputDevice?.Stop();
+									}
+									finally
+									{
+										audioFile?.Dispose();
+										outputDevice?.Dispose();
+									}
+								}, audioCancellationTokenSource.Token);
+							}
 							break;
 						case Action.StartProcess:
 							string exe = data.param;

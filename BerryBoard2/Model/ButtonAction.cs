@@ -36,6 +36,7 @@ namespace BerryBoard2.Model
 
 		// System
 		StartProcess,
+		PlayAudio,
 		MuteMicrophone
 	}
 }

@@ -21,6 +21,7 @@
     <None Remove="Images\paste.png" />
     <None Remove="Images\pauseplay.png" />
     <None Remove="Images\pauserecording.png" />
+    <None Remove="Images\playaudio.png" />
     <None Remove="Images\previous.png" />
     <None Remove="Images\startrecording.png" />
     <None Remove="Images\startstreaming.png" />
@@ -44,6 +45,7 @@
     <Resource Include="Images\paste.png" />
     <Resource Include="Images\pauseplay.png" />
     <Resource Include="Images\pauserecording.png" />
+    <Resource Include="Images\playaudio.png" />
     <Resource Include="Images\previous.png" />
     <Resource Include="Images\startrecording.png" />
     <Resource Include="Images\startstreaming.png" />
@@ -54,6 +56,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.IO.Ports" Version="8.0.0-preview.4.23259.5" />
   </ItemGroup>

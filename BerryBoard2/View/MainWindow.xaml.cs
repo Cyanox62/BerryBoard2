@@ -71,6 +71,7 @@ namespace BerryBoard2
 		}
 
 		private Button? selectedButton = null;
+		private ButtonAction? selectedButtonData = null;
 		private void SelectButton(Button button)
 		{
 			if (selectedButton != null)
@@ -82,14 +83,14 @@ namespace BerryBoard2
 			selectedButton = button;
 
 			// Load data
-			ButtonAction? data = controller?.GetButtonAction(int.Parse(button.Tag.ToString()));
+			selectedButtonData = controller?.GetButtonAction(int.Parse(button.Tag.ToString()));
 
-			if (data?.action != Model.Action.None)
+			if (selectedButtonData?.action != Model.Action.None)
 			{
 				ClearButton.IsEnabled = true;
 				foreach (TreeViewItem item in MainTreeView.Items)
 				{
-					string header = GetHeaderByAction(item, data?.action);
+					string header = GetHeaderByAction(item, selectedButtonData?.action);
 					if (header != null)
 					{
 						ActionLabel.Text = header;
@@ -97,33 +98,38 @@ namespace BerryBoard2
 					}
 				}
 
-				selectedButton.Content = controller?.CreateImage(controller?.GetImage(data.action));
-				ActionImage.Source = controller?.CreateImage(controller?.GetImage(data.action)).Source;
+				selectedButton.Content = controller?.CreateImage(controller?.GetImage(selectedButtonData.action));
+				ActionImage.Source = controller?.CreateImage(controller?.GetImage(selectedButtonData.action)).Source;
 				ActionImage.Visibility = Visibility.Visible;
 			}
 			else
 			{
-				ActionLabel.Text = data.action.ToString();
+				ActionLabel.Text = selectedButtonData.action.ToString();
 				ClearButton.IsEnabled = false;
 				ActionImage.Visibility = Visibility.Collapsed;
 			}
 
-			ParamTextbox.Text = data?.param.ToString();
+			ParamTextbox.Text = selectedButtonData?.param.ToString();
 
-			switch (data?.action)
+			switch (selectedButtonData?.action)
 			{
 				case Model.Action.ChangeScene:
 					ParamText.Text = "Scene Name";
 					ParamTextbox.IsEnabled = true;
 					break;
 				case Model.Action.StartProcess:
-					ParamText.Text = "File Path";
+					ParamText.Text = "Application Path";
 					ParamTextbox.IsEnabled = true;
 					FolderButton.IsEnabled = true;
 					break;
 				case Model.Action.CustomText:
 					ParamText.Text = "Text";
 					ParamTextbox.IsEnabled = true;
+					break;
+				case Model.Action.PlayAudio:
+					ParamText.Text = "Audio Path";
+					ParamTextbox.IsEnabled = true;
+					FolderButton.IsEnabled = true;
 					break;
 				default:
 					ParamText.Text = paramText;
@@ -193,9 +199,18 @@ namespace BerryBoard2
 		{
 			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
+			if (selectedButtonData?.action == Model.Action.StartProcess)
+			{
+				dlg.DefaultExt = ".exe";
+				dlg.Filter = "Executable Files (*.exe)|*.exe";
+			}
+			else if (selectedButtonData?.action == Model.Action.PlayAudio)
+			{
+				dlg.DefaultExt = ".mp3";
+				dlg.Filter = "Audio Files (*.mp3;*.wav)|*.mp3;*.wav";
+			}
+
 			dlg.InitialDirectory = @"C:\";
-			dlg.DefaultExt = ".exe";
-			dlg.Filter = "Executable Files (*.exe)|*.exe";
 
 			Nullable<bool> result = dlg.ShowDialog();
 
@@ -203,7 +218,6 @@ namespace BerryBoard2
 			{
 				ParamTextbox.Text = dlg.FileName;
 			}
-
 		}
 
 		private void AboutButton_Click(object sender, RoutedEventArgs e)
