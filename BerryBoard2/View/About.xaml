@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BerryBoard2.View"
         mc:Ignorable="d"
-        WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True"
+        WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" WindowStartupLocation="CenterOwner"
         Title="About" Height="450" Width="800">
     
     <Window.Resources>
@@ -67,7 +67,7 @@
                     <LineBreak/>
                     - Lightweight and efficient
                 </TextBlock>
-            </StackPanel>s
+            </StackPanel>
 
             <Grid VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10">
                 <TextBlock Foreground="{StaticResource ButtonForeground}" FontSize="14"

@@ -1,0 +1,166 @@
+﻿<Window x:Class="BerryBoard2.View.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BerryBoard2.View"
+        mc:Ignorable="d" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" WindowStartupLocation="CenterOwner"
+        Title="Settings" Height="300" Width="400">
+    <Window.Resources>
+        <SolidColorBrush x:Key="BackgroundColor" Color="#2c2c2d" />
+        <SolidColorBrush x:Key="ButtonBackground" Color="#232322" />
+        <SolidColorBrush x:Key="ButtonForeground" Color="White" />
+        <SolidColorBrush x:Key="DisabledColor" Color="#808080" />
+    </Window.Resources>
+
+    <Grid>
+
+        <Grid.Resources>
+            <Style x:Key="ExtraButtonStyle" TargetType="{x:Type Button}">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="Width" Value="300" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontFamily" Value="Segoe UI" />
+                <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Name="border" Background="{StaticResource ButtonBackground}" BorderBrush="{StaticResource ButtonForeground}" BorderThickness="1" CornerRadius="3">
+                                <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                    <ContentPresenter.ContentTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+                                        </DataTemplate>
+                                    </ContentPresenter.ContentTemplate>
+                                </ContentPresenter>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter TargetName="border" Property="Background" Value="{StaticResource BackgroundColor}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter TargetName="border" Property="Background" Value="{StaticResource ButtonBackground}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DisabledColor}" />
+                                    <Setter Property="Foreground" Value="{StaticResource DisabledColor}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="ExtraCheckBoxStyle" TargetType="{x:Type CheckBox}">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="Width" Value="300" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="FontFamily" Value="Segoe UI" />
+                <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type CheckBox}">
+                            <Border Name="border" Background="{StaticResource ButtonBackground}" BorderBrush="{StaticResource ButtonForeground}" BorderThickness="0" CornerRadius="3">
+                                <StackPanel Orientation="Horizontal">
+                                    <Rectangle Name="mark" Width="16" Height="16" Fill="{StaticResource ButtonBackground}" Stroke="{StaticResource ButtonForeground}" StrokeThickness="1" Margin="0,0,5,0" />
+                                    <ContentPresenter x:Name="contentPresenter" VerticalAlignment="Center">
+                                        <ContentPresenter.ContentTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type CheckBox}}, Path=Foreground}"/>
+                                            </DataTemplate>
+                                        </ContentPresenter.ContentTemplate>
+                                    </ContentPresenter>
+                                </StackPanel>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter TargetName="border" Property="Background" Value="{StaticResource BackgroundColor}" />
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="true">
+                                    <Setter TargetName="mark" Property="Fill" Value="{StaticResource ButtonForeground}" />
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DisabledColor}" />
+                                    <Setter Property="Foreground" Value="{StaticResource DisabledColor}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="StyledTextBox" TargetType="{x:Type TextBox}">
+                <Setter Property="IsEnabled" Value="False" />
+                <Setter Property="Width" Value="170" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Background" Value="{StaticResource ButtonBackground}" />
+                <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
+                <Setter Property="BorderBrush" Value="{StaticResource ButtonForeground}" />
+                <Setter Property="FontSize" Value="17" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" x:Name="border" BorderThickness="1">
+                                <ScrollViewer x:Name="PART_ContentHost" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="false">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DisabledColor}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="{StaticResource BackgroundColor}">
+            <Border Background="Transparent" MouseLeftButtonDown="Menu_MouseLeftButtonDown">
+                <TextBlock Text="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" FontSize="15" Foreground="{StaticResource ButtonForeground}" HorizontalAlignment="Center"/>
+            </Border>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnMinimize" Content="_" Width="25" Height="25" Foreground="White"
+                        BorderBrush="Transparent" Background="Transparent"
+                        Click="MinimizeButton_Click" ClickMode="Press"/>
+                <Button x:Name="btnClose" Content="✕" Width="25" Height="25" Foreground="White"
+                        BorderBrush="Transparent" Background="Transparent"
+                        Click="CloseButton_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" Background="{StaticResource ButtonBackground}">
+            <StackPanel Margin="20 20 0 0">
+                <TextBlock Text="OBS Integration" Foreground="{StaticResource ButtonForeground}" FontSize="25" TextDecorations="Underline"/>
+                <CheckBox Content="Enable OBS Integration" x:Name="ObsCheckbox" Checked="ObsCheckbox_Checked" Unchecked="ObsCheckbox_Unchecked" Style="{StaticResource ExtraCheckBoxStyle}" HorizontalAlignment="Left"/>
+                <TextBlock Text="Must have [Tools > WebSocket Server] enabled" Foreground="{StaticResource ButtonForeground}" FontSize="10" FontStyle="Italic"/>
+                <Grid Margin="0 10 0 0">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Port" x:Name="PortText" Foreground="{StaticResource ButtonForeground}" FontSize="15" VerticalAlignment="Center" Margin="0 0 5 0"/>
+                    <TextBlock Text="Auth" x:Name="AuthText" Grid.Row="1" Foreground="{StaticResource ButtonForeground}" FontSize="15" VerticalAlignment="Center" Margin="0 5 5 0"/>
+
+                    <TextBox x:Name="PortTextbox" Grid.Column="1" Style="{StaticResource StyledTextBox}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <TextBox x:Name="AuthTextbox" Grid.Column="1" Grid.Row="1" Style="{StaticResource StyledTextBox}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0 5 0 0"/>
+                </Grid>
+
+            </StackPanel>
+
+            <Button Style="{StaticResource ExtraButtonStyle}" Click="SaveButton_Click" Content="Save" VerticalAlignment="Bottom" Margin="0 0 0 8" Width="200"/>
+        </Grid>
+
+    </Grid>
+</Window>

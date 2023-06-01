@@ -192,7 +192,7 @@ namespace BerryBoard2.Model
 			data.param = string.Empty;
 		}
 
-		public void Save()
+		public void SaveConfig()
 		{
 			File.WriteAllText(configFile, JsonConvert.SerializeObject(buttons, Formatting.Indented));
 		}

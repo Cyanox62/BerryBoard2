@@ -1,4 +1,5 @@
 ﻿using BerryBoard2.Model;
+using BerryBoard2.Model.Objects;
 using BerryBoard2.View;
 using System;
 using System.Collections.Generic;
@@ -68,7 +69,11 @@ namespace BerryBoard2
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
 		{
-			controller?.Save();
+			controller?.SaveConfig();
+
+			var c = new CustomMessageBox("Configuration saved");
+			c.Owner = this;
+			c.Show();
 		}
 
 		private Button? selectedButton = null;
@@ -202,6 +207,17 @@ namespace BerryBoard2
 		private void AboutButton_Click(object sender, RoutedEventArgs e)
 		{
 			new About().Show();
+		}
+
+		private void SettingsButton_Click(object sender, RoutedEventArgs e)
+		{
+			new Settings(this).Show();
+		}
+
+		public void UpdateSettings(SettingsData settings)
+		{
+			// enable checking
+			// save changes
 		}
 	}
 }
