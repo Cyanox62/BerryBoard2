@@ -465,7 +465,7 @@
 
                     <TreeViewItem FontSize="16" IsExpanded="False" Foreground="{StaticResource ButtonForeground}" Focusable="False">
                         <TreeViewItem.Header>
-                            <TextBlock Text="OBS" FontWeight="Bold"/>
+                            <TextBlock Text="OBS Studio" FontWeight="Bold"/>
                         </TreeViewItem.Header>
                         <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="ChangeScene">
                             <TreeViewItem.Header>

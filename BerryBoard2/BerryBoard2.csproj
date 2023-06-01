@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\launchprogram.png" />
     <Resource Include="Images\openwebsite.png" />
   </ItemGroup>
 
@@ -43,7 +44,6 @@
     <Resource Include="Images\cut.png" />
     <Resource Include="Images\delete.png" />
     <Resource Include="Images\folder.png" />
-    <Resource Include="Images\launchprogram.png" />
     <Resource Include="Images\muteaudio.png" />
     <Resource Include="Images\mutemicrophone.png" />
     <Resource Include="Images\next.png" />
