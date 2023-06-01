@@ -156,7 +156,12 @@ namespace BerryBoard2.Model
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MIC_ON_OFF_TOGGLE);
 							break;
 						case Action.StartProcess:
-							Process.Start(data.param);
+							string exe = data.param;
+							ProcessStartInfo processInfo = new ProcessStartInfo();
+							processInfo.WorkingDirectory = Path.GetDirectoryName(data.param);
+							processInfo.FileName = Path.GetFileName(exe);
+							processInfo.UseShellExecute = true;
+							Process.Start(processInfo);
 							break;
 					}
 				});
