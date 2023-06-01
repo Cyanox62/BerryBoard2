@@ -91,7 +91,8 @@ namespace BerryBoard2.Model
 				{ Action.StartProcess, new BitmapImage(new Uri("/Images/launchprogram.png", UriKind.Relative))},
 				{ Action.PlayAudio, new BitmapImage(new Uri("/Images/playaudio.png", UriKind.Relative))},
 				{ Action.OpenWebsite, new BitmapImage(new Uri("/Images/openwebsite.png", UriKind.Relative))},
-				{ Action.MuteMicrophone, new BitmapImage(new Uri("/Images/mutemicrophone.png", UriKind.Relative))}
+				{ Action.MuteMicrophone, new BitmapImage(new Uri("/Images/mutemicrophone.png", UriKind.Relative))},
+				{ Action.PowerOff, new BitmapImage(new Uri("/Images/poweroff.png", UriKind.Relative))}
 			};
 
 			// Load Config
@@ -217,9 +218,6 @@ namespace BerryBoard2.Model
 							break;
 
 						// System
-						case Action.MuteMicrophone:
-							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MIC_ON_OFF_TOGGLE);
-							break;
 						case Action.PlayAudio:
 							// If audio is currently playing, cancel the task and stop the playback
 							if (audioTask != null && audioTask.Status == TaskStatus.Running)
@@ -280,6 +278,15 @@ namespace BerryBoard2.Model
 							processInfo.FileName = Path.GetFileName(exe);
 							processInfo.UseShellExecute = true;
 							Process.Start(processInfo);
+							break;
+						case Action.MuteMicrophone:
+							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MIC_ON_OFF_TOGGLE);
+							break;
+						case Action.PowerOff:
+							var p = new ProcessStartInfo("shutdown", "/s /t 0");
+							p.CreateNoWindow = true;
+							p.UseShellExecute = false;
+							Process.Start(p);
 							break;
 					}
 				});

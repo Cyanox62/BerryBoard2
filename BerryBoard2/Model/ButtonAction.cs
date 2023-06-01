@@ -38,6 +38,7 @@ namespace BerryBoard2.Model
 		StartProcess,
 		PlayAudio,
 		OpenWebsite,
-		MuteMicrophone
+		MuteMicrophone,
+		PowerOff
 	}
 }

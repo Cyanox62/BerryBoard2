@@ -23,6 +23,7 @@
     <None Remove="Images\pauseplay.png" />
     <None Remove="Images\pauserecording.png" />
     <None Remove="Images\playaudio.png" />
+    <None Remove="Images\poweroff.png" />
     <None Remove="Images\previous.png" />
     <None Remove="Images\startrecording.png" />
     <None Remove="Images\startstreaming.png" />
@@ -51,6 +52,7 @@
     <Resource Include="Images\pauseplay.png" />
     <Resource Include="Images\pauserecording.png" />
     <Resource Include="Images\playaudio.png" />
+    <Resource Include="Images\poweroff.png" />
     <Resource Include="Images\previous.png" />
     <Resource Include="Images\startrecording.png" />
     <Resource Include="Images\startstreaming.png" />
