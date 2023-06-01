@@ -180,19 +180,21 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Text="Selected Action" 
+                            <TextBlock Text="Action" 
                                     HorizontalAlignment="Center" 
                                     FontSize="16" FontWeight="Bold" 
                                     FontFamily="Segoe UI" VerticalAlignment="Center"
                                     Foreground="{StaticResource ButtonForeground}"
                                     Grid.Row="0"/>
-                            <TextBlock Text="None" x:Name="ActionLabel"
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <Image x:Name="ActionImage" Visibility="Collapsed" Width="20" Height="20" VerticalAlignment="Top" Margin="0 3 5 0"/>
+                                <TextBlock Text="None" x:Name="ActionLabel"
                                     HorizontalAlignment="Center" 
                                     VerticalAlignment="Top" 
                                     FontSize="16" Margin="0 1 0 0"
                                     FontFamily="Segoe UI" 
-                                    Foreground="{StaticResource ButtonForeground}"
-                                    Grid.Row="1"/>
+                                    Foreground="{StaticResource ButtonForeground}"/>
+                            </StackPanel>
                             <Button Content="Save Configuration" Grid.Row="3" Width="210" Height="30" Click="SaveButton_Click" Style="{StaticResource ExtraButtonStyle}" Margin="0 0 10 0"/>
                         </Grid>
 

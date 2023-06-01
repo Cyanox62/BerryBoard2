@@ -98,11 +98,14 @@ namespace BerryBoard2
 				}
 
 				selectedButton.Content = controller?.CreateImage(controller?.GetImage(data.action));
+				ActionImage.Source = controller?.CreateImage(controller?.GetImage(data.action)).Source;
+				ActionImage.Visibility = Visibility.Visible;
 			}
 			else
 			{
 				ActionLabel.Text = data.action.ToString();
 				ClearButton.IsEnabled = false;
+				ActionImage.Visibility = Visibility.Collapsed;
 			}
 
 			ParamTextbox.Text = data?.param.ToString();
@@ -178,6 +181,7 @@ namespace BerryBoard2
 				ParamTextbox.Text = string.Empty;
 				ClearButton.IsEnabled = false;
 				ParamTextbox.IsEnabled = false;
+				ActionImage.Visibility = Visibility.Collapsed;
 			}
 		}
 
