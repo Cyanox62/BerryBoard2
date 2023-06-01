@@ -70,25 +70,40 @@ namespace BerryBoard2.Model.Libs
 			string indata = sp.ReadExisting().Trim();
 			if (indata == string.Empty) return;
 			Debug.WriteLine($"Data received ({sp.PortName}): " + indata);
+			for (int i = serialPorts.Count - 1; i >= 0; i--)
+			{
+				SerialPort port = serialPorts[i];
+				if (port.PortName != sp.PortName)
+				{
+					KillPort(port);
+					serialPorts.Remove(port);
+				}
+			}
 
 			DataReceivedEvent?.Invoke(indata);
 		}
 
-		public void KillPorts()
+		public void KillAllPorts()
 		{
 			portCheckTimer?.Stop();
 
 			foreach (var port in serialPorts)
 			{
-				if (port.IsOpen)
-				{
-					port.Close();
-					port.DataReceived -= DataReceivedHandler;
-					port.Dispose();
-				}
+				KillPort(port);
 			}
 
 			serialPorts.Clear();
+		}
+
+		private void KillPort(SerialPort port)
+		{
+			if (port.IsOpen)
+			{
+				port.Close();
+				port.DataReceived -= DataReceivedHandler;
+				port.Dispose();
+				Debug.WriteLine("Killed port: " + port.PortName);
+			}
 		}
 	}
 }

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <None Remove="Images\changescene.png" />
+    <None Remove="Images\folder.png" />
     <None Remove="Images\launchprogram.png" />
     <None Remove="Images\muteaudio.png" />
     <None Remove="Images\mutemicrophone.png" />
@@ -31,6 +32,7 @@
 
   <ItemGroup>
     <Resource Include="Images\changescene.png" />
+    <Resource Include="Images\folder.png" />
     <Resource Include="Images\launchprogram.png" />
     <Resource Include="Images\muteaudio.png" />
     <Resource Include="Images\mutemicrophone.png" />

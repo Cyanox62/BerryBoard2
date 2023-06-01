@@ -1,4 +1,4 @@
-dotnet publish -c Release --self-contained win-x64 -p:PublishSingleFile=true
+dotnet publish -c Release --self-contained -r win-x64 -p:PublishSingleFile=true
 # SIG # Begin signature block
 # MIIFUgYJKoZIhvcNAQcCoIIFQzCCBT8CAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR

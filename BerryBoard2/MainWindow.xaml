@@ -103,6 +103,70 @@
 
                 <Grid Grid.Row="1" Background="{StaticResource ButtonBackground}">
 
+                    <Grid.Resources>
+                        <Style x:Key="ExtraButtonStyle" TargetType="{x:Type Button}">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="Width" Value="300" />
+                            <Setter Property="Height" Value="30" />
+                            <Setter Property="FontSize" Value="16" />
+                            <Setter Property="FontFamily" Value="Segoe UI" />
+                            <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Name="border" Background="{StaticResource ButtonBackground}" BorderBrush="{StaticResource ButtonForeground}" BorderThickness="1" CornerRadius="3">
+                                            <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                                <ContentPresenter.ContentTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
+                                                    </DataTemplate>
+                                                </ContentPresenter.ContentTemplate>
+                                            </ContentPresenter>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter TargetName="border" Property="Background" Value="{StaticResource BackgroundColor}" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="true">
+                                                <Setter TargetName="border" Property="Background" Value="{StaticResource ButtonBackground}" />
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="false">
+                                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DisabledColor}" />
+                                                <Setter Property="Foreground" Value="{StaticResource DisabledColor}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+
+                        <Style x:Key="ImageButtonStyle" TargetType="{x:Type Button}">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="Width" Value="50" />
+                            <Setter Property="Height" Value="30" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border Name="border" Background="{StaticResource ButtonBackground}" BorderBrush="{StaticResource ButtonForeground}" BorderThickness="1" CornerRadius="3">
+                                            <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" ContentSource="Content"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter TargetName="border" Property="Background" Value="{StaticResource BackgroundColor}" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="true">
+                                                <Setter TargetName="border" Property="Background" Value="{StaticResource ButtonBackground}" />
+                                            </Trigger>
+                                            <Trigger Property="IsEnabled" Value="false">
+                                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DisabledColor}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Grid.Resources>
+
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -157,72 +221,38 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-                                <TextBox x:Name="ParamTextbox" IsEnabled="False" Width="200" Height="30" Grid.Row="1" TextChanged="ParamTextbox_TextChanged"
+                                <StackPanel Orientation="Horizontal" Grid.Row="1">
+                                    <Button Width="30" Height="30" Margin="0 0 5 0" Style="{StaticResource ImageButtonStyle}">
+                                        <Image Source="/Images\folder.png" Width="20" Height="20" Margin="1 0 0 0"/>
+                                    </Button>
+                                    <TextBox x:Name="ParamTextbox" IsEnabled="False" Width="200" Height="30" TextChanged="ParamTextbox_TextChanged"
                                      Background="{StaticResource ButtonBackground}" 
                                      Foreground="{StaticResource ButtonForeground}" 
                                      BorderBrush="{StaticResource ButtonForeground}"
                                      FontSize="17" 
                                      VerticalContentAlignment="Center"
                                      TextAlignment="Center">
-                                    <TextBox.Template>
-                                        <ControlTemplate TargetType="{x:Type TextBox}">
-                                            <Border Background="{TemplateBinding Background}" 
+                                        <TextBox.Template>
+                                            <ControlTemplate TargetType="{x:Type TextBox}">
+                                                <Border Background="{TemplateBinding Background}" 
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             x:Name="border"
                                             BorderThickness="1">
-                                                <ScrollViewer x:Name="PART_ContentHost" />
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsEnabled" Value="false">
-                                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DisabledColor}" />
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </TextBox.Template>
-                                </TextBox>
+                                                    <ScrollViewer x:Name="PART_ContentHost" />
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsEnabled" Value="false">
+                                                        <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DisabledColor}" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </TextBox.Template>
+                                    </TextBox>
+                                </StackPanel>
                             </Grid>
                         </Grid>
 
                         <Grid Grid.Row="1">
-
-                            <Grid.Resources>
-                                <Style x:Key="ExtraButtonStyle" TargetType="{x:Type Button}">
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                    <Setter Property="Width" Value="300" />
-                                    <Setter Property="Height" Value="30" />
-                                    <Setter Property="FontSize" Value="16" />
-                                    <Setter Property="FontFamily" Value="Segoe UI" />
-                                    <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="{x:Type Button}">
-                                                <Border Name="border" Background="{StaticResource ButtonBackground}" BorderBrush="{StaticResource ButtonForeground}" BorderThickness="1" CornerRadius="3">
-                                                    <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                                        <ContentPresenter.ContentTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock Text="{Binding}" Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"/>
-                                                            </DataTemplate>
-                                                        </ContentPresenter.ContentTemplate>
-                                                    </ContentPresenter>
-                                                </Border>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="true">
-                                                        <Setter TargetName="border" Property="Background" Value="{StaticResource BackgroundColor}" />
-                                                    </Trigger>
-                                                    <Trigger Property="IsPressed" Value="true">
-                                                        <Setter TargetName="border" Property="Background" Value="{StaticResource ButtonBackground}" />
-                                                    </Trigger>
-                                                    <Trigger Property="IsEnabled" Value="false">
-                                                        <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DisabledColor}" />
-                                                        <Setter Property="Foreground" Value="{StaticResource DisabledColor}" />
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </Grid.Resources>
-
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Button Content="Save Configuration" Grid.Row="3" Width="200" Height="30" Click="SaveButton_Click" Style="{StaticResource ExtraButtonStyle}" Margin="0 0 10 0"/>
                                 <Button Content="Clear Action" x:Name="ClearButton" IsEnabled="False" Grid.Row="3" Width="200" Height="30" Click="ClearButton_Click" Style="{StaticResource ExtraButtonStyle}" Margin="10 0 0 0"/>

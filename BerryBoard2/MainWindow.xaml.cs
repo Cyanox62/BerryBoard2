@@ -21,12 +21,11 @@ namespace BerryBoard2
 		public MainWindow()
 		{
 			InitializeComponent();
-
-			ParamText.Text = paramText;
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
+			ParamText.Text = paramText;
 			controller = new Controller(this, ButtonGrid);
 		}
 

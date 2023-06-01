@@ -1,5 +1,4 @@
 ﻿using BerryBoard2.Model.Libs;
-using BerryBoard2.Model.Objects;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -106,8 +105,6 @@ namespace BerryBoard2.Model
 		{
 			if (int.TryParse(msg, out int num))
 			{
-				num--;
-
 				ButtonAction data = buttons[num];
 
 				SafeWrite(window, () =>
