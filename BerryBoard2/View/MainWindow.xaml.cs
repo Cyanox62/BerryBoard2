@@ -2,19 +2,14 @@
 using BerryBoard2.Model.Objects;
 using BerryBoard2.View;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace BerryBoard2
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
 	public partial class MainWindow : Window
 	{
 		private Controller? controller;
@@ -55,7 +50,6 @@ namespace BerryBoard2
 		{
 			if (e.LeftButton == MouseButtonState.Pressed)
 			{
-				//TreeViewItem item = (TreeViewItem)sender;
 				TreeViewItem item = (TreeViewItem)sender;
 				DragDrop.DoDragDrop(item, item, DragDropEffects.Move);
 			}
@@ -211,13 +205,12 @@ namespace BerryBoard2
 
 		private void SettingsButton_Click(object sender, RoutedEventArgs e)
 		{
-			new Settings(this).Show();
+			new Settings(this, controller).Show();
 		}
 
 		public void UpdateSettings(SettingsData settings)
 		{
-			// enable checking
-			// save changes
+			controller?.SaveSettings(settings);
 		}
 	}
 }

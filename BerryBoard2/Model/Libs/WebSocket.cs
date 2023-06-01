@@ -15,11 +15,28 @@ namespace BerryBoard2.Model.Libs
 		public delegate void DataReceivedDelegate(string msg);
 		public event DataReceivedDelegate? DataReceivedEvent;
 
+		public delegate void WebsocketErrorDelegate(Exception Exception);
+		public event WebsocketErrorDelegate? WebsocketErrorEvent;
+
 		private ClientWebSocket? clientWebSocket;
 
 		public void SetupWebSocket(string url)
 		{
 			Task.Run(() => Init(url));
+		}
+
+		public bool IsWebSocketOpen()
+		{
+			return clientWebSocket?.State == WebSocketState.Open;
+		}
+
+		public async Task CloseWebSocket()
+		{
+			if (clientWebSocket?.State == WebSocketState.Open)
+			{
+				await clientWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
+			}
+			clientWebSocket = null;
 		}
 
 		private async Task Init(string u)
@@ -48,6 +65,7 @@ namespace BerryBoard2.Model.Libs
 			catch (Exception ex)
 			{
 				Debug.WriteLine("WebSocket connection error: " + ex.Message);
+				WebsocketErrorEvent?.Invoke(ex);
 			}
 			finally
 			{

@@ -1,9 +1,11 @@
 ﻿using BerryBoard2.Model.Libs;
+using BerryBoard2.Model.Objects;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -37,8 +39,10 @@ namespace BerryBoard2.Model
 		private Serial serial = new Serial();
 		private WebSocket ws = new WebSocket();
 		private const string configFile = "config.json";
+		private const string settingsFile = "settings.json";
 		private ButtonAction[]? buttons;
-		private Dictionary<Model.Action, BitmapImage>? images;
+		private SettingsData? settings;
+		private Dictionary<Action, BitmapImage>? images;
 
 		public Controller(Window window, Grid buttonGrid)
 		{
@@ -94,12 +98,31 @@ namespace BerryBoard2.Model
 				}
 			}
 
+			// Load Settings
+			if (!File.Exists(settingsFile))
+			{
+				settings = new SettingsData();
+			}
+			else
+			{
+				settings = JsonConvert.DeserializeObject<SettingsData>(File.ReadAllText(settingsFile));
+			}
+
 			// Setup Serial
 			serial.SetupPorts();
 			serial.DataReceivedEvent += DataReceived;
 
 			// Setup WebSocket
-			Task.Run(() => ws.SetupWebSocket("ws://localhost:4455"));
+			if (settings?.ObsEnable ?? false)
+			{
+				ws.WebsocketErrorEvent += OnWebsocketError;
+				Task.Run(() => ObsChecker());
+			}
+		}
+
+		private void OnWebsocketError(Exception x)
+		{
+			Task.Run(() => ObsChecker());
 		}
 
 		private void DataReceived(string msg)
@@ -169,6 +192,27 @@ namespace BerryBoard2.Model
 			}
 		}
 
+		private async Task ObsChecker()
+		{
+			while (settings.ObsEnable ?? false)
+			{
+				Debug.WriteLine("checking obs");
+				if (Process.GetProcesses().Any(p => p.ProcessName.Equals("obs64")))
+				{
+					Debug.WriteLine("found");
+					if (!ws.IsWebSocketOpen())
+					{
+						await Task.Run(() => ws.SetupWebSocket($"ws://localhost:{settings.ObsPort}"));
+					}
+				}
+				else
+				{
+					await ws.CloseWebSocket();
+				}
+				await Task.Delay(5000); // Wait 5 seconds before trying again
+			}
+		}
+
 		public void ChangeButtonAction(int button, Action action = Action.None, string? param = null)
 		{
 			ButtonAction data = buttons[button];
@@ -185,6 +229,8 @@ namespace BerryBoard2.Model
 			return null;
 		}
 
+		public SettingsData GetSettings() => settings;
+
 		public void ClearButton(int button)
 		{
 			ButtonAction data = buttons[button];
@@ -195,6 +241,21 @@ namespace BerryBoard2.Model
 		public void SaveConfig()
 		{
 			File.WriteAllText(configFile, JsonConvert.SerializeObject(buttons, Formatting.Indented));
+		}
+
+		public void SaveSettings(SettingsData settings)
+		{
+			File.WriteAllText(settingsFile, JsonConvert.SerializeObject(settings, Formatting.Indented));
+			this.settings = settings;
+
+			if (settings.ObsEnable ?? false)
+			{
+				Task.Run(() => ObsChecker());
+			}
+			else if (ws.IsWebSocketOpen())
+			{
+				Task.Run(() => ws.CloseWebSocket());
+			}
 		}
 
 		public BitmapImage GetImage(Action action)

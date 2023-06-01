@@ -1,4 +1,6 @@
-﻿using BerryBoard2.Model.Objects;
+﻿using BerryBoard2.Model;
+using BerryBoard2.Model.Objects;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
@@ -7,29 +9,27 @@ namespace BerryBoard2.View
 	public partial class Settings : Window
 	{
 		private MainWindow main;
+		private Controller controller;
 
-		public Settings(MainWindow main)
+		internal Settings(MainWindow main, Controller controller)
 		{
 			InitializeComponent();
 
 			this.main = main;
+			this.controller = controller;
 		}
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
 		{
-			if (ObsCheckbox.IsChecked ?? false && PortTextbox.Text == string.Empty)
+			if ((ObsCheckbox.IsChecked ?? false) && PortTextbox.Text == string.Empty)
 			{
-				var c = new CustomMessageBox("You must enter a port");
-				c.Owner = this;
-				c.Show();
+				new CustomMessageBox("You must enter a port"){ Owner = this }.Show();
 				return;
 			}
 
 			if (!int.TryParse(PortTextbox.Text.Trim(), out int port))
 			{
-				var c = new CustomMessageBox("You must enter a port");
-				c.Owner = this;
-				c.Show();
+				new CustomMessageBox("Port must be a number") { Owner = this }.Show();
 				return;
 			}
 
@@ -37,7 +37,7 @@ namespace BerryBoard2.View
 			{
 				ObsEnable = ObsCheckbox.IsChecked,
 				ObsPort = port,
-				ObsAuth = AuthText.Text.Trim()
+				ObsAuth = AuthTextbox.Text.Trim()
 			});
 			Close();
 		}
@@ -67,6 +67,14 @@ namespace BerryBoard2.View
 		{
 			PortTextbox.IsEnabled = false;
 			AuthTextbox.IsEnabled = false;
+		}
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			SettingsData settings = controller.GetSettings();
+			ObsCheckbox.IsChecked = settings.ObsEnable;
+			PortTextbox.Text = settings.ObsPort == -1 ? string.Empty : settings.ObsPort.ToString();
+			AuthTextbox.Text = settings.ObsAuth;
 		}
 	}
 }
