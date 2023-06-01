@@ -126,6 +126,10 @@ namespace BerryBoard2
 					ParamText.Text = "Text";
 					ParamTextbox.IsEnabled = true;
 					break;
+				case Model.Action.OpenWebsite:
+					ParamText.Text = "Website URL";
+					ParamTextbox.IsEnabled = true;
+					break;
 				case Model.Action.PlayAudio:
 					ParamText.Text = "Audio Path";
 					ParamTextbox.IsEnabled = true;

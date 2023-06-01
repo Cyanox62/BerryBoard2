@@ -90,6 +90,7 @@ namespace BerryBoard2.Model
 
 				{ Action.StartProcess, new BitmapImage(new Uri("/Images/launchprogram.png", UriKind.Relative))},
 				{ Action.PlayAudio, new BitmapImage(new Uri("/Images/playaudio.png", UriKind.Relative))},
+				{ Action.OpenWebsite, new BitmapImage(new Uri("/Images/openwebsite.png", UriKind.Relative))},
 				{ Action.MuteMicrophone, new BitmapImage(new Uri("/Images/mutemicrophone.png", UriKind.Relative))}
 			};
 
@@ -264,6 +265,13 @@ namespace BerryBoard2.Model
 									}
 								}, audioCancellationTokenSource.Token);
 							}
+							break;
+						case Action.OpenWebsite:
+							Process.Start(new ProcessStartInfo
+							{
+								FileName = data.param,
+								UseShellExecute = true
+							});
 							break;
 						case Action.StartProcess:
 							string exe = data.param;
