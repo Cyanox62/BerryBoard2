@@ -54,7 +54,7 @@ namespace BerryBoard2.Model.Libs
 				{
 					serialPort.Open();
 					Debug.WriteLine($"Opened port {port}");
-					serialPort.WriteLine("IDENTIFY");
+					//serialPort.WriteLine("IDENTIFY");
 				}
 				catch (Exception ex)
 				{

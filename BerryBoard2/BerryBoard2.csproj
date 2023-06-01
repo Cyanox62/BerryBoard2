@@ -8,8 +8,42 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\changescene.png" />
+    <None Remove="Images\launchprogram.png" />
+    <None Remove="Images\muteaudio.png" />
+    <None Remove="Images\mutemicrophone.png" />
+    <None Remove="Images\next.png" />
+    <None Remove="Images\pauseplay.png" />
+    <None Remove="Images\pauserecording.png" />
+    <None Remove="Images\previous.png" />
+    <None Remove="Images\startrecording.png" />
+    <None Remove="Images\startstreaming.png" />
+    <None Remove="Images\stoprecording.png" />
+    <None Remove="Images\stopstreaming.png" />
+    <None Remove="Images\volumedown.png" />
+    <None Remove="Images\volumeup.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.IO.Ports" Version="8.0.0-preview.4.23259.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\changescene.png" />
+    <Resource Include="Images\launchprogram.png" />
+    <Resource Include="Images\muteaudio.png" />
+    <Resource Include="Images\mutemicrophone.png" />
+    <Resource Include="Images\next.png" />
+    <Resource Include="Images\pauseplay.png" />
+    <Resource Include="Images\pauserecording.png" />
+    <Resource Include="Images\previous.png" />
+    <Resource Include="Images\startrecording.png" />
+    <Resource Include="Images\startstreaming.png" />
+    <Resource Include="Images\stoprecording.png" />
+    <Resource Include="Images\stopstreaming.png" />
+    <Resource Include="Images\volumedown.png" />
+    <Resource Include="Images\volumeup.png" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,6 @@
-﻿namespace BerryBoard2.Model
+﻿using System.Windows.Controls;
+
+namespace BerryBoard2.Model
 {
 	internal class ButtonAction
 	{

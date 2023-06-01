@@ -1,9 +1,12 @@
 ﻿using BerryBoard2.Model;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace BerryBoard2
 {
@@ -13,7 +16,6 @@ namespace BerryBoard2
 	public partial class MainWindow : Window
 	{
 		private Controller? controller;
-
 		private const string paramText = "Parameter";
 
 		public MainWindow()
@@ -25,7 +27,7 @@ namespace BerryBoard2
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			controller = new Controller(this);
+			controller = new Controller(this, ButtonGrid);
 		}
 
 		private void MinimizeButton_Click(object sender, RoutedEventArgs e)
@@ -52,6 +54,7 @@ namespace BerryBoard2
 		{
 			if (e.LeftButton == MouseButtonState.Pressed)
 			{
+				//TreeViewItem item = (TreeViewItem)sender;
 				TreeViewItem item = (TreeViewItem)sender;
 				DragDrop.DoDragDrop(item, item, DragDropEffects.Move);
 			}
@@ -94,6 +97,8 @@ namespace BerryBoard2
 						break;
 					}
 				}
+
+				selectedButton.Content = controller?.CreateImage(controller?.GetImage(data.action));
 			}
 			else
 			{
@@ -120,21 +125,25 @@ namespace BerryBoard2
 			}
 		}
 
-		private string GetHeaderByAction(TreeViewItem item, Model.Action? action)
+		private string GetHeaderByAction(TreeViewItem i, Model.Action? action)
 		{
-			if ((string)item.Tag == action.ToString())
-				return (string)item.Header;
-
-			string foundHeader = null;
-
-			foreach (TreeViewItem child in item.Items)
+			foreach (TreeViewItem item in i.Items)
 			{
-				foundHeader = GetHeaderByAction(child, action);
-				if (foundHeader != null)
-					break;
+				if (item.Tag.ToString() == action?.ToString())
+				{
+					if (item.Header is StackPanel panel)
+					{
+						foreach (var child in panel.Children)
+						{
+							if (child is TextBlock textBlock)
+							{
+								return textBlock.Text;
+							}
+						}
+					}
+				}
 			}
-
-			return foundHeader;
+			return null;
 		}
 
 		private void Button_Drop(object sender, DragEventArgs e)
@@ -160,8 +169,10 @@ namespace BerryBoard2
 		{
 			if (selectedButton != null)
 			{
-				controller?.ClearButton(int.Parse(selectedButton.Tag.ToString()));
+				int button = int.Parse(selectedButton.Tag.ToString());
+				controller?.ClearButton(button);
 				ActionLabel.Text = "None";
+				selectedButton.Content = null;
 				ParamText.Text = paramText;
 				ParamTextbox.Text = string.Empty;
 				ClearButton.IsEnabled = false;

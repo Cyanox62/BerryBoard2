@@ -72,7 +72,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- Main Buttons -->
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid x:Name="ButtonGrid" HorizontalAlignment="Center" VerticalAlignment="Center">
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -87,18 +87,18 @@
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <Button Content="1" Grid.Column="0" Grid.Row="0" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="0"/>
-                    <Button Content="2" Grid.Column="1" Grid.Row="0" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="1"/>
-                    <Button Content="3" Grid.Column="2" Grid.Row="0" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="2"/>
-                    <Button Content="4" Grid.Column="3" Grid.Row="0" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="3"/>
-                    <Button Content="5" Grid.Column="0" Grid.Row="1" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="4"/>
-                    <Button Content="6" Grid.Column="1" Grid.Row="1" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="5"/>
-                    <Button Content="7" Grid.Column="2" Grid.Row="1" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="6"/>
-                    <Button Content="8" Grid.Column="3" Grid.Row="1" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="7"/>
-                    <Button Content="9" Grid.Column="0" Grid.Row="2" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="8"/>
-                    <Button Content="10" Grid.Column="1" Grid.Row="2" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="9"/>
-                    <Button Content="11" Grid.Column="2" Grid.Row="2" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="10"/>
-                    <Button Content="12" Grid.Column="3" Grid.Row="2" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="11"/>
+                    <Button Content="" Grid.Column="0" Grid.Row="0" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="0"/>
+                    <Button Content="" Grid.Column="1" Grid.Row="0" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="1"/>
+                    <Button Content="" Grid.Column="2" Grid.Row="0" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="2"/>
+                    <Button Content="" Grid.Column="3" Grid.Row="0" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="3"/>
+                    <Button Content="" Grid.Column="0" Grid.Row="1" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="4"/>
+                    <Button Content="" Grid.Column="1" Grid.Row="1" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="5"/>
+                    <Button Content="" Grid.Column="2" Grid.Row="1" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="6"/>
+                    <Button Content="" Grid.Column="3" Grid.Row="1" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="7"/>
+                    <Button Content="" Grid.Column="0" Grid.Row="2" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="8"/>
+                    <Button Content="" Grid.Column="1" Grid.Row="2" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="9"/>
+                    <Button Content="" Grid.Column="2" Grid.Row="2" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="10"/>
+                    <Button Content="" Grid.Column="3" Grid.Row="2" Click="Button_Click" AllowDrop="True" Drop="Button_Drop" Style="{StaticResource MainButton}" Tag="11"/>
                 </Grid>
 
                 <Grid Grid.Row="1" Background="{StaticResource ButtonBackground}">
@@ -257,24 +257,107 @@
                         <TreeViewItem.Header>
                             <TextBlock Text="OBS" FontWeight="Bold"/>
                         </TreeViewItem.Header>
-                        <TreeViewItem Header="Change Scene" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="ChangeScene"/>
-                        <TreeViewItem Header="Start Streaming" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StartStreaming"/>
-                        <TreeViewItem Header="Stop Streaming" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StopStreaming"/>
-                        <TreeViewItem Header="Start Recording" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StartRecording"/>
-                        <TreeViewItem Header="Stop Recording" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StopRecording"/>
-                        <TreeViewItem Header="Pause Recording" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="PauseRecording"/>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="ChangeScene">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/changescene.png" Width="20" Height="20" />
+                                    <TextBlock Text="Change Scene" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StartStreaming">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/startstreaming.png" Width="20" Height="20" />
+                                    <TextBlock Text="Start Streaming" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StopStreaming">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/stopstreaming.png" Width="20" Height="20" />
+                                    <TextBlock Text="Stop Streaming" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StartRecording">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/startrecording.png" Width="20" Height="20" />
+                                    <TextBlock Text="Start Recording" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StopRecording">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/stoprecording.png" Width="20" Height="20" />
+                                    <TextBlock Text="Stop Recording" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="PauseRecording">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/pauserecording.png" Width="20" Height="20" />
+                                    <TextBlock Text="Pause Recording" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
                     </TreeViewItem>
 
                     <TreeViewItem FontSize="16" IsExpanded="False" Foreground="{StaticResource ButtonForeground}" Focusable="False">
                         <TreeViewItem.Header>
                             <TextBlock Text="Media" FontWeight="Bold"/>
                         </TreeViewItem.Header>
-                        <TreeViewItem Header="Volume Up" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="VolumeUp"/>
-                        <TreeViewItem Header="Volume Down" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="VolumeDown"/>
-                        <TreeViewItem Header="Mute Audio" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="MuteAudio"/>
-                        <TreeViewItem Header="Play/Pause" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="PlayPause"/>
-                        <TreeViewItem Header="Next Track" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="NextTrack"/>
-                        <TreeViewItem Header="Previous Track" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="PreviousTrack">
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="VolumeUp">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/volumeup.png" Width="20" Height="20" />
+                                    <TextBlock Text="Volume Up" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="VolumeDown">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/volumedown.png" Width="20" Height="20" />
+                                    <TextBlock Text="Volume Down" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="MuteAudio">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/muteaudio.png" Width="20" Height="20" />
+                                    <TextBlock Text="Mute Audio" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="PlayPause">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/pauseplay.png" Width="20" Height="20" />
+                                    <TextBlock Text="Play/Pause" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="NextTrack">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/next.png" Width="20" Height="20" />
+                                    <TextBlock Text="Next Track" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="PreviousTrack">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/previous.png" Width="20" Height="20" />
+                                    <TextBlock Text="Previous Track" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
                         </TreeViewItem>
                     </TreeViewItem>
 
@@ -282,9 +365,24 @@
                         <TreeViewItem.Header>
                             <TextBlock Text="System" FontWeight="Bold"/>
                         </TreeViewItem.Header>
-                        <TreeViewItem Header="Start Process" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StartProcess"/>
-                        <TreeViewItem Header="Mute Microphone" MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="MuteMicrophone"/>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StartProcess">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/launchprogram.png" Width="20" Height="20" />
+                                    <TextBlock Text="Start Process" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="MuteMicrophone">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/mutemicrophone.png" Width="20" Height="20" />
+                                    <TextBlock Text="Mute Microphone" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
                     </TreeViewItem>
+
                 </TreeView>
             </Grid>
         </Grid>

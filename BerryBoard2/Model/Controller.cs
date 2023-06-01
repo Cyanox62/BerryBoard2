@@ -1,10 +1,14 @@
 ﻿using BerryBoard2.Model.Libs;
+using BerryBoard2.Model.Objects;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace BerryBoard2.Model
 {
@@ -34,13 +38,35 @@ namespace BerryBoard2.Model
 		private WebSocket ws = new WebSocket();
 		private const string configFile = "config.json";
 		private ButtonAction[]? buttons;
+		private Dictionary<Model.Action, BitmapImage>? images;
 
-		public Controller(Window window)
+		public Controller(Window window, Grid buttonGrid)
 		{
 			this.window = window;
 			handle = new System.Windows.Interop.WindowInteropHelper(window).Handle;
 
 			buttons = new ButtonAction[12];
+
+			// Load images
+			images = new Dictionary<Action, BitmapImage>()
+			{
+				{ Action.ChangeScene, new BitmapImage(new Uri("/Images/changescene.png", UriKind.Relative))},
+				{ Action.StartStreaming, new BitmapImage(new Uri("/Images/startstreaming.png", UriKind.Relative))},
+				{ Action.StopStreaming, new BitmapImage(new Uri("/Images/stopstreaming.png", UriKind.Relative))},
+				{ Action.StartRecording, new BitmapImage(new Uri("/Images/startrecording.png", UriKind.Relative))},
+				{ Action.StopRecording, new BitmapImage(new Uri("/Images/stoprecording.png", UriKind.Relative))},
+				{ Action.PauseRecording, new BitmapImage(new Uri("/Images/pauserecording.png", UriKind.Relative))},
+
+				{ Action.VolumeUp, new BitmapImage(new Uri("/Images/volumeup.png", UriKind.Relative))},
+				{ Action.VolumeDown, new BitmapImage(new Uri("/Images/volumedown.png", UriKind.Relative))},
+				{ Action.MuteAudio, new BitmapImage(new Uri("/Images/muteaudio.png", UriKind.Relative))},
+				{ Action.PlayPause, new BitmapImage(new Uri("/Images/pauseplay.png", UriKind.Relative))},
+				{ Action.NextTrack, new BitmapImage(new Uri("/Images/next.png", UriKind.Relative))},
+				{ Action.PreviousTrack, new BitmapImage(new Uri("/Images/previous.png", UriKind.Relative))},
+
+				{ Action.StartProcess, new BitmapImage(new Uri("/Images/launchprogram.png", UriKind.Relative))},
+				{ Action.MuteMicrophone, new BitmapImage(new Uri("/Images/mutemicrophone.png", UriKind.Relative))}
+			};
 
 			// Load Config
 			if (!File.Exists(configFile))
@@ -53,6 +79,19 @@ namespace BerryBoard2.Model
 			else
 			{
 				buttons = JsonConvert.DeserializeObject<ButtonAction[]>(File.ReadAllText(configFile));
+
+				for (int i = 0; i < buttonGrid.Children.Count; i++)
+				{
+					UIElement element = buttonGrid.Children[i];
+					if (element is Button button)
+					{
+						ButtonAction data = buttons[i];
+						if (data?.action != Action.None)
+						{
+							button.Content = CreateImage(images[data.action]);
+						}
+					}
+				}
 			}
 
 			// Setup Serial
@@ -153,6 +192,22 @@ namespace BerryBoard2.Model
 		public void Save()
 		{
 			File.WriteAllText(configFile, JsonConvert.SerializeObject(buttons, Formatting.Indented));
+		}
+
+		public BitmapImage GetImage(Action action)
+		{
+			if (action != Action.None) return images[action];
+			return null;
+		}
+
+		public Image CreateImage(BitmapImage source)
+		{
+			Image image = new Image();
+			image.Source = source;
+			image.Width = 20;
+			image.Height = 20;
+
+			return image;
 		}
 
 		private void SafeWrite(Window target, System.Action action)
