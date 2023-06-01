@@ -32,9 +32,7 @@ namespace BerryBoard2.Model
 		Cut,
 		Copy,
 		Paste,
-		Delete,
-		Undo,
-		Redo,
+		CustomText,
 
 		// System
 		StartProcess,

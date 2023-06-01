@@ -121,6 +121,10 @@ namespace BerryBoard2
 					ParamTextbox.IsEnabled = true;
 					FolderButton.IsEnabled = true;
 					break;
+				case Model.Action.CustomText:
+					ParamText.Text = "Text";
+					ParamTextbox.IsEnabled = true;
+					break;
 				default:
 					ParamText.Text = paramText;
 					ParamTextbox.IsEnabled = false;

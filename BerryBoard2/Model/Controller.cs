@@ -23,24 +23,8 @@ namespace BerryBoard2.Model
 		[DllImport("user32.dll")]
 		public static extern IntPtr SendMessageW(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
-		[DllImport("user32.dll")]
-		static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
-
 		#region App Codes
-		const byte KEYEVENTF_EXTENDEDKEY = 0x0001;
-		const byte KEYEVENTF_KEYUP = 0x0002;
-		const byte VK_V = 0x56;
-		const byte VK_C = 0x43;
-		const byte VK_X = 0x58;
-		const byte VK_LSHIFT = 0xA0;
-		const byte VK_RSHIFT = 0xA1;
-		const byte VK_LCONTROL = 0xA2;
-		const byte VK_RCONTROL = 0xA3;
-		const byte VK_LMENU = 0xA4;  // left alt
-		const byte VK_RMENU = 0xA5;  // right alt
-		const byte VK_DELETE = 0x2E;
-
-
+		// App Codes
 		internal const int WM_APPCOMMAND = 0x319;
 
 		// Media
@@ -61,10 +45,6 @@ namespace BerryBoard2.Model
 
 		// System
 		internal const int APPCOMMAND_MIC_ON_OFF_TOGGLE = 0x180000;
-
-		// Browser
-		internal const int APPCOMMAND_BROWSER_BACKWARD = 0x100000;
-		internal const int APPCOMMAND_BROWSER_FORWARD = 0x200000;
 		#endregion
 
 		// Fields
@@ -103,7 +83,7 @@ namespace BerryBoard2.Model
 				{ Action.Cut, new BitmapImage(new Uri("/Images/cut.png", UriKind.Relative))},
 				{ Action.Copy, new BitmapImage(new Uri("/Images/copy.png", UriKind.Relative))},
 				{ Action.Paste, new BitmapImage(new Uri("/Images/paste.png", UriKind.Relative))},
-				{ Action.Delete, new BitmapImage(new Uri("/Images/delete.png", UriKind.Relative))},
+				{ Action.CustomText, new BitmapImage(new Uri("/Images/customtext.png", UriKind.Relative))},
 
 				{ Action.StartProcess, new BitmapImage(new Uri("/Images/launchprogram.png", UriKind.Relative))},
 				{ Action.MuteMicrophone, new BitmapImage(new Uri("/Images/mutemicrophone.png", UriKind.Relative))}
@@ -214,26 +194,16 @@ namespace BerryBoard2.Model
 
 						// Keyboard
 						case Action.Cut:
-							keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY, 0);
-							keybd_event(VK_X, 0, KEYEVENTF_EXTENDEDKEY, 0);
-							keybd_event(VK_X, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
-							keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+							SendKeys.Send("x", true);
 							break;
 						case Action.Copy:
-							keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY, 0);
-							keybd_event(VK_C, 0, KEYEVENTF_EXTENDEDKEY, 0);
-							keybd_event(VK_C, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
-							keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+							SendKeys.Send("c", true);
 							break;
 						case Action.Paste:
-							keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY, 0);
-							keybd_event(VK_V, 0, KEYEVENTF_EXTENDEDKEY, 0);
-							keybd_event(VK_V, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
-							keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+							SendKeys.Send("v", true);
 							break;
-						case Action.Delete:
-							keybd_event(VK_DELETE, 0, KEYEVENTF_EXTENDEDKEY, 0);
-							keybd_event(VK_DELETE, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+						case Action.CustomText:
+							SendKeys.Send(data.param);
 							break;
 
 						// System
