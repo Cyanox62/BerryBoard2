@@ -3,6 +3,7 @@ using BerryBoard2.Model.Objects;
 using BerryBoard2.View;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -206,7 +207,8 @@ namespace BerryBoard2
 			if (selectedButtonData?.action == Model.KeyAction.StartProcess)
 			{
 				dlg.DefaultExt = ".exe";
-				dlg.Filter = "Executable Files (*.exe)|*.exe";
+				dlg.Filter = "Executable Files (*.exe;*.url)|*.exe;*.url";
+				dlg.CheckFileExists = false;  // add this line
 			}
 			else if (selectedButtonData?.action == Model.KeyAction.PlayAudio)
 			{
@@ -220,7 +222,32 @@ namespace BerryBoard2
 
 			if (result == true)
 			{
-				ParamTextbox.Text = dlg.FileName;
+				if (Path.GetExtension(dlg.FileName).ToLower() == ".url")
+				{
+					try
+					{
+						using (StreamReader sr = new StreamReader(dlg.FileName))
+						{
+							string line;
+							while ((line = sr.ReadLine()) != null)
+							{
+								if (line.StartsWith("URL="))
+								{
+									ParamTextbox.Text = line.Substring(4);
+									return;
+								}
+							}
+						}
+					}
+					catch (Exception ex)
+					{
+						Console.WriteLine($"Error reading .url file: {ex.Message}");
+					}
+				}
+				else
+				{
+					ParamTextbox.Text = dlg.FileName;
+				}
 			}
 		}
 
