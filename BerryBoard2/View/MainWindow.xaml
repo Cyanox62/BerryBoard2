@@ -467,14 +467,6 @@
                         <TreeViewItem.Header>
                             <TextBlock Text="OBS Studio" FontWeight="Bold"/>
                         </TreeViewItem.Header>
-                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="ChangeScene">
-                            <TreeViewItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="/Images/changescene.png" Width="20" Height="20" />
-                                    <TextBlock Text="Change Scene" Margin="8,0,0,0" />
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
                         <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StartStreaming">
                             <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -515,36 +507,20 @@
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="ChangeScene">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/changescene.png" Width="20" Height="20" />
+                                    <TextBlock Text="Change Scene" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
                     </TreeViewItem>
 
                     <TreeViewItem FontSize="16" IsExpanded="False" Foreground="{StaticResource ButtonForeground}" Focusable="False">
                         <TreeViewItem.Header>
                             <TextBlock Text="Media" FontWeight="Bold"/>
                         </TreeViewItem.Header>
-                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="VolumeUp">
-                            <TreeViewItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="/Images/volumeup.png" Width="20" Height="20" />
-                                    <TextBlock Text="Volume Up" Margin="8,0,0,0" />
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="VolumeDown">
-                            <TreeViewItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="/Images/volumedown.png" Width="20" Height="20" />
-                                    <TextBlock Text="Volume Down" Margin="8,0,0,0" />
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="MuteAudio">
-                            <TreeViewItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="/Images/muteaudio.png" Width="20" Height="20" />
-                                    <TextBlock Text="Mute Audio" Margin="8,0,0,0" />
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
                         <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="PlayPause">
                             <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -566,6 +542,30 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="/Images/previous.png" Width="20" Height="20" />
                                     <TextBlock Text="Previous Track" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="VolumeUp">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/volumeup.png" Width="20" Height="20" />
+                                    <TextBlock Text="Volume Up" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="VolumeDown">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/volumedown.png" Width="20" Height="20" />
+                                    <TextBlock Text="Volume Down" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="MuteAudio">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/muteaudio.png" Width="20" Height="20" />
+                                    <TextBlock Text="Mute Audio" Margin="8,0,0,0" />
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>

@@ -13,20 +13,20 @@ namespace BerryBoard2.Model
 		None,
 
 		// OBS
-		ChangeScene,
 		StartStreaming,
 		StopStreaming,
 		StartRecording,
 		StopRecording,
 		PauseRecording,
+		ChangeScene,
 
 		// Media
-		VolumeUp,
-		VolumeDown,
-		MuteAudio,
 		PlayPause,
 		NextTrack,
 		PreviousTrack,
+		VolumeUp,
+		VolumeDown,
+		MuteAudio,
 
 		// Keyboard
 		Cut,

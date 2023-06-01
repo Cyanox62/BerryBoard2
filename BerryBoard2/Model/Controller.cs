@@ -69,19 +69,19 @@ namespace BerryBoard2.Model
 			// Load images
 			images = new Dictionary<KeyAction, BitmapImage>()
 			{
-				{ KeyAction.ChangeScene, new BitmapImage(new Uri("/Images/changescene.png", UriKind.Relative))},
 				{ KeyAction.StartStreaming, new BitmapImage(new Uri("/Images/startstreaming.png", UriKind.Relative))},
 				{ KeyAction.StopStreaming, new BitmapImage(new Uri("/Images/stopstreaming.png", UriKind.Relative))},
 				{ KeyAction.StartRecording, new BitmapImage(new Uri("/Images/startrecording.png", UriKind.Relative))},
 				{ KeyAction.StopRecording, new BitmapImage(new Uri("/Images/stoprecording.png", UriKind.Relative))},
 				{ KeyAction.PauseRecording, new BitmapImage(new Uri("/Images/pauserecording.png", UriKind.Relative))},
+				{ KeyAction.ChangeScene, new BitmapImage(new Uri("/Images/changescene.png", UriKind.Relative))},
 
-				{ KeyAction.VolumeUp, new BitmapImage(new Uri("/Images/volumeup.png", UriKind.Relative))},
-				{ KeyAction.VolumeDown, new BitmapImage(new Uri("/Images/volumedown.png", UriKind.Relative))},
-				{ KeyAction.MuteAudio, new BitmapImage(new Uri("/Images/muteaudio.png", UriKind.Relative))},
 				{ KeyAction.PlayPause, new BitmapImage(new Uri("/Images/pauseplay.png", UriKind.Relative))},
 				{ KeyAction.NextTrack, new BitmapImage(new Uri("/Images/next.png", UriKind.Relative))},
 				{ KeyAction.PreviousTrack, new BitmapImage(new Uri("/Images/previous.png", UriKind.Relative))},
+				{ KeyAction.VolumeUp, new BitmapImage(new Uri("/Images/volumeup.png", UriKind.Relative))},
+				{ KeyAction.VolumeDown, new BitmapImage(new Uri("/Images/volumedown.png", UriKind.Relative))},
+				{ KeyAction.MuteAudio, new BitmapImage(new Uri("/Images/muteaudio.png", UriKind.Relative))},
 
 				{ KeyAction.Cut, new BitmapImage(new Uri("/Images/cut.png", UriKind.Relative))},
 				{ KeyAction.Copy, new BitmapImage(new Uri("/Images/copy.png", UriKind.Relative))},

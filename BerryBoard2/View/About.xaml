@@ -55,17 +55,17 @@
                 <TextBlock Foreground="{StaticResource ButtonForeground}" FontSize="25" Margin="20 20 0 0" TextDecorations="Underline"
                Text="Features"/>
                 <TextBlock Foreground="{StaticResource ButtonForeground}" FontSize="16" Margin="20 0 0 0">
-                    - Fully customizable macro keys
+                    • Fully customizable macro keys
                     <LineBreak/>
-                    - Intuitive user interface
+                    • Intuitive user interface
                     <LineBreak/>
-                    - Instant key recognition and feedback
+                    • Instant key recognition and feedback
                     <LineBreak/>
-                    - System and media control
+                    • System and media control
                     <LineBreak/>
-                    - OBS Studio integration
+                    • OBS Studio integration
                     <LineBreak/>
-                    - Lightweight and efficient
+                    • Lightweight and efficient
                 </TextBlock>
             </StackPanel>
 
