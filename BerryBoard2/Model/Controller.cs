@@ -265,19 +265,22 @@ namespace BerryBoard2.Model
 							}
 							break;
 						case KeyAction.OpenWebsite:
-							Process.Start(new ProcessStartInfo
-							{
-								FileName = data.param,
-								UseShellExecute = true
-							});
+							OpenUrl(data.param);
 							break;
 						case KeyAction.StartProcess:
-							string exe = data.param;
-							ProcessStartInfo processInfo = new ProcessStartInfo();
-							processInfo.WorkingDirectory = Path.GetDirectoryName(data.param);
-							processInfo.FileName = Path.GetFileName(exe);
-							processInfo.UseShellExecute = true;
-							Process.Start(processInfo);
+							if (IsValidUrl(data.param))
+							{
+								OpenUrl(data.param);
+							}
+							else
+							{
+								string exe = data.param;
+								ProcessStartInfo processInfo = new ProcessStartInfo();
+								processInfo.WorkingDirectory = Path.GetDirectoryName(data.param);
+								processInfo.FileName = Path.GetFileName(exe);
+								processInfo.UseShellExecute = true;
+								Process.Start(processInfo);
+							}
 							break;
 						case KeyAction.MuteMicrophone:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MIC_ON_OFF_TOGGLE);
@@ -291,6 +294,26 @@ namespace BerryBoard2.Model
 					}
 				});
 			}
+		}
+
+		private bool IsValidUrl(string url)
+		{
+			if (string.IsNullOrEmpty(url))
+				return false;
+
+			Uri uriResult;
+			return Uri.TryCreate(url, UriKind.Absolute, out uriResult)
+				&& (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps || uriResult.Scheme == "steam");
+		}
+
+
+		private void OpenUrl(string url)
+		{
+			Process.Start(new ProcessStartInfo
+			{
+				FileName = url,
+				UseShellExecute = true
+			});
 		}
 
 		private bool isCheckingObs = false;
