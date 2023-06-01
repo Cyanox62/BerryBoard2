@@ -114,12 +114,14 @@ namespace BerryBoard2
 					ParamTextbox.IsEnabled = true;
 					break;
 				case Model.Action.StartProcess:
-					ParamText.Text = "Filepath";
+					ParamText.Text = "File Path";
 					ParamTextbox.IsEnabled = true;
+					FolderButton.IsEnabled = true;
 					break;
 				default:
 					ParamText.Text = paramText;
 					ParamTextbox.IsEnabled = false;
+					FolderButton.IsEnabled = false;
 					break;
 			}
 		}
@@ -177,6 +179,23 @@ namespace BerryBoard2
 				ClearButton.IsEnabled = false;
 				ParamTextbox.IsEnabled = false;
 			}
+		}
+
+		private void FolderButton_Click(object sender, RoutedEventArgs e)
+		{
+			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+			dlg.InitialDirectory = @"C:\";
+			dlg.DefaultExt = ".exe";
+			dlg.Filter = "Executable Files (*.exe)|*.exe";
+
+			Nullable<bool> result = dlg.ShowDialog();
+
+			if (result == true)
+			{
+				ParamTextbox.Text = dlg.FileName;
+			}
+
 		}
 	}
 }

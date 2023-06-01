@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Berry Board Configuration" Height="450" Width="700"
         WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" Loaded="Window_Loaded"
-        MinHeight="420" MinWidth="620"
+        MinHeight="420" MinWidth="640"
         Background="#2c2c2d">
 
     <Window.Resources>
@@ -168,95 +168,82 @@
                     </Grid.Resources>
 
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition Height="40"/>
-                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
 
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
 
-                            <Grid Grid.Column="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Text="Selected Action" 
-                                       HorizontalAlignment="Center" 
-                                       Padding="8" FontSize="16" FontWeight="Bold" 
-                                       FontFamily="Segoe UI" 
-                                       Foreground="{StaticResource ButtonForeground}"
-                                       Grid.Row="0"/>
-                                <TextBlock Text="None" x:Name="ActionLabel"
-                                       HorizontalAlignment="Center" 
-                                       VerticalAlignment="Center" 
-                                       Padding="8" FontSize="16" 
-                                       FontFamily="Segoe UI" 
-                                       Foreground="{StaticResource ButtonForeground}"
-                                       Grid.Row="1"/>
-                            </Grid>
-
-                            <Grid Grid.Column="1">
-
-                                <Grid.RowDefinitions>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Text="Parameter" x:Name="ParamText" IsEnabled="False" FontWeight="Bold" HorizontalAlignment="Center" Padding="8" FontSize="16" FontFamily="Segoe UI"  VerticalAlignment="Center" Grid.Row="0">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ElementName=ParamTextbox, Path=IsEnabled}" Value="False">
-                                                    <Setter Property="Foreground" Value="{StaticResource DisabledColor}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <StackPanel Orientation="Horizontal" Grid.Row="1">
-                                    <Button Width="30" Height="30" Margin="0 0 5 0" Style="{StaticResource ImageButtonStyle}">
-                                        <Image Source="/Images\folder.png" Width="20" Height="20" Margin="1 0 0 0"/>
-                                    </Button>
-                                    <TextBox x:Name="ParamTextbox" IsEnabled="False" Width="200" Height="30" TextChanged="ParamTextbox_TextChanged"
-                                     Background="{StaticResource ButtonBackground}" 
-                                     Foreground="{StaticResource ButtonForeground}" 
-                                     BorderBrush="{StaticResource ButtonForeground}"
-                                     FontSize="17" 
-                                     VerticalContentAlignment="Center"
-                                     TextAlignment="Center">
-                                        <TextBox.Template>
-                                            <ControlTemplate TargetType="{x:Type TextBox}">
-                                                <Border Background="{TemplateBinding Background}" 
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            x:Name="border"
-                                            BorderThickness="1">
-                                                    <ScrollViewer x:Name="PART_ContentHost" />
-                                                </Border>
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsEnabled" Value="false">
-                                                        <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DisabledColor}" />
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </TextBox.Template>
-                                    </TextBox>
-                                </StackPanel>
-                            </Grid>
+                            <TextBlock Text="Selected Action" 
+                                    HorizontalAlignment="Center" 
+                                    FontSize="16" FontWeight="Bold" 
+                                    FontFamily="Segoe UI" VerticalAlignment="Center"
+                                    Foreground="{StaticResource ButtonForeground}"
+                                    Grid.Row="0"/>
+                            <TextBlock Text="None" x:Name="ActionLabel"
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Top" 
+                                    FontSize="16" Margin="0 1 0 0"
+                                    FontFamily="Segoe UI" 
+                                    Foreground="{StaticResource ButtonForeground}"
+                                    Grid.Row="1"/>
+                            <Button Content="Save Configuration" Grid.Row="3" Width="210" Height="30" Click="SaveButton_Click" Style="{StaticResource ExtraButtonStyle}" Margin="0 0 10 0"/>
                         </Grid>
 
-                        <Grid Grid.Row="1">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Button Content="Save Configuration" Grid.Row="3" Width="200" Height="30" Click="SaveButton_Click" Style="{StaticResource ExtraButtonStyle}" Margin="0 0 10 0"/>
-                                <Button Content="Clear Action" x:Name="ClearButton" IsEnabled="False" Grid.Row="3" Width="200" Height="30" Click="ClearButton_Click" Style="{StaticResource ExtraButtonStyle}" Margin="10 0 0 0"/>
+                        <Grid Grid.Column="1">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Parameter" x:Name="ParamText" IsEnabled="False" FontWeight="Bold" HorizontalAlignment="Center" Padding="8" FontSize="16" FontFamily="Segoe UI"  VerticalAlignment="Center" Grid.Row="0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=ParamTextbox, Path=IsEnabled}" Value="False">
+                                                <Setter Property="Foreground" Value="{StaticResource DisabledColor}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <Button x:Name="FolderButton" Width="30" Height="30" Click="FolderButton_Click" Margin="0 0 5 0" Style="{StaticResource ImageButtonStyle}" IsEnabled="False">
+                                    <Image Source="/Images\folder.png" Width="20" Height="20" Margin="1 0 0 0"/>
+                                </Button>
+                                <TextBox x:Name="ParamTextbox" IsEnabled="False" Width="170" Height="30" TextChanged="ParamTextbox_TextChanged"
+                                    Background="{StaticResource ButtonBackground}" 
+                                    Foreground="{StaticResource ButtonForeground}" 
+                                    BorderBrush="{StaticResource ButtonForeground}"
+                                    FontSize="17" 
+                                    VerticalContentAlignment="Center">
+                                    <TextBox.Template>
+                                        <ControlTemplate TargetType="{x:Type TextBox}">
+                                            <Border Background="{TemplateBinding Background}" 
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        x:Name="border"
+                                        BorderThickness="1">
+                                                <ScrollViewer x:Name="PART_ContentHost" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsEnabled" Value="false">
+                                                    <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource DisabledColor}" />
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </TextBox.Template>
+                                </TextBox>
                             </StackPanel>
+                            <Button Content="Clear Action" x:Name="ClearButton" IsEnabled="False" Grid.Row="3" Width="205" Height="30" Click="ClearButton_Click" Style="{StaticResource ExtraButtonStyle}" Margin="0 0 0 0"/>
                         </Grid>
                     </Grid>
                 </Grid>

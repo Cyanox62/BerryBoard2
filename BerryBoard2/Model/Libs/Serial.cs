@@ -15,6 +15,8 @@ namespace BerryBoard2.Model.Libs
 		private List<SerialPort> serialPorts = new List<SerialPort>();
 		private Timer? portCheckTimer;
 
+		private SerialPort? senderPort = null;
+
 		public void SetupPorts()
 		{
 			ConnectToAllSerialPorts();
@@ -32,7 +34,9 @@ namespace BerryBoard2.Model.Libs
 
 		private void ConnectToAllSerialPorts()
 		{
-			string[] ports = SerialPort.GetPortNames();
+			string[]? ports;
+			if (senderPort != null) ports = new string[] { senderPort.PortName };
+			else ports = SerialPort.GetPortNames();
 
 			foreach (string port in ports)
 			{
@@ -70,14 +74,25 @@ namespace BerryBoard2.Model.Libs
 			string indata = sp.ReadExisting().Trim();
 			if (indata == string.Empty) return;
 			Debug.WriteLine($"Data received ({sp.PortName}): " + indata);
+
 			for (int i = serialPorts.Count - 1; i >= 0; i--)
 			{
 				SerialPort port = serialPorts[i];
-				if (port.PortName != sp.PortName)
+				if (port.PortName == sp.PortName)
 				{
-					KillPort(port);
-					serialPorts.Remove(port);
+					senderPort = port;
+					continue;
 				}
+
+				KillPort(port);
+				serialPorts.Remove(port);
+			}
+
+			if (senderPort != null && serialPorts.Count > 1)
+			{
+				serialPorts.Remove(senderPort);
+				serialPorts.Clear();
+				serialPorts.Add(senderPort);
 			}
 
 			DataReceivedEvent?.Invoke(indata);
