@@ -573,6 +573,44 @@
 
                     <TreeViewItem FontSize="16" IsExpanded="False" Foreground="{StaticResource ButtonForeground}" Focusable="False">
                         <TreeViewItem.Header>
+                            <TextBlock Text="Keyboard" FontWeight="Bold"/>
+                        </TreeViewItem.Header>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Cut">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/cut.png" Width="20" Height="20" />
+                                    <TextBlock Text="Cut" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Copy">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/copy.png" Width="20" Height="20" />
+                                    <TextBlock Text="Copy" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Paste">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/paste.png" Width="20" Height="20" />
+                                    <TextBlock Text="Paste" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Delete">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/delete.png" Width="20" Height="20" />
+                                    <TextBlock Text="Delete" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeViewItem>
+
+                    <TreeViewItem FontSize="16" IsExpanded="False" Foreground="{StaticResource ButtonForeground}" Focusable="False">
+                        <TreeViewItem.Header>
                             <TextBlock Text="System" FontWeight="Bold"/>
                         </TreeViewItem.Header>
                         <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StartProcess">

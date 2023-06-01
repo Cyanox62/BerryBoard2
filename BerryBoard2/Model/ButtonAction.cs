@@ -28,6 +28,14 @@ namespace BerryBoard2.Model
 		NextTrack,
 		PreviousTrack,
 
+		// Keyboard
+		Cut,
+		Copy,
+		Paste,
+		Delete,
+		Undo,
+		Redo,
+
 		// System
 		StartProcess,
 		MuteMicrophone

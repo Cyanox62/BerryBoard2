@@ -23,17 +23,49 @@ namespace BerryBoard2.Model
 		[DllImport("user32.dll")]
 		public static extern IntPtr SendMessageW(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
-		// App Command Codes
+		[DllImport("user32.dll")]
+		static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, uint dwExtraInfo);
+
+		#region App Codes
+		const byte KEYEVENTF_EXTENDEDKEY = 0x0001;
+		const byte KEYEVENTF_KEYUP = 0x0002;
+		const byte VK_V = 0x56;
+		const byte VK_C = 0x43;
+		const byte VK_X = 0x58;
+		const byte VK_LSHIFT = 0xA0;
+		const byte VK_RSHIFT = 0xA1;
+		const byte VK_LCONTROL = 0xA2;
+		const byte VK_RCONTROL = 0xA3;
+		const byte VK_LMENU = 0xA4;  // left alt
+		const byte VK_RMENU = 0xA5;  // right alt
+		const byte VK_DELETE = 0x2E;
+
+
 		internal const int WM_APPCOMMAND = 0x319;
+
+		// Media
 		internal const int APPCOMMAND_VOLUME_MUTE = 0x80000;
 		internal const int APPCOMMAND_VOLUME_UP = 0xA0000;
 		internal const int APPCOMMAND_VOLUME_DOWN = 0x90000;
 		internal const int APPCOMMAND_MEDIA_PLAY_PAUSE = 0xE0000;
 		internal const int APPCOMMAND_MEDIA_NEXTTRACK = 0xB0000;
 		internal const int APPCOMMAND_MEDIA_PREVIOUSTRACK = 0xC0000;
+
+		// Keyboard
+		internal const int APPCOMMAND_CUT = 0x108;
+		internal const int APPCOMMAND_COPY = 0x109;
+		internal const int APPCOMMAND_PASTE = 0x10A;
+		internal const int APPCOMMAND_DELETE = 0x10B;
+		internal const int APPCOMMAND_UNDO = 0x10C;
+		internal const int APPCOMMAND_REDO = 0x10D;
+
+		// System
+		internal const int APPCOMMAND_MIC_ON_OFF_TOGGLE = 0x180000;
+
+		// Browser
 		internal const int APPCOMMAND_BROWSER_BACKWARD = 0x100000;
 		internal const int APPCOMMAND_BROWSER_FORWARD = 0x200000;
-		internal const int APPCOMMAND_MIC_ON_OFF_TOGGLE = 0x180000;
+		#endregion
 
 		// Fields
 		private Serial serial = new Serial();
@@ -67,6 +99,11 @@ namespace BerryBoard2.Model
 				{ Action.PlayPause, new BitmapImage(new Uri("/Images/pauseplay.png", UriKind.Relative))},
 				{ Action.NextTrack, new BitmapImage(new Uri("/Images/next.png", UriKind.Relative))},
 				{ Action.PreviousTrack, new BitmapImage(new Uri("/Images/previous.png", UriKind.Relative))},
+
+				{ Action.Cut, new BitmapImage(new Uri("/Images/cut.png", UriKind.Relative))},
+				{ Action.Copy, new BitmapImage(new Uri("/Images/copy.png", UriKind.Relative))},
+				{ Action.Paste, new BitmapImage(new Uri("/Images/paste.png", UriKind.Relative))},
+				{ Action.Delete, new BitmapImage(new Uri("/Images/delete.png", UriKind.Relative))},
 
 				{ Action.StartProcess, new BitmapImage(new Uri("/Images/launchprogram.png", UriKind.Relative))},
 				{ Action.MuteMicrophone, new BitmapImage(new Uri("/Images/mutemicrophone.png", UriKind.Relative))}
@@ -173,6 +210,30 @@ namespace BerryBoard2.Model
 							break;
 						case Action.PreviousTrack:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MEDIA_PREVIOUSTRACK);
+							break;
+
+						// Keyboard
+						case Action.Cut:
+							keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY, 0);
+							keybd_event(VK_X, 0, KEYEVENTF_EXTENDEDKEY, 0);
+							keybd_event(VK_X, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+							keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+							break;
+						case Action.Copy:
+							keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY, 0);
+							keybd_event(VK_C, 0, KEYEVENTF_EXTENDEDKEY, 0);
+							keybd_event(VK_C, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+							keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+							break;
+						case Action.Paste:
+							keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY, 0);
+							keybd_event(VK_V, 0, KEYEVENTF_EXTENDEDKEY, 0);
+							keybd_event(VK_V, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+							keybd_event(VK_LCONTROL, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+							break;
+						case Action.Delete:
+							keybd_event(VK_DELETE, 0, KEYEVENTF_EXTENDEDKEY, 0);
+							keybd_event(VK_DELETE, 0, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
 							break;
 
 						// System
