@@ -1,5 +1,6 @@
 ﻿using BerryBoard2.Model.Libs;
 using BerryBoard2.Model.Objects;
+using NAudio.Wave;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,13 +8,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using NAudio.Wave;
-using System.Threading;
 
 namespace BerryBoard2.Model
 {
@@ -37,14 +36,6 @@ namespace BerryBoard2.Model
 		internal const int APPCOMMAND_MEDIA_PLAY_PAUSE = 0xE0000;
 		internal const int APPCOMMAND_MEDIA_NEXTTRACK = 0xB0000;
 		internal const int APPCOMMAND_MEDIA_PREVIOUSTRACK = 0xC0000;
-
-		// Keyboard
-		internal const int APPCOMMAND_CUT = 0x108;
-		internal const int APPCOMMAND_COPY = 0x109;
-		internal const int APPCOMMAND_PASTE = 0x10A;
-		internal const int APPCOMMAND_DELETE = 0x10B;
-		internal const int APPCOMMAND_UNDO = 0x10C;
-		internal const int APPCOMMAND_REDO = 0x10D;
 
 		// System
 		internal const int APPCOMMAND_MIC_ON_OFF_TOGGLE = 0x180000;

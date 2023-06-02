@@ -1,6 +1,5 @@
 ﻿using BerryBoard2.Model;
 using BerryBoard2.Model.Objects;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
@@ -23,7 +22,7 @@ namespace BerryBoard2.View
 		{
 			if ((ObsCheckbox.IsChecked ?? false) && PortTextbox.Text == string.Empty)
 			{
-				new CustomMessageBox("You must enter a port"){ Owner = this }.Show();
+				new CustomMessageBox("You must enter a port") { Owner = this }.Show();
 				return;
 			}
 
