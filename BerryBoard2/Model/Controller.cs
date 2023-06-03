@@ -4,7 +4,6 @@ using BerryBoard2.Model.Objects;
 using CSCore;
 using CSCore.Codecs;
 using CSCore.SoundOut;
-using IWshRuntimeLibrary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -431,27 +430,6 @@ namespace BerryBoard2.Model
 			catch
 			{
 				// Ignore
-			}
-		}
-
-		public void SetStartupShortcut(bool enable)
-		{
-			if (enable)
-			{
-				if (!System.IO.File.Exists(shortcutPath))
-				{
-					WshShell shell = new WshShell();
-					IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
-					shortcut.TargetPath = appPath;
-					shortcut.Save();
-				}
-			}
-			else
-			{
-				if (System.IO.File.Exists(shortcutPath))
-				{
-					System.IO.File.Delete(shortcutPath);
-				}
 			}
 		}
 	}

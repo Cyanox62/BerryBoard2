@@ -29,7 +29,6 @@ namespace BerryBoard2
 		{
 			ParamText.Text = paramText;
 			controller = new Controller(this, ButtonGrid);
-			if (controller.GetSettings().StartHidden ?? false) Hide();
 		}
 
 		private void MinimizeButton_Click(object sender, RoutedEventArgs e)

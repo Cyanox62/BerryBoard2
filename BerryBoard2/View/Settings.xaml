@@ -185,10 +185,6 @@
                     <TextBlock Text="General" Foreground="{StaticResource ButtonForeground}" FontSize="25" TextDecorations="Underline"/>
                     <CheckBox Content="Minimize to system tray" x:Name="SystemTrayCheckbox" Unchecked="ObsCheckbox_Unchecked" Style="{StaticResource ExtraCheckBoxStyle}" HorizontalAlignment="Left"
                               ToolTip="Minimizing this window will hide it in your system tray"/>
-                    <CheckBox Content="Startup with windows" x:Name="StartWithWindowsCheckbox" Unchecked="ObsCheckbox_Unchecked" Style="{StaticResource ExtraCheckBoxStyle}" HorizontalAlignment="Left"
-                              ToolTip="The program will startup when your computer starts"/>
-                    <CheckBox Content="Start hidden" x:Name="StartHiddenCheckbox" Unchecked="ObsCheckbox_Unchecked" Style="{StaticResource ExtraCheckBoxStyle}" HorizontalAlignment="Left"
-                              ToolTip="The program will automatically hide itself in the system tray after launching"/>
                 </StackPanel>
             </Grid>
 
