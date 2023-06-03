@@ -36,7 +36,8 @@ namespace BerryBoard2.View
 			{
 				ObsEnable = ObsCheckbox.IsChecked,
 				ObsPort = port,
-				ObsAuth = AuthTextbox.Text.Trim()
+				ObsAuth = AuthTextbox.Text.Trim(),
+				MinimizeToTray = SystemTrayCheckbox.IsChecked
 			});
 			Close();
 		}
@@ -74,6 +75,8 @@ namespace BerryBoard2.View
 			ObsCheckbox.IsChecked = settings.ObsEnable;
 			PortTextbox.Text = settings.ObsPort == -1 ? string.Empty : settings.ObsPort.ToString();
 			AuthTextbox.Text = settings.ObsAuth;
+
+			SystemTrayCheckbox.IsChecked = settings.MinimizeToTray;
 		}
-	}
+    }
 }

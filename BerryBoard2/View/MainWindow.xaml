@@ -3,12 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:BerryBoard2"
         mc:Ignorable="d"
         Title="Berry Board Configuration" Height="450" Width="700"
         WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" Loaded="Window_Loaded"
         MinHeight="420" MinWidth="640"
-        Background="#2c2c2d">
+        Background="#2c2c2d" Icon="../Images/chip.ico">
 
     <Window.Resources>
         <SolidColorBrush x:Key="BackgroundColor" Color="#2c2c2d" />
@@ -674,5 +675,7 @@
                 </TreeView>
             </Grid>
         </Grid>
+
+        <tb:TaskbarIcon x:Name="MyNotifyIcon" IconSource="/Images/chip.ico" ToolTipText="Berry Board Configuration" TrayMouseDoubleClick="NotifyIcon_TrayMouseDoubleClick"/>
     </Grid>
 </Window>

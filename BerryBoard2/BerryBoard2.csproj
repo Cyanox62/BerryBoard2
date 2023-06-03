@@ -11,6 +11,7 @@
     <None Remove="Images\changemicrophone.png" />
     <None Remove="Images\changescene.png" />
     <None Remove="Images\changespeakers.png" />
+    <None Remove="Images\chip.ico" />
     <None Remove="Images\copy.png" />
     <None Remove="Images\customtext.png" />
     <None Remove="Images\cut.png" />
@@ -39,6 +40,7 @@
   <ItemGroup>
     <Resource Include="Images\changemicrophone.png" />
     <Resource Include="Images\changespeakers.png" />
+    <Resource Include="Images\chip.ico" />
     <Resource Include="Images\launchprogram.png" />
     <Resource Include="Images\openwebsite.png" />
   </ItemGroup>
@@ -72,6 +74,7 @@
     <PackageReference Include="AudioSwitcher.AudioApi" Version="4.0.0-alpha5" />
     <PackageReference Include="AudioSwitcher.AudioApi.CoreAudio" Version="4.0.0-alpha5" />
     <PackageReference Include="CSCore" Version="1.2.1.2" />
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.IO.Ports" Version="8.0.0-preview.4.23259.5" />
   </ItemGroup>

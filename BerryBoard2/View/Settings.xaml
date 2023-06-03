@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BerryBoard2.View"
         mc:Ignorable="d" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" WindowStartupLocation="CenterOwner"
-        Title="Settings" Height="300" Width="400" Loaded="Window_Loaded">
+        Title="Settings" Height="300" Width="500" Loaded="Window_Loaded">
     <Window.Resources>
         <SolidColorBrush x:Key="BackgroundColor" Color="#2c2c2d" />
         <SolidColorBrush x:Key="ButtonBackground" Color="#232322" />
@@ -114,10 +114,11 @@
                 </Setter>
             </Style>
         </Grid.Resources>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="25"/>
             <RowDefinition/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Background="{StaticResource BackgroundColor}">
@@ -135,6 +136,12 @@
         </Grid>
 
         <Grid Grid.Row="1" Background="{StaticResource ButtonBackground}">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
             <StackPanel Margin="20 20 0 0">
                 <TextBlock Text="OBS Integration" Foreground="{StaticResource ButtonForeground}" FontSize="25" TextDecorations="Underline"/>
                 <CheckBox Content="Enable OBS Integration" x:Name="ObsCheckbox" Checked="ObsCheckbox_Checked" Unchecked="ObsCheckbox_Unchecked" Style="{StaticResource ExtraCheckBoxStyle}" HorizontalAlignment="Left"/>
@@ -159,7 +166,17 @@
 
             </StackPanel>
 
-            <Button Style="{StaticResource ExtraButtonStyle}" Click="SaveButton_Click" Content="Save" VerticalAlignment="Bottom" Margin="0 0 0 8" Width="200"/>
+            <Grid Grid.Column="1">
+                <StackPanel Margin="20 20 0 0">
+                    <TextBlock Text="General" Foreground="{StaticResource ButtonForeground}" FontSize="25" TextDecorations="Underline"/>
+                    <CheckBox Content="Minimize to system tray" x:Name="SystemTrayCheckbox" Unchecked="ObsCheckbox_Unchecked" Style="{StaticResource ExtraCheckBoxStyle}" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </Grid>
+
+        </Grid>
+
+        <Grid Grid.Row="2" Background="{StaticResource ButtonBackground}">
+            <Button Style="{StaticResource ExtraButtonStyle}" Click="SaveButton_Click" Content="Save" VerticalAlignment="Bottom" Width="200"/>
         </Grid>
 
     </Grid>

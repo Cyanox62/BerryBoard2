@@ -2,6 +2,7 @@
 using BerryBoard2.Model.Objects;
 using BerryBoard2.View;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,6 +34,13 @@ namespace BerryBoard2
 		private void MinimizeButton_Click(object sender, RoutedEventArgs e)
 		{
 			WindowState = WindowState.Minimized;
+			if (controller?.GetSettings().MinimizeToTray ?? false) Hide();
+		}
+
+		private void NotifyIcon_TrayMouseDoubleClick(object sender, RoutedEventArgs e)
+		{
+			WindowState = WindowState.Normal;
+			Show();
 		}
 
 		private void MaximizeRestoreButton_Click(object sender, RoutedEventArgs e)
