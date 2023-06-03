@@ -5,6 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Images\chip.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +36,10 @@
     <None Remove="Images\stopstreaming.png" />
     <None Remove="Images\volumedown.png" />
     <None Remove="Images\volumeup.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\chip.ico" />
   </ItemGroup>
 
   <ItemGroup>
