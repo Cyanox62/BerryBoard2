@@ -260,10 +260,10 @@ namespace BerryBoard2.Model
 							}
 							break;
 						case KeyAction.ChangeSpeakers:
-							controller.GetPlaybackDevices(AudioSwitcher.AudioApi.DeviceState.Active).FirstOrDefault()?.SetAsDefault();
+							controller.GetPlaybackDevices(AudioSwitcher.AudioApi.DeviceState.Active).FirstOrDefault(x => x.FullName == data.param)?.SetAsDefault();
 							break;
 						case KeyAction.ChangeMicrophone:
-							controller.GetCaptureDevices(AudioSwitcher.AudioApi.DeviceState.Active).FirstOrDefault()?.SetAsDefault();
+							controller.GetCaptureDevices(AudioSwitcher.AudioApi.DeviceState.Active).FirstOrDefault(x => x.FullName == data.param)?.SetAsDefault();
 							break;
 						case KeyAction.OpenWebsite:
 							OpenUrl(data.param);
