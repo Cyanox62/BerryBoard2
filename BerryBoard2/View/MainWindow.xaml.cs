@@ -29,12 +29,13 @@ namespace BerryBoard2
 		{
 			ParamText.Text = paramText;
 			controller = new Controller(this, ButtonGrid);
+			if (controller.GetSettings().StartHidden ?? false) Hide();
 		}
 
 		private void MinimizeButton_Click(object sender, RoutedEventArgs e)
 		{
-			WindowState = WindowState.Minimized;
 			if (controller?.GetSettings().MinimizeToTray ?? false) Hide();
+			else WindowState = WindowState.Minimized;
 		}
 
 		private void NotifyIcon_TrayMouseDoubleClick(object sender, RoutedEventArgs e)

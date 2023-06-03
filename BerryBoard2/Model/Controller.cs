@@ -4,6 +4,7 @@ using BerryBoard2.Model.Objects;
 using CSCore;
 using CSCore.Codecs;
 using CSCore.SoundOut;
+using IWshRuntimeLibrary;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using File = System.IO.File;
 
 namespace BerryBoard2.Model
 {
@@ -54,6 +56,11 @@ namespace BerryBoard2.Model
 		private SettingsData? settings;
 		private Dictionary<KeyAction, BitmapImage>? images;
 
+		// For shortcut creation
+		string startupFolder = Environment.GetFolderPath(Environment.SpecialFolder.Startup);
+		string appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+		string shortcutPath;
+
 		public Controller(Window window, Grid buttonGrid)
 		{
 			this.window = window;
@@ -64,6 +71,8 @@ namespace BerryBoard2.Model
 			serial = new Serial();
 			ws = new WebSocket();
 			controller = new CoreAudioController();
+
+			shortcutPath = Path.Combine(startupFolder, window.Title + ".lnk");
 
 			// Load images
 			images = new Dictionary<KeyAction, BitmapImage>()
@@ -422,6 +431,27 @@ namespace BerryBoard2.Model
 			catch
 			{
 				// Ignore
+			}
+		}
+
+		public void SetStartupShortcut(bool enable)
+		{
+			if (enable)
+			{
+				if (!System.IO.File.Exists(shortcutPath))
+				{
+					WshShell shell = new WshShell();
+					IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
+					shortcut.TargetPath = appPath;
+					shortcut.Save();
+				}
+			}
+			else
+			{
+				if (System.IO.File.Exists(shortcutPath))
+				{
+					System.IO.File.Delete(shortcutPath);
+				}
 			}
 		}
 	}

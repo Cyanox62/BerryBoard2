@@ -113,6 +113,20 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Style TargetType="ToolTip">
+                <Setter Property="Background" Value="{StaticResource ButtonBackground}" />
+                <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToolTip">
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="4">
+                                <ContentPresenter Margin="4" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
         </Grid.Resources>
 
         <Grid.RowDefinitions>
@@ -169,7 +183,12 @@
             <Grid Grid.Column="1">
                 <StackPanel Margin="20 20 0 0">
                     <TextBlock Text="General" Foreground="{StaticResource ButtonForeground}" FontSize="25" TextDecorations="Underline"/>
-                    <CheckBox Content="Minimize to system tray" x:Name="SystemTrayCheckbox" Unchecked="ObsCheckbox_Unchecked" Style="{StaticResource ExtraCheckBoxStyle}" HorizontalAlignment="Left"/>
+                    <CheckBox Content="Minimize to system tray" x:Name="SystemTrayCheckbox" Unchecked="ObsCheckbox_Unchecked" Style="{StaticResource ExtraCheckBoxStyle}" HorizontalAlignment="Left"
+                              ToolTip="Minimizing this window will hide it in your system tray"/>
+                    <CheckBox Content="Startup with windows" x:Name="StartWithWindowsCheckbox" Unchecked="ObsCheckbox_Unchecked" Style="{StaticResource ExtraCheckBoxStyle}" HorizontalAlignment="Left"
+                              ToolTip="The program will startup when your computer starts"/>
+                    <CheckBox Content="Start hidden" x:Name="StartHiddenCheckbox" Unchecked="ObsCheckbox_Unchecked" Style="{StaticResource ExtraCheckBoxStyle}" HorizontalAlignment="Left"
+                              ToolTip="The program will automatically hide itself in the system tray after launching"/>
                 </StackPanel>
             </Grid>
 

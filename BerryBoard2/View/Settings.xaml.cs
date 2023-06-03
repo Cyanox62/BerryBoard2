@@ -38,8 +38,13 @@ namespace BerryBoard2.View
 				ObsEnable = ObsCheckbox.IsChecked,
 				ObsPort = port,
 				ObsAuth = AuthTextbox.Text.Trim(),
+				StartWithWindows = StartWithWindowsCheckbox.IsChecked,
+				StartHidden = StartHiddenCheckbox.IsChecked,
 				MinimizeToTray = SystemTrayCheckbox.IsChecked
 			});
+
+			controller.SetStartupShortcut(StartWithWindowsCheckbox.IsChecked ?? false);
+
 			Close();
 		}
 
@@ -77,6 +82,8 @@ namespace BerryBoard2.View
 			PortTextbox.Text = settings.ObsPort == -1 ? string.Empty : settings.ObsPort.ToString();
 			AuthTextbox.Text = settings.ObsAuth;
 
+			StartWithWindowsCheckbox.IsChecked = settings.StartWithWindows;
+			StartHiddenCheckbox.IsChecked = settings.StartHidden;
 			SystemTrayCheckbox.IsChecked = settings.MinimizeToTray;
 		}
     }
