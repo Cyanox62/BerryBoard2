@@ -1,0 +1,78 @@
+﻿<Window x:Class="BerryBoard2.View.OptionSelector"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BerryBoard2.View"
+         mc:Ignorable="d" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" WindowStartupLocation="CenterOwner"
+        Title="Select Option" Height="500" Width="800" Loaded="Window_Loaded">
+    <Window.Resources>
+        <SolidColorBrush x:Key="BackgroundColor" Color="#2c2c2d" />
+        <SolidColorBrush x:Key="ButtonBackground" Color="#232322" />
+        <SolidColorBrush x:Key="ButtonForeground" Color="White" />
+        <SolidColorBrush x:Key="DisabledColor" Color="#808080" />
+        <SolidColorBrush x:Key="SelectedColor" Color="#454545" />
+
+        <Style x:Key="ExtraToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Width" Value="600" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="Foreground" Value="{StaticResource ButtonForeground}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border Name="border" Background="{StaticResource ButtonBackground}" BorderBrush="{StaticResource ButtonForeground}" BorderThickness="1" CornerRadius="3">
+                            <ContentPresenter x:Name="contentPresenter" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                <ContentPresenter.ContentTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" Foreground="{Binding RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}, Path=Foreground}"/>
+                                    </DataTemplate>
+                                </ContentPresenter.ContentTemplate>
+                            </ContentPresenter>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource BackgroundColor}" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="true">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource SelectedColor}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="{StaticResource BackgroundColor}">
+            <Border Background="Transparent" MouseLeftButtonDown="Menu_MouseLeftButtonDown">
+                <TextBlock Text="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" FontSize="15" Foreground="{StaticResource ButtonForeground}" HorizontalAlignment="Center"/>
+            </Border>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="btnClose" Content="✕" Width="25" Height="25" Foreground="White"
+                        BorderBrush="Transparent" Background="Transparent"
+                        Click="CloseButton_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="DevicePanel" Background="{StaticResource ButtonBackground}"/>
+        </ScrollViewer>
+
+
+        <Grid Grid.Row="2" Background="{StaticResource ButtonBackground}">
+            <Button Width="250" Height="25" FontSize="16" Content="Select" Click="OkButton_Click" Foreground="{StaticResource ButtonForeground}" Background="{StaticResource ButtonBackground}" HorizontalAlignment="Center"/>
+        </Grid>
+
+    </Grid>
+</Window>

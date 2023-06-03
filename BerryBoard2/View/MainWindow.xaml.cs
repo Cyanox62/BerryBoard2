@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace BerryBoard2
 {
@@ -14,6 +15,9 @@ namespace BerryBoard2
 	{
 		private Controller? controller;
 		private const string paramText = "Parameter";
+
+		BitmapImage folder = new BitmapImage(new Uri("/Images/folder.png", UriKind.Relative));
+		BitmapImage options = new BitmapImage(new Uri("/Images/options.png", UriKind.Relative));
 
 		public MainWindow()
 		{
@@ -85,7 +89,7 @@ namespace BerryBoard2
 			// Load data
 			selectedButtonData = controller?.GetButtonAction(int.Parse(button.Tag.ToString()));
 
-			if (selectedButtonData?.action != Model.KeyAction.None)
+			if (selectedButtonData?.action != KeyAction.None)
 			{
 				ClearButton.IsEnabled = true;
 				foreach (TreeViewItem item in MainTreeView.Items)
@@ -109,41 +113,51 @@ namespace BerryBoard2
 				ActionImage.Visibility = Visibility.Collapsed;
 			}
 
-			ParamTextbox.Text = selectedButtonData?.param.ToString();
+			ParamTextbox.Text = selectedButtonData?.param;
 
 			switch (selectedButtonData?.action)
 			{
-				case Model.KeyAction.ChangeScene:
+				case KeyAction.ChangeScene:
 					ParamText.Text = "Scene Name";
 					ParamTextbox.IsEnabled = true;
 					break;
-				case Model.KeyAction.StartProcess:
+				case KeyAction.StartProcess:
 					ParamText.Text = "Application Path";
 					ParamTextbox.IsEnabled = true;
-					FolderButton.IsEnabled = true;
+					ParamButton.IsEnabled = true;
+					((Image)ParamButton.Content).Source = folder;
 					break;
-				case Model.KeyAction.CustomText:
+				case KeyAction.CustomText:
 					ParamText.Text = "Text";
 					ParamTextbox.IsEnabled = true;
 					break;
-				case Model.KeyAction.OpenWebsite:
+				case KeyAction.OpenWebsite:
 					ParamText.Text = "Website URL";
 					ParamTextbox.IsEnabled = true;
+					((Image)ParamButton.Content).Source = folder;
 					break;
-				case Model.KeyAction.PlayAudio:
+				case KeyAction.PlayAudio:
 					ParamText.Text = "Audio Path";
 					ParamTextbox.IsEnabled = true;
-					FolderButton.IsEnabled = true;
+					ParamButton.IsEnabled = true;
+					((Image)ParamButton.Content).Source = folder;
+					break;
+				case KeyAction.ChangeSpeakers:
+				case KeyAction.ChangeMicrophone:
+					ParamText.Text = "Desired Device";
+					ParamTextbox.IsEnabled = true;
+					ParamButton.IsEnabled = true;
+					((Image)ParamButton.Content).Source = options;
 					break;
 				default:
 					ParamText.Text = paramText;
 					ParamTextbox.IsEnabled = false;
-					FolderButton.IsEnabled = false;
+					ParamButton.IsEnabled = false;
 					break;
 			}
 		}
 
-		private string GetHeaderByAction(TreeViewItem i, Model.KeyAction? action)
+		private string GetHeaderByAction(TreeViewItem i, KeyAction? action)
 		{
 			foreach (TreeViewItem item in i.Items)
 			{
@@ -169,8 +183,8 @@ namespace BerryBoard2
 			TreeViewItem item = (TreeViewItem)e.Data.GetData(typeof(TreeViewItem));
 			Button button = (Button)sender;
 
-			Model.KeyAction action = (Model.KeyAction)Enum.Parse(typeof(Model.KeyAction), item.Tag.ToString());
-			controller?.ChangeButtonAction(int.Parse(button.Tag.ToString()), action, ParamTextbox.Text);
+			KeyAction action = (KeyAction)Enum.Parse(typeof(KeyAction), item.Tag.ToString());
+			controller?.ChangeButtonAction(int.Parse(button.Tag.ToString()), action);
 
 			SelectButton(button);
 		}
@@ -179,7 +193,7 @@ namespace BerryBoard2
 		{
 			if (selectedButton != null)
 			{
-				controller?.ChangeButtonAction(int.Parse(selectedButton.Tag.ToString()), Model.KeyAction.None, ParamTextbox.Text);
+				controller?.ChangeButtonAction(int.Parse(selectedButton.Tag.ToString()), KeyAction.None, ParamTextbox.Text);
 			}
 		}
 
@@ -199,53 +213,69 @@ namespace BerryBoard2
 			}
 		}
 
-		private void FolderButton_Click(object sender, RoutedEventArgs e)
+		public void UpdateParam(string text)
 		{
-			Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+			ParamTextbox.Text = text;
+		}
 
-			if (selectedButtonData?.action == Model.KeyAction.StartProcess)
+		private void ParamButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (selectedButtonData?.action == KeyAction.ChangeSpeakers)
 			{
-				dlg.DefaultExt = ".exe";
-				dlg.Filter = "Executable Files (*.exe;*.url)|*.exe;*.url";
-				dlg.CheckFileExists = false;  // add this line
+				new OptionSelector(this, controller?.GetPlaybackDevices()) { Owner = this }.Show();
 			}
-			else if (selectedButtonData?.action == Model.KeyAction.PlayAudio)
+			else if (selectedButtonData?.action == KeyAction.ChangeMicrophone)
 			{
-				dlg.DefaultExt = ".mp3";
-				dlg.Filter = "Audio Files (*.mp3;*.wav)|*.mp3;*.wav";
+				new OptionSelector(this, controller?.GetCaptureDevices()) { Owner = this }.Show();
 			}
-
-			dlg.InitialDirectory = @"C:\";
-
-			Nullable<bool> result = dlg.ShowDialog();
-
-			if (result == true)
+			else
 			{
-				if (Path.GetExtension(dlg.FileName).ToLower() == ".url")
+				Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+				if (selectedButtonData?.action == KeyAction.StartProcess)
 				{
-					try
+					dlg.DefaultExt = ".exe";
+					dlg.Filter = "Executable Files (*.exe;*.url)|*.exe;*.url";
+					dlg.CheckFileExists = false;  // add this line
+				}
+				else if (selectedButtonData?.action == KeyAction.PlayAudio)
+				{
+					dlg.DefaultExt = ".mp3";
+					dlg.Filter = "Audio Files (*.mp3;*.wav)|*.mp3;*.wav";
+				}
+
+				dlg.InitialDirectory = @"C:\";
+
+				Nullable<bool> result = dlg.ShowDialog();
+
+				if (result == true)
+				{
+					if (Path.GetExtension(dlg.FileName).ToLower() == ".url")
 					{
-						using (StreamReader sr = new StreamReader(dlg.FileName))
+						try
 						{
-							string line;
-							while ((line = sr.ReadLine()) != null)
+							using (StreamReader sr = new StreamReader(dlg.FileName))
 							{
-								if (line.StartsWith("URL="))
+								string line;
+								while ((line = sr.ReadLine()) != null)
 								{
-									ParamTextbox.Text = line.Substring(4);
-									return;
+									if (line.StartsWith("URL="))
+									{
+										ParamTextbox.Text = line.Substring(4);
+										return;
+									}
 								}
 							}
 						}
+						catch (Exception ex)
+						{
+							Console.WriteLine($"Error reading .url file: {ex.Message}");
+						}
 					}
-					catch (Exception ex)
+					else
 					{
-						Console.WriteLine($"Error reading .url file: {ex.Message}");
+						ParamTextbox.Text = dlg.FileName;
 					}
-				}
-				else
-				{
-					ParamTextbox.Text = dlg.FileName;
 				}
 			}
 		}

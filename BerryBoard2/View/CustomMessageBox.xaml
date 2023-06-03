@@ -37,10 +37,8 @@
         </Grid>
 
         <Grid Grid.Row="2" Background="{StaticResource ButtonBackground}">
-            
+            <Button Width="200" Height="20" Content="OK" Click="OkButton_Click" Foreground="{StaticResource ButtonForeground}" Background="{StaticResource ButtonBackground}" HorizontalAlignment="Center"/>
         </Grid>
-
-        <Button Grid.Row="2" Width="200" Height="20" Content="OK" Click="OkButton_Click" Foreground="{StaticResource ButtonForeground}" Background="{StaticResource ButtonBackground}" HorizontalAlignment="Center"/>
 
     </Grid>
 </Window>

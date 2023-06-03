@@ -35,6 +35,8 @@
 		// System
 		StartProcess,
 		PlayAudio,
+		ChangeSpeakers,
+		ChangeMicrophone,
 		OpenWebsite,
 		MuteMicrophone,
 		PowerOff

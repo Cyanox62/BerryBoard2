@@ -1,6 +1,9 @@
-﻿using BerryBoard2.Model.Libs;
+﻿using AudioSwitcher.AudioApi.CoreAudio;
+using BerryBoard2.Model.Libs;
 using BerryBoard2.Model.Objects;
-using NAudio.Wave;
+using CSCore;
+using CSCore.Codecs;
+using CSCore.SoundOut;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -42,8 +45,9 @@ namespace BerryBoard2.Model
 		#endregion
 
 		// Fields
-		private Serial serial = new Serial();
-		private WebSocket ws = new WebSocket();
+		private Serial serial;
+		private WebSocket ws;
+		private CoreAudioController controller;
 		private const string configFile = "config.json";
 		private const string settingsFile = "settings.json";
 		private ButtonAction[]? buttons;
@@ -56,6 +60,10 @@ namespace BerryBoard2.Model
 			handle = new System.Windows.Interop.WindowInteropHelper(window).Handle;
 
 			buttons = new ButtonAction[12];
+
+			serial = new Serial();
+			ws = new WebSocket();
+			controller = new CoreAudioController();
 
 			// Load images
 			images = new Dictionary<KeyAction, BitmapImage>()
@@ -81,6 +89,8 @@ namespace BerryBoard2.Model
 
 				{ KeyAction.StartProcess, new BitmapImage(new Uri("/Images/launchprogram.png", UriKind.Relative))},
 				{ KeyAction.PlayAudio, new BitmapImage(new Uri("/Images/playaudio.png", UriKind.Relative))},
+				{ KeyAction.ChangeSpeakers, new BitmapImage(new Uri("/Images/changespeakers.png", UriKind.Relative))},
+				{ KeyAction.ChangeMicrophone, new BitmapImage(new Uri("/Images/changemicrophone.png", UriKind.Relative))},
 				{ KeyAction.OpenWebsite, new BitmapImage(new Uri("/Images/openwebsite.png", UriKind.Relative))},
 				{ KeyAction.MuteMicrophone, new BitmapImage(new Uri("/Images/mutemicrophone.png", UriKind.Relative))},
 				{ KeyAction.PowerOff, new BitmapImage(new Uri("/Images/poweroff.png", UriKind.Relative))}
@@ -139,10 +149,10 @@ namespace BerryBoard2.Model
 			Task.Run(() => ObsChecker());
 		}
 
-		private static AudioFileReader audioFile;
-		private static WaveOutEvent outputDevice;
-		private static CancellationTokenSource audioCancellationTokenSource;
-		private static Task audioTask;
+		private IWaveSource audioSource;
+		private ISoundOut soundOut;
+		private Task audioTask;
+		private CancellationTokenSource audioCancellationTokenSource;
 
 		private void DataReceived(string msg)
 		{
@@ -155,9 +165,6 @@ namespace BerryBoard2.Model
 					switch (data.action)
 					{
 						// OBS
-						case KeyAction.ChangeScene:
-							ws.SendWebSocketMessage(ObsReqGen.ChangeScene(data.param));
-							break;
 						case KeyAction.StartStreaming:
 							ws.SendWebSocketMessage(ObsReqGen.StartStreaming());
 							break;
@@ -173,17 +180,11 @@ namespace BerryBoard2.Model
 						case KeyAction.PauseRecording:
 							ws.SendWebSocketMessage(ObsReqGen.PauseRecording());
 							break;
+						case KeyAction.ChangeScene:
+							ws.SendWebSocketMessage(ObsReqGen.ChangeScene(data.param));
+							break;
 
 						// Media
-						case KeyAction.VolumeUp:
-							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_VOLUME_UP);
-							break;
-						case KeyAction.VolumeDown:
-							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_VOLUME_DOWN);
-							break;
-						case KeyAction.MuteAudio:
-							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_VOLUME_MUTE);
-							break;
 						case KeyAction.PlayPause:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MEDIA_PLAY_PAUSE);
 							break;
@@ -192,6 +193,15 @@ namespace BerryBoard2.Model
 							break;
 						case KeyAction.PreviousTrack:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MEDIA_PREVIOUSTRACK);
+							break;
+						case KeyAction.VolumeUp:
+							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_VOLUME_UP);
+							break;
+						case KeyAction.VolumeDown:
+							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_VOLUME_DOWN);
+							break;
+						case KeyAction.MuteAudio:
+							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_VOLUME_MUTE);
 							break;
 
 						// Keyboard
@@ -210,50 +220,50 @@ namespace BerryBoard2.Model
 
 						// System
 						case KeyAction.PlayAudio:
-							// If audio is currently playing, cancel the task and stop the playback
 							if (audioTask != null && audioTask.Status == TaskStatus.Running)
 							{
 								audioCancellationTokenSource?.Cancel();
-								outputDevice?.Stop();
-								audioFile?.Dispose();
-								outputDevice?.Dispose();
+								soundOut?.Stop();
+								audioSource?.Dispose();
+								soundOut?.Dispose();
 								audioTask = null;
 							}
-							// If no audio is playing, start playing
 							else
 							{
-								// Start a new cancellation token source for the new audio task
 								audioCancellationTokenSource = new CancellationTokenSource();
 
 								audioTask = Task.Run(() =>
 								{
 									try
 									{
-										audioFile = new AudioFileReader(data.param);
-										outputDevice = new WaveOutEvent();
-										outputDevice.Init(audioFile);
-										outputDevice.Play();
+										audioSource = CodecFactory.Instance.GetCodec(data.param);
+										soundOut = new CSCore.SoundOut.WasapiOut();
+										soundOut.Initialize(audioSource);
+										soundOut.Play();
 
-										// We use SpinWait to hold the Task open until the PlaybackStopped event is fired.
-										while (outputDevice.PlaybackState == PlaybackState.Playing)
+										while (soundOut.PlaybackState == CSCore.SoundOut.PlaybackState.Playing)
 										{
 											Task.Delay(1000).Wait();
-											// Throw if cancellation is requested
 											audioCancellationTokenSource.Token.ThrowIfCancellationRequested();
 										}
 									}
 									catch (OperationCanceledException)
 									{
-										// Handle the cancellation
-										outputDevice?.Stop();
+										soundOut?.Stop();
 									}
 									finally
 									{
-										audioFile?.Dispose();
-										outputDevice?.Dispose();
+										audioSource?.Dispose();
+										soundOut?.Dispose();
 									}
 								}, audioCancellationTokenSource.Token);
 							}
+							break;
+						case KeyAction.ChangeSpeakers:
+							controller.GetPlaybackDevices(AudioSwitcher.AudioApi.DeviceState.Active).FirstOrDefault()?.SetAsDefault();
+							break;
+						case KeyAction.ChangeMicrophone:
+							controller.GetCaptureDevices(AudioSwitcher.AudioApi.DeviceState.Active).FirstOrDefault()?.SetAsDefault();
 							break;
 						case KeyAction.OpenWebsite:
 							OpenUrl(data.param);
@@ -336,6 +346,16 @@ namespace BerryBoard2.Model
 			ButtonAction data = buttons[button];
 			if (action != KeyAction.None) data.action = action;
 			if (param != null) data.param = param;
+		}
+
+		public string[] GetPlaybackDevices()
+		{
+			return controller.GetPlaybackDevices(AudioSwitcher.AudioApi.DeviceState.Active).Select(x => x.FullName).ToArray();
+		}
+
+		public string[] GetCaptureDevices()
+		{
+			return controller.GetCaptureDevices(AudioSwitcher.AudioApi.DeviceState.Active).Select(x => x.FullName).ToArray();
 		}
 
 		public ButtonAction GetButtonAction(int button)
