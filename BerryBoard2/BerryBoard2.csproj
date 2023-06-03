@@ -39,13 +39,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Images\chip.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="Images\changemicrophone.png" />
     <Resource Include="Images\changespeakers.png" />
-    <Resource Include="Images\chip.ico" />
+    <Resource Include="Images\chip.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\launchprogram.png" />
     <Resource Include="Images\openwebsite.png" />
   </ItemGroup>

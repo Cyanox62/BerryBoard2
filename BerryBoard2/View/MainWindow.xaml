@@ -9,7 +9,7 @@
         Title="Berry Board Configuration" Height="450" Width="700"
         WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" Loaded="Window_Loaded"
         MinHeight="420" MinWidth="640"
-        Background="#2c2c2d" Icon="../Images/chip.ico">
+        Background="#2c2c2d" Icon="/Images/chip.ico">
 
     <Window.Resources>
         <SolidColorBrush x:Key="BackgroundColor" Color="#2c2c2d" />
