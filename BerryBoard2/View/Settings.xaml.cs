@@ -26,11 +26,12 @@ namespace BerryBoard2.View
 				return;
 			}
 
-			if (!int.TryParse(PortTextbox.Text.Trim(), out int port))
+			if (PortTextbox.Text != string.Empty && !int.TryParse(PortTextbox.Text.Trim(), out int port))
 			{
 				new CustomMessageBox("Port must be a number") { Owner = this }.Show();
 				return;
 			}
+			else port = -1;
 
 			main.UpdateSettings(new SettingsData()
 			{
