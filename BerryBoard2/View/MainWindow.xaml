@@ -570,6 +570,14 @@
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="PlayAudio">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/playaudio.png" Width="20" Height="20" />
+                                    <TextBlock Text="Play Audio" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
                     </TreeViewItem>
 
                     <TreeViewItem FontSize="16" IsExpanded="False" Foreground="{StaticResource ButtonForeground}" Focusable="False">
@@ -612,24 +620,8 @@
 
                     <TreeViewItem FontSize="16" IsExpanded="False" Foreground="{StaticResource ButtonForeground}" Focusable="False">
                         <TreeViewItem.Header>
-                            <TextBlock Text="System" FontWeight="Bold"/>
+                            <TextBlock Text="Devices" FontWeight="Bold"/>
                         </TreeViewItem.Header>
-                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StartProcess">
-                            <TreeViewItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="/Images/launchprogram.png" Width="20" Height="20" />
-                                    <TextBlock Text="Start Process" Margin="8,0,0,0" />
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
-                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="PlayAudio">
-                            <TreeViewItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="/Images/playaudio.png" Width="20" Height="20" />
-                                    <TextBlock Text="Play Audio" Margin="8,0,0,0" />
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
                         <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="ChangeSpeakers">
                             <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -646,19 +638,33 @@
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>
-                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="OpenWebsite">
-                            <TreeViewItem.Header>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="/Images/openwebsite.png" Width="20" Height="20" />
-                                    <TextBlock Text="Open Website" Margin="8,0,0,0" />
-                                </StackPanel>
-                            </TreeViewItem.Header>
-                        </TreeViewItem>
                         <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="MuteMicrophone">
                             <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="/Images/mutemicrophone.png" Width="20" Height="20" />
                                     <TextBlock Text="Mute Microphone" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeViewItem>
+
+                    <TreeViewItem FontSize="16" IsExpanded="False" Foreground="{StaticResource ButtonForeground}" Focusable="False">
+                        <TreeViewItem.Header>
+                            <TextBlock Text="System" FontWeight="Bold"/>
+                        </TreeViewItem.Header>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="StartProcess">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/launchprogram.png" Width="20" Height="20" />
+                                    <TextBlock Text="Start Process" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="OpenWebsite">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/openwebsite.png" Width="20" Height="20" />
+                                    <TextBlock Text="Open Website" Margin="8,0,0,0" />
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>

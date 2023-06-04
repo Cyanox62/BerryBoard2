@@ -25,6 +25,7 @@
 		VolumeUp,
 		VolumeDown,
 		MuteAudio,
+		PlayAudio,
 
 		// Keyboard
 		Cut,
@@ -32,13 +33,14 @@
 		Paste,
 		CustomText,
 
-		// System
-		StartProcess,
-		PlayAudio,
+		// Devices
 		ChangeSpeakers,
 		ChangeMicrophone,
-		OpenWebsite,
 		MuteMicrophone,
+
+		// System
+		StartProcess,
+		OpenWebsite,
 		PowerOff
 	}
 }
