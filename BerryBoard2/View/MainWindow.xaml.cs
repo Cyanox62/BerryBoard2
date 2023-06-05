@@ -154,7 +154,7 @@ namespace BerryBoard2
 					break;
 				case KeyAction.ChangeSpeakers:
 				case KeyAction.ChangeMicrophone:
-					ParamText.Text = "Desired Device";
+					ParamText.Text = "Device";
 					ParamTextbox.IsEnabled = true;
 					ParamButton.IsEnabled = true;
 					((Image)ParamButton.Content).Source = options;
