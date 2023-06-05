@@ -246,7 +246,7 @@ namespace BerryBoard2
 				{
 					dlg.DefaultExt = ".exe";
 					dlg.Filter = "Executable Files (*.exe;*.url)|*.exe;*.url";
-					dlg.CheckFileExists = false;  // add this line
+					dlg.CheckFileExists = false;
 				}
 				else if (selectedButtonData?.action == KeyAction.PlayAudio)
 				{

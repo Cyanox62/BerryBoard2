@@ -27,6 +27,13 @@
 		MuteAudio,
 		PlayAudio,
 
+		// Browser
+		Home,
+		Search,
+		Refresh,
+		Forward,
+		Backward,
+
 		// Keyboard
 		Cut,
 		Copy,
@@ -41,6 +48,8 @@
 		// System
 		StartProcess,
 		OpenWebsite,
+		Lock,
+		Sleep,
 		PowerOff
 	}
 }

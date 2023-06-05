@@ -29,9 +29,19 @@ namespace BerryBoard2.Model
 		[DllImport("user32.dll")]
 		public static extern IntPtr SendMessageW(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
 
-		#region App Codes
+		[DllImport("user32.dll")]
+		static extern IntPtr GetForegroundWindow();
+
+		[DllImport("user32.dll")]
+		static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+		[DllImport("user32")]
+		public static extern void LockWorkStation();
+
+		#region Commands
 		// App Codes
 		internal const int WM_APPCOMMAND = 0x319;
+		internal const int WM_SYSCOMMAND = 0x0112;
 
 		// Media
 		internal const int APPCOMMAND_VOLUME_MUTE = 0x80000;
@@ -41,8 +51,16 @@ namespace BerryBoard2.Model
 		internal const int APPCOMMAND_MEDIA_NEXTTRACK = 0xB0000;
 		internal const int APPCOMMAND_MEDIA_PREVIOUSTRACK = 0xC0000;
 
+		// Browser
+		internal const int APPCOMMAND_BROWSER_BACKWARD = 0x10000;
+		internal const int APPCOMMAND_BROWSER_FORWARD = 0x20000;
+		internal const int APPCOMMAND_BROWSER_REFRESH = 0x30000;
+		internal const int APPCOMMAND_BROWSER_SEARCH = 0x50000;
+		internal const int APPCOMMAND_BROWSER_HOME = 0x70000;
+
 		// System
 		internal const int APPCOMMAND_MIC_ON_OFF_TOGGLE = 0x180000;
+		internal const int SC_MONITORPOWER = 0xF170;
 		#endregion
 
 		// Fields
@@ -89,18 +107,27 @@ namespace BerryBoard2.Model
 				{ KeyAction.VolumeUp, new BitmapImage(new Uri("/Images/volumeup.png", UriKind.Relative))},
 				{ KeyAction.VolumeDown, new BitmapImage(new Uri("/Images/volumedown.png", UriKind.Relative))},
 				{ KeyAction.MuteAudio, new BitmapImage(new Uri("/Images/muteaudio.png", UriKind.Relative))},
+				{ KeyAction.PlayAudio, new BitmapImage(new Uri("/Images/playaudio.png", UriKind.Relative))},
+
+				{ KeyAction.Home, new BitmapImage(new Uri("/Images/home.png", UriKind.Relative))},
+				{ KeyAction.Search, new BitmapImage(new Uri("/Images/search.png", UriKind.Relative))},
+				{ KeyAction.Refresh, new BitmapImage(new Uri("/Images/refresh.png", UriKind.Relative))},
+				{ KeyAction.Forward, new BitmapImage(new Uri("/Images/forward.png", UriKind.Relative))},
+				{ KeyAction.Backward, new BitmapImage(new Uri("/Images/backward.png", UriKind.Relative))},
 
 				{ KeyAction.Cut, new BitmapImage(new Uri("/Images/cut.png", UriKind.Relative))},
 				{ KeyAction.Copy, new BitmapImage(new Uri("/Images/copy.png", UriKind.Relative))},
 				{ KeyAction.Paste, new BitmapImage(new Uri("/Images/paste.png", UriKind.Relative))},
 				{ KeyAction.CustomText, new BitmapImage(new Uri("/Images/customtext.png", UriKind.Relative))},
 
-				{ KeyAction.StartProcess, new BitmapImage(new Uri("/Images/launchprogram.png", UriKind.Relative))},
-				{ KeyAction.PlayAudio, new BitmapImage(new Uri("/Images/playaudio.png", UriKind.Relative))},
 				{ KeyAction.ChangeSpeakers, new BitmapImage(new Uri("/Images/changespeakers.png", UriKind.Relative))},
 				{ KeyAction.ChangeMicrophone, new BitmapImage(new Uri("/Images/changemicrophone.png", UriKind.Relative))},
-				{ KeyAction.OpenWebsite, new BitmapImage(new Uri("/Images/openwebsite.png", UriKind.Relative))},
 				{ KeyAction.MuteMicrophone, new BitmapImage(new Uri("/Images/mutemicrophone.png", UriKind.Relative))},
+
+				{ KeyAction.StartProcess, new BitmapImage(new Uri("/Images/launchprogram.png", UriKind.Relative))},
+				{ KeyAction.OpenWebsite, new BitmapImage(new Uri("/Images/openwebsite.png", UriKind.Relative))},
+				{ KeyAction.Lock, new BitmapImage(new Uri("/Images/lock.png", UriKind.Relative))},
+				{ KeyAction.Sleep, new BitmapImage(new Uri("/Images/sleep.png", UriKind.Relative))},
 				{ KeyAction.PowerOff, new BitmapImage(new Uri("/Images/poweroff.png", UriKind.Relative))}
 			};
 
@@ -168,11 +195,12 @@ namespace BerryBoard2.Model
 			{
 				ButtonAction data = buttons[num];
 
+				IntPtr curWindow = GetForegroundWindow();
 				SafeWrite(window, () =>
 				{
 					switch (data.action)
 					{
-						// OBS
+						#region OSB Studio
 						case KeyAction.StartStreaming:
 							ws.SendWebSocketMessage(ObsReqGen.StartStreaming());
 							break;
@@ -191,8 +219,9 @@ namespace BerryBoard2.Model
 						case KeyAction.ChangeScene:
 							ws.SendWebSocketMessage(ObsReqGen.ChangeScene(data.param));
 							break;
+						#endregion
 
-						// Media
+						#region Media
 						case KeyAction.PlayPause:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MEDIA_PLAY_PAUSE);
 							break;
@@ -211,22 +240,6 @@ namespace BerryBoard2.Model
 						case KeyAction.MuteAudio:
 							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_VOLUME_MUTE);
 							break;
-
-						// Keyboard
-						case KeyAction.Cut:
-							SendKeys.Send("x", true);
-							break;
-						case KeyAction.Copy:
-							SendKeys.Send("c", true);
-							break;
-						case KeyAction.Paste:
-							SendKeys.Send("v", true);
-							break;
-						case KeyAction.CustomText:
-							SendKeys.Send(data.param);
-							break;
-
-						// System
 						case KeyAction.PlayAudio:
 							if (audioTask != null && audioTask.Status == TaskStatus.Running)
 							{
@@ -267,12 +280,54 @@ namespace BerryBoard2.Model
 								}, audioCancellationTokenSource.Token);
 							}
 							break;
+						#endregion
+
+						#region Browser
+						case KeyAction.Home:
+							SendMessageW(curWindow, WM_APPCOMMAND, curWindow, (IntPtr)APPCOMMAND_BROWSER_HOME);
+							break;
+						case KeyAction.Search:
+							SendMessageW(curWindow, WM_APPCOMMAND, curWindow, (IntPtr)APPCOMMAND_BROWSER_SEARCH);
+							break;
+						case KeyAction.Refresh:
+							SendMessageW(curWindow, WM_APPCOMMAND, curWindow, (IntPtr)APPCOMMAND_BROWSER_REFRESH);
+							break;
+						case KeyAction.Forward:
+							SendMessageW(curWindow, WM_APPCOMMAND, curWindow, (IntPtr)APPCOMMAND_BROWSER_FORWARD);
+							break;
+						case KeyAction.Backward:
+							SendMessageW(curWindow, WM_APPCOMMAND, curWindow, (IntPtr)APPCOMMAND_BROWSER_BACKWARD);
+							break;
+						#endregion
+
+						#region Keyboard
+						case KeyAction.Cut:
+							SendKeys.Send("x", true);
+							break;
+						case KeyAction.Copy:
+							SendKeys.Send("c", true);
+							break;
+						case KeyAction.Paste:
+							SendKeys.Send("v", true);
+							break;
+						case KeyAction.CustomText:
+							SendKeys.Send(data.param);
+							break;
+						#endregion
+
+						#region Devices
 						case KeyAction.ChangeSpeakers:
 							controller.GetPlaybackDevices(AudioSwitcher.AudioApi.DeviceState.Active).FirstOrDefault(x => x.FullName == data.param)?.SetAsDefault();
 							break;
 						case KeyAction.ChangeMicrophone:
 							controller.GetCaptureDevices(AudioSwitcher.AudioApi.DeviceState.Active).FirstOrDefault(x => x.FullName == data.param)?.SetAsDefault();
 							break;
+						case KeyAction.MuteMicrophone:
+							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MIC_ON_OFF_TOGGLE);
+							break;
+						#endregion
+
+						#region System
 						case KeyAction.OpenWebsite:
 							OpenUrl(data.param);
 							break;
@@ -291,8 +346,11 @@ namespace BerryBoard2.Model
 								Process.Start(processInfo);
 							}
 							break;
-						case KeyAction.MuteMicrophone:
-							SendMessageW(handle, WM_APPCOMMAND, handle, (IntPtr)APPCOMMAND_MIC_ON_OFF_TOGGLE);
+						case KeyAction.Lock:
+							LockWorkStation();
+							break;
+						case KeyAction.Sleep:
+							SendMessageW(handle, WM_SYSCOMMAND, (IntPtr)SC_MONITORPOWER, (IntPtr)2);
 							break;
 						case KeyAction.PowerOff:
 							var p = new ProcessStartInfo("shutdown", "/s /t 0");
@@ -300,6 +358,7 @@ namespace BerryBoard2.Model
 							p.UseShellExecute = false;
 							Process.Start(p);
 							break;
+							#endregion
 					}
 				});
 			}
@@ -331,10 +390,8 @@ namespace BerryBoard2.Model
 			isCheckingObs = true;
 			while (settings?.ObsEnable ?? false)
 			{
-				Debug.WriteLine("checking obs");
 				if (Process.GetProcesses().Any(p => p.ProcessName.Equals("obs64")))
 				{
-					Debug.WriteLine("found");
 					if (!ws.IsWebSocketOpen())
 					{
 						await Task.Run(() => ws.SetupWebSocket($"ws://localhost:{settings.ObsPort}", settings.ObsAuth));

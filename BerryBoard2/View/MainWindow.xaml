@@ -582,6 +582,52 @@
 
                     <TreeViewItem FontSize="16" IsExpanded="False" Foreground="{StaticResource ButtonForeground}" Focusable="False">
                         <TreeViewItem.Header>
+                            <TextBlock Text="Browser" FontWeight="Bold"/>
+                        </TreeViewItem.Header>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Home">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/home.png" Width="20" Height="20" />
+                                    <TextBlock Text="Home" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Search">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/search.png" Width="20" Height="20" />
+                                    <TextBlock Text="Search" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Refresh">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/refresh.png" Width="20" Height="20" />
+                                    <TextBlock Text="Refresh" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Forward">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/forward.png" Width="20" Height="20" />
+                                    <TextBlock Text="Forward" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Backward">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/backward.png" Width="20" Height="20" />
+                                    <TextBlock Text="Backward" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                    </TreeViewItem>
+
+                    <TreeViewItem FontSize="16" IsExpanded="False" Foreground="{StaticResource ButtonForeground}" Focusable="False">
+                        <TreeViewItem.Header>
                             <TextBlock Text="Keyboard" FontWeight="Bold"/>
                         </TreeViewItem.Header>
                         <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Cut">
@@ -668,11 +714,27 @@
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Lock">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/lock.png" Width="20" Height="20" />
+                                    <TextBlock Text="Lock Computer" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Sleep">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/sleep.png" Width="20" Height="20" />
+                                    <TextBlock Text="Sleep Computer" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
                         <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="PowerOff">
                             <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="/Images/poweroff.png" Width="20" Height="20" />
-                                    <TextBlock Text="Turn Off PC" Margin="8,0,0,0" />
+                                    <TextBlock Text="Power Off" Margin="8,0,0,0" />
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>
