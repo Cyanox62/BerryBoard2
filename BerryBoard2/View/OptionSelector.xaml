@@ -4,8 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BerryBoard2.View"
-         mc:Ignorable="d" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" WindowStartupLocation="CenterOwner"
+         mc:Ignorable="d" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
         Title="Select Option" Height="500" Width="800" Loaded="Window_Loaded">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="25"
+                            GlassFrameThickness="0,0,0,1"
+                            ResizeBorderThickness="5" />
+    </WindowChrome.WindowChrome>
+
     <Window.Resources>
         <SolidColorBrush x:Key="BackgroundColor" Color="#2c2c2d" />
         <SolidColorBrush x:Key="ButtonBackground" Color="#232322" />

@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Berry Board Configuration" Height="450" Width="700"
         WindowStyle="SingleBorderWindow" ResizeMode="CanResizeWithGrip" Loaded="Window_Loaded"
-        MinHeight="420" MinWidth="640"
+        MinHeight="420" MinWidth="665"
         Background="#2c2c2d" Icon="/Images/chip.ico">
 
     <WindowChrome.WindowChrome>
@@ -227,8 +227,8 @@
                 <TextBlock Text="{Binding Path=Title, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" FontSize="15" Foreground="{StaticResource ButtonForeground}" HorizontalAlignment="Center"/>
             </Border>
             <StackPanel Orientation="Horizontal">
-                <Button Content="Settings" HorizontalAlignment="Left" Margin="5 0 0 0" Click="SettingsButton_Click" FontSize="16" Width="60" BorderBrush="Transparent" Background="Transparent" Foreground="{StaticResource ButtonForeground}"/>
-                <Button Content="About" HorizontalAlignment="Left" Margin="5 0 0 0" Click="AboutButton_Click" FontSize="16" Width="60" BorderBrush="Transparent" Background="Transparent" Foreground="{StaticResource ButtonForeground}"/>
+                <Button Content="Settings" HorizontalAlignment="Left" Margin="5 0 0 0" Click="SettingsButton_Click" FontSize="16" Width="60" BorderBrush="Transparent" Background="Transparent" Foreground="{StaticResource ButtonForeground}" WindowChrome.IsHitTestVisibleInChrome="True"/>
+                <Button Content="About" HorizontalAlignment="Left" Margin="5 0 0 0" Click="AboutButton_Click" FontSize="16" Width="60" BorderBrush="Transparent" Background="Transparent" Foreground="{StaticResource ButtonForeground}" WindowChrome.IsHitTestVisibleInChrome="True"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="btnMinimize" Content="_" Width="25" Height="25" Foreground="White"

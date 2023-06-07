@@ -4,8 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BerryBoard2.View"
-        mc:Ignorable="d" WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" WindowStartupLocation="CenterOwner"
+        mc:Ignorable="d" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
         Height="320" Width="450" Title="Help">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="25"
+                            GlassFrameThickness="0,0,0,1"
+                            ResizeBorderThickness="5" />
+    </WindowChrome.WindowChrome>
+
     <Window.Resources>
         <SolidColorBrush x:Key="BackgroundColor" Color="#2c2c2d" />
         <SolidColorBrush x:Key="ButtonBackground" Color="#232322" />
@@ -28,7 +35,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="btnClose" Content="✕" Width="25" Height="25" Foreground="White"
                         BorderBrush="Transparent" Background="Transparent"
-                        Click="CloseButton_Click"/>
+                        Click="CloseButton_Click" WindowChrome.IsHitTestVisibleInChrome="True"/>
             </StackPanel>
         </Grid>
 

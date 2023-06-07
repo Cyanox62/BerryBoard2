@@ -5,9 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BerryBoard2.View"
         mc:Ignorable="d"
-        WindowStyle="None" ResizeMode="NoResize" AllowsTransparency="True" WindowStartupLocation="CenterOwner"
+        WindowStyle="SingleBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
         Title="About" Height="450" Width="800">
-    
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="25"
+                            GlassFrameThickness="0,0,0,1"
+                            ResizeBorderThickness="5" />
+    </WindowChrome.WindowChrome>
+
     <Window.Resources>
         <SolidColorBrush x:Key="BackgroundColor" Color="#2c2c2d" />
         <SolidColorBrush x:Key="ButtonBackground" Color="#232322" />
@@ -28,10 +34,12 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="btnMinimize" Content="_" Width="25" Height="25" Foreground="White"
                         BorderBrush="Transparent" Background="Transparent"
-                        Click="MinimizeButton_Click" ClickMode="Press"/>
+                        Click="MinimizeButton_Click" ClickMode="Press"
+                        WindowChrome.IsHitTestVisibleInChrome="True"/>
                 <Button x:Name="btnClose" Content="✕" Width="25" Height="25" Foreground="White"
                         BorderBrush="Transparent" Background="Transparent"
-                        Click="CloseButton_Click"/>
+                        Click="CloseButton_Click"
+                        WindowChrome.IsHitTestVisibleInChrome="True"/>
             </StackPanel>
         </Grid>
 
