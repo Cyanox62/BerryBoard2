@@ -193,11 +193,30 @@ namespace BerryBoard2
 
 		private void Button_Drop(object sender, DragEventArgs e)
 		{
-			TreeViewItem item = (TreeViewItem)e.Data.GetData(typeof(TreeViewItem));
-			Button button = (Button)sender;
+			TreeViewItem? item = e.Data.GetData(typeof(TreeViewItem)) as TreeViewItem;
 
-			KeyAction action = (KeyAction)Enum.Parse(typeof(KeyAction), item.Tag.ToString());
-			controller?.ChangeButtonAction(int.Parse(button.Tag.ToString()), action);
+			Button button = (Button)sender;
+			int buttonId = int.Parse(button.Tag.ToString());
+
+			if (item != null)
+			{
+				KeyAction action = (KeyAction)Enum.Parse(typeof(KeyAction), item.Tag.ToString());
+				controller?.ChangeButtonAction(buttonId, action);
+			}
+			else
+			{
+				Button? droppedButton = e.Data.GetData(typeof(Button)) as Button;
+
+				if (droppedButton != null && droppedButton.Tag != button.Tag)
+				{
+					int droppedButtonId = int.Parse(droppedButton.Tag.ToString());
+					ButtonAction? data = controller?.GetButtonAction(droppedButtonId);
+					controller?.ChangeButtonAction(buttonId, data.action, data.param);
+
+					Debug.WriteLine(droppedButtonId);
+					ClearButtonContent(droppedButtonId);
+				}
+			}
 
 			SelectButton(button);
 		}
@@ -215,15 +234,20 @@ namespace BerryBoard2
 			if (selectedButton != null)
 			{
 				int button = int.Parse(selectedButton.Tag.ToString());
-				controller?.ClearButton(button);
-				ActionLabel.Text = "None";
-				selectedButton.Content = null;
-				ParamText.Text = paramText;
-				ParamTextbox.Text = string.Empty;
-				ClearButton.IsEnabled = false;
-				ParamTextbox.IsEnabled = false;
-				ActionImage.Visibility = Visibility.Collapsed;
+				ClearButtonContent(button);
 			}
+		}
+
+		private void ClearButtonContent(int button)
+		{
+			controller?.ClearButton(button);
+			ActionLabel.Text = "None";
+			selectedButton.Content = null;
+			ParamText.Text = paramText;
+			ParamTextbox.Text = string.Empty;
+			ClearButton.IsEnabled = false;
+			ParamTextbox.IsEnabled = false;
+			ActionImage.Visibility = Visibility.Collapsed;
 		}
 
 		public void UpdateParam(string text)
@@ -310,6 +334,16 @@ namespace BerryBoard2
 		public void UpdateSettings(SettingsData settings)
 		{
 			controller?.SaveSettings(settings);
+		}
+
+		private void Button_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			Button button = sender as Button;
+			SelectButton(button);
+			if ((controller?.GetButtonAction(int.Parse(button.Tag.ToString()))).action != KeyAction.None && button != null)
+			{
+				DragDrop.DoDragDrop(button, button, DragDropEffects.Copy);
+			}
 		}
 	}
 }
