@@ -21,6 +21,7 @@ namespace BerryBoard2
 
 		BitmapImage folder = new BitmapImage(new Uri("/Images/folder.png", UriKind.Relative));
 		BitmapImage options = new BitmapImage(new Uri("/Images/options.png", UriKind.Relative));
+		BitmapImage help = new BitmapImage(new Uri("/Images/help.png", UriKind.Relative));
 
 		public MainWindow()
 		{
@@ -137,9 +138,11 @@ namespace BerryBoard2
 					ParamButton.IsEnabled = true;
 					((Image)ParamButton.Content).Source = folder;
 					break;
-				case KeyAction.CustomText:
-					ParamText.Text = "Text";
+				case KeyAction.CustomInput:
+					ParamText.Text = "Input (Click ? for help)";
 					ParamTextbox.IsEnabled = true;
+					ParamButton.IsEnabled = true;
+					((Image)ParamButton.Content).Source = help;
 					break;
 				case KeyAction.OpenWebsite:
 					ParamText.Text = "Website URL";
@@ -237,6 +240,10 @@ namespace BerryBoard2
 			else if (selectedButtonData?.action == KeyAction.ChangeMicrophone)
 			{
 				new OptionSelector(this, controller?.GetCaptureDevices()) { Owner = this }.Show();
+			}
+			else if (selectedButtonData?.action == KeyAction.CustomInput)
+			{
+				new HelpWindow() { Owner = this }.Show();
 			}
 			else
 			{

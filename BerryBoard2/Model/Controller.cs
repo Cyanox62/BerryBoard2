@@ -118,7 +118,7 @@ namespace BerryBoard2.Model
 				{ KeyAction.Cut, new BitmapImage(new Uri("/Images/cut.png", UriKind.Relative))},
 				{ KeyAction.Copy, new BitmapImage(new Uri("/Images/copy.png", UriKind.Relative))},
 				{ KeyAction.Paste, new BitmapImage(new Uri("/Images/paste.png", UriKind.Relative))},
-				{ KeyAction.CustomText, new BitmapImage(new Uri("/Images/customtext.png", UriKind.Relative))},
+				{ KeyAction.CustomInput, new BitmapImage(new Uri("/Images/customtext.png", UriKind.Relative))},
 
 				{ KeyAction.ChangeSpeakers, new BitmapImage(new Uri("/Images/changespeakers.png", UriKind.Relative))},
 				{ KeyAction.ChangeMicrophone, new BitmapImage(new Uri("/Images/changemicrophone.png", UriKind.Relative))},
@@ -310,8 +310,11 @@ namespace BerryBoard2.Model
 						case KeyAction.Paste:
 							SendKeys.Send("v", true);
 							break;
-						case KeyAction.CustomText:
-							SendKeys.Send(data.param);
+						case KeyAction.CustomInput:
+							bool shift = data.param.Contains("+");
+							bool ctrl = data.param.Contains("^");
+							bool alt = data.param.Contains("*");
+							SendKeys.Send(data.param.Replace("+", "").Replace("^", "").Replace("*", ""), ctrl, shift, alt);
 							break;
 						#endregion
 

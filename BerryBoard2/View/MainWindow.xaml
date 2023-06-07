@@ -663,11 +663,11 @@
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>
-                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="CustomText">
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="CustomInput">
                             <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="/Images/customtext.png" Width="20" Height="20" />
-                                    <TextBlock Text="Custom Text" Margin="8,0,0,0" />
+                                    <TextBlock Text="Custom Input" Margin="8,0,0,0" />
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>

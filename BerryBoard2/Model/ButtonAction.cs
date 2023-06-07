@@ -38,7 +38,7 @@
 		Cut,
 		Copy,
 		Paste,
-		CustomText,
+		CustomInput,
 
 		// Devices
 		ChangeSpeakers,

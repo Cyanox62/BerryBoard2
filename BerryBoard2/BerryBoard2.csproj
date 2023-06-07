@@ -20,6 +20,7 @@
     <None Remove="Images\delete.png" />
     <None Remove="Images\folder.png" />
     <None Remove="Images\forward.png" />
+    <None Remove="Images\help.png" />
     <None Remove="Images\home.png" />
     <None Remove="Images\launchprogram.png" />
     <None Remove="Images\lock.png" />
@@ -53,6 +54,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\forward.png" />
+    <Resource Include="Images\help.png" />
     <Resource Include="Images\home.png" />
     <Resource Include="Images\launchprogram.png" />
     <Resource Include="Images\lock.png" />
@@ -94,6 +96,12 @@
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.IO.Ports" Version="8.0.0-preview.4.23259.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="View\HelpWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>
