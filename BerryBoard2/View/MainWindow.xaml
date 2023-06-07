@@ -7,9 +7,15 @@
         xmlns:local="clr-namespace:BerryBoard2"
         mc:Ignorable="d"
         Title="Berry Board Configuration" Height="450" Width="700"
-        WindowStyle="None" ResizeMode="CanResizeWithGrip" AllowsTransparency="True" Loaded="Window_Loaded"
+        WindowStyle="SingleBorderWindow" ResizeMode="CanResizeWithGrip" Loaded="Window_Loaded"
         MinHeight="420" MinWidth="640"
         Background="#2c2c2d" Icon="/Images/chip.ico">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="25"
+                            GlassFrameThickness="0,0,0,1"
+                            ResizeBorderThickness="5" />
+    </WindowChrome.WindowChrome>
 
     <Window.Resources>
         <SolidColorBrush x:Key="BackgroundColor" Color="#2c2c2d" />
@@ -226,14 +232,17 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button x:Name="btnMinimize" Content="_" Width="25" Height="25" Foreground="White"
-                        BorderBrush="Transparent" Background="Transparent"
-                        Click="MinimizeButton_Click" ClickMode="Press"/>
+                    BorderBrush="Transparent" Background="Transparent"
+                    Click="MinimizeButton_Click" ClickMode="Press"
+                    WindowChrome.IsHitTestVisibleInChrome="True"/>
                 <Button x:Name="btnMaximize" Content="🗖" Width="25" Height="25" Foreground="White"
-                        BorderBrush="Transparent" Background="Transparent"
-                        Click="MaximizeRestoreButton_Click"/>
+                    BorderBrush="Transparent" Background="Transparent"
+                    Click="MaximizeRestoreButton_Click"
+                    WindowChrome.IsHitTestVisibleInChrome="True"/>
                 <Button x:Name="btnClose" Content="✕" Width="25" Height="25" Foreground="White"
-                        BorderBrush="Transparent" Background="Transparent"
-                        Click="CloseButton_Click"/>
+                    BorderBrush="Transparent" Background="Transparent"
+                    Click="CloseButton_Click"
+                    WindowChrome.IsHitTestVisibleInChrome="True"/>
             </StackPanel>
         </Grid>
 
