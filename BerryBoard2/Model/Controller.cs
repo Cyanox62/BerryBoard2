@@ -341,11 +341,29 @@ namespace BerryBoard2.Model
 							}
 							else
 							{
-								string exe = data.param;
+								string commandLine = data.param.Trim();
+								string exe = "", arguments = "";
+
+								int firstQuoteIndex = commandLine.IndexOf('\"');
+								int secondQuoteIndex = commandLine.IndexOf('\"', firstQuoteIndex + 1);
+
+								if (firstQuoteIndex != -1 && secondQuoteIndex != -1)
+								{
+									exe = commandLine.Substring(firstQuoteIndex, secondQuoteIndex - firstQuoteIndex + 1).Trim('\"');
+									arguments = commandLine.Substring(secondQuoteIndex + 1).Trim();
+								}
+								else
+								{
+									exe = commandLine;
+									arguments = "";
+								}
+
 								ProcessStartInfo processInfo = new ProcessStartInfo();
-								processInfo.WorkingDirectory = Path.GetDirectoryName(data.param);
+								processInfo.WorkingDirectory = Path.GetDirectoryName(exe);
 								processInfo.FileName = Path.GetFileName(exe);
+								processInfo.Arguments = arguments;
 								processInfo.UseShellExecute = true;
+
 								Process.Start(processInfo);
 							}
 							break;
