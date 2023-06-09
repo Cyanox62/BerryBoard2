@@ -33,6 +33,9 @@ namespace BerryBoard2.Model
 		static extern IntPtr GetForegroundWindow();
 
 		[DllImport("user32.dll")]
+		static extern IntPtr SetForegroundWindow(IntPtr hWnd);
+
+		[DllImport("user32.dll")]
 		static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
 		[DllImport("user32")]
@@ -342,30 +345,33 @@ namespace BerryBoard2.Model
 							}
 							else
 							{
-								string commandLine = data.param.Trim();
-								string exe = "", arguments = "";
-
-								int firstQuoteIndex = commandLine.IndexOf('\"');
-								int secondQuoteIndex = commandLine.IndexOf('\"', firstQuoteIndex + 1);
-
-								if (firstQuoteIndex != -1 && secondQuoteIndex != -1)
+								Task.Run(() =>
 								{
-									exe = commandLine.Substring(firstQuoteIndex, secondQuoteIndex - firstQuoteIndex + 1).Trim('\"');
-									arguments = commandLine.Substring(secondQuoteIndex + 1).Trim();
-								}
-								else
-								{
-									exe = commandLine;
-									arguments = "";
-								}
+									string commandLine = data.param.Trim();
+									string exe = "", arguments = "";
 
-								ProcessStartInfo processInfo = new ProcessStartInfo();
-								processInfo.WorkingDirectory = Path.GetDirectoryName(exe);
-								processInfo.FileName = Path.GetFileName(exe);
-								processInfo.Arguments = arguments;
-								processInfo.UseShellExecute = true;
+									int firstQuoteIndex = commandLine.IndexOf('\"');
+									int secondQuoteIndex = commandLine.IndexOf('\"', firstQuoteIndex + 1);
 
-								Process.Start(processInfo);
+									if (firstQuoteIndex != -1 && secondQuoteIndex != -1)
+									{
+										exe = commandLine.Substring(firstQuoteIndex, secondQuoteIndex - firstQuoteIndex + 1).Trim('\"');
+										arguments = commandLine.Substring(secondQuoteIndex + 1).Trim();
+									}
+									else
+									{
+										exe = commandLine;
+										arguments = "";
+									}
+
+									ProcessStartInfo processInfo = new ProcessStartInfo();
+									processInfo.WorkingDirectory = Path.GetDirectoryName(exe);
+									processInfo.FileName = Path.GetFileName(exe);
+									processInfo.Arguments = arguments;
+									processInfo.UseShellExecute = true;
+
+									Task.Run(() => StartProcessWithFocus(processInfo));
+								});
 							}
 							break;
 						case KeyAction.CustomScript:
@@ -408,11 +414,14 @@ namespace BerryBoard2.Model
 			}
 			startInfo.Arguments = scriptPath;
 
-			using (Process process = new Process { StartInfo = startInfo })
-			{
-				process.Start();
-				await Task.Run(() => process.WaitForExit());
-			}
+			await Task.Run(() => StartProcessWithFocus(startInfo));
+		}
+
+		private void StartProcessWithFocus(ProcessStartInfo processInfo)
+		{
+			Process? newProcess = Process.Start(processInfo);
+			newProcess?.WaitForInputIdle();
+			SetForegroundWindow(newProcess.MainWindowHandle);
 		}
 
 		private bool IsValidUrl(string url)
