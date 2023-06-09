@@ -126,6 +126,7 @@ namespace BerryBoard2.Model
 
 				{ KeyAction.StartProcess, new BitmapImage(new Uri("/Images/launchprogram.png", UriKind.Relative))},
 				{ KeyAction.OpenWebsite, new BitmapImage(new Uri("/Images/openwebsite.png", UriKind.Relative))},
+				{ KeyAction.CustomScript, new BitmapImage(new Uri("/Images/customscript.png", UriKind.Relative))},
 				{ KeyAction.Lock, new BitmapImage(new Uri("/Images/lock.png", UriKind.Relative))},
 				{ KeyAction.Sleep, new BitmapImage(new Uri("/Images/sleep.png", UriKind.Relative))},
 				{ KeyAction.PowerOff, new BitmapImage(new Uri("/Images/poweroff.png", UriKind.Relative))}
@@ -367,6 +368,9 @@ namespace BerryBoard2.Model
 								Process.Start(processInfo);
 							}
 							break;
+						case KeyAction.CustomScript:
+							Task.Run(() => RunScriptAsync(data.param));
+							break;
 						case KeyAction.Lock:
 							LockWorkStation();
 							break;
@@ -382,6 +386,32 @@ namespace BerryBoard2.Model
 							#endregion
 					}
 				});
+			}
+		}
+
+		private async Task RunScriptAsync(string scriptPath)
+		{
+			Debug.WriteLine(scriptPath);
+			ProcessStartInfo startInfo = new ProcessStartInfo();
+
+			switch (Path.GetExtension(scriptPath))
+			{
+				case ".py":
+					startInfo.FileName = "python";
+					break;
+				case ".js":
+					startInfo.FileName = "node";
+					break;
+				default:
+					Console.WriteLine("Unsupported script type");
+					return;
+			}
+			startInfo.Arguments = scriptPath;
+
+			using (Process process = new Process { StartInfo = startInfo })
+			{
+				process.Start();
+				await Task.Run(() => process.WaitForExit());
 			}
 		}
 

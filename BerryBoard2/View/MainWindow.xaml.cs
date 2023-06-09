@@ -149,6 +149,12 @@ namespace BerryBoard2
 					ParamTextbox.IsEnabled = true;
 					((Image)ParamButton.Content).Source = folder;
 					break;
+				case KeyAction.CustomScript:
+					ParamText.Text = "Script Location";
+					ParamTextbox.IsEnabled = true;
+					ParamButton.IsEnabled = true;
+					((Image)ParamButton.Content).Source = folder;
+					break;
 				case KeyAction.PlayAudio:
 					ParamText.Text = "Audio Path";
 					ParamTextbox.IsEnabled = true;

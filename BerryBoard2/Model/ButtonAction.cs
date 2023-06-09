@@ -48,6 +48,7 @@
 		// System
 		StartProcess,
 		OpenWebsite,
+		CustomScript,
 		Lock,
 		Sleep,
 		PowerOff

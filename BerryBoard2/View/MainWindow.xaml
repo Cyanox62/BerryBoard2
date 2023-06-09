@@ -723,6 +723,14 @@
                                 </StackPanel>
                             </TreeViewItem.Header>
                         </TreeViewItem>
+                        <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="CustomScript">
+                            <TreeViewItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Images/customscript.png" Width="20" Height="20" />
+                                    <TextBlock Text="Custom Script" Margin="8,0,0,0" />
+                                </StackPanel>
+                            </TreeViewItem.Header>
+                        </TreeViewItem>
                         <TreeViewItem MouseMove="TreeViewItem_MouseMove" Focusable="False" Tag="Lock">
                             <TreeViewItem.Header>
                                 <StackPanel Orientation="Horizontal">

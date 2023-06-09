@@ -15,6 +15,7 @@
     <None Remove="Images\changespeakers.png" />
     <None Remove="Images\chip.ico" />
     <None Remove="Images\copy.png" />
+    <None Remove="Images\customscript.png" />
     <None Remove="Images\customtext.png" />
     <None Remove="Images\cut.png" />
     <None Remove="Images\delete.png" />
@@ -53,6 +54,7 @@
     <Resource Include="Images\chip.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\customscript.png" />
     <Resource Include="Images\forward.png" />
     <Resource Include="Images\help.png" />
     <Resource Include="Images\home.png" />
