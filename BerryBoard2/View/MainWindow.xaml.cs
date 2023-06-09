@@ -297,32 +297,35 @@ namespace BerryBoard2
 
 				if (result == true)
 				{
-					if (Path.GetExtension(dlg.FileName).ToLower() == ".url")
+					Task.Run(() =>
 					{
-						try
+						if (Path.GetExtension(dlg.FileName).ToLower() == ".url")
 						{
-							using (StreamReader sr = new StreamReader(dlg.FileName))
+							try
 							{
-								string line;
-								while ((line = sr.ReadLine()) != null)
+								using (StreamReader sr = new StreamReader(dlg.FileName))
 								{
-									if (line.StartsWith("URL="))
+									string line;
+									while ((line = sr.ReadLine()) != null)
 									{
-										ParamTextbox.Text = line.Substring(4);
-										return;
+										if (line.StartsWith("URL="))
+										{
+											ParamTextbox.Text = line.Substring(4);
+											return;
+										}
 									}
 								}
 							}
+							catch (Exception ex)
+							{
+								Console.WriteLine($"Error reading .url file: {ex.Message}");
+							}
 						}
-						catch (Exception ex)
+						else
 						{
-							Console.WriteLine($"Error reading .url file: {ex.Message}");
+							ParamTextbox.Text = dlg.FileName;
 						}
-					}
-					else
-					{
-						ParamTextbox.Text = dlg.FileName;
-					}
+					});
 				}
 			}
 		}
