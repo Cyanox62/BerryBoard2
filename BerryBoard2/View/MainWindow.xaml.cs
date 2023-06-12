@@ -25,6 +25,8 @@ namespace BerryBoard2
 
 		public MainWindow()
 		{
+			Directory.SetCurrentDirectory(Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName));
+
 			InitializeComponent();
 		}
 

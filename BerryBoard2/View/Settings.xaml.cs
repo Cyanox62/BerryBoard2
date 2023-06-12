@@ -1,5 +1,11 @@
 ﻿using BerryBoard2.Model;
 using BerryBoard2.Model.Objects;
+using Microsoft.Win32;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 
@@ -9,6 +15,8 @@ namespace BerryBoard2.View
 	{
 		private MainWindow main;
 		private Controller controller;
+
+		private const string regKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
 
 		internal Settings(MainWindow main, Controller controller)
 		{
@@ -40,6 +48,8 @@ namespace BerryBoard2.View
 				ObsAuth = AuthTextbox.Text.Trim(),
 				MinimizeToTray = SystemTrayCheckbox.IsChecked
 			});
+
+			SetStartup(StartupCheckBox.IsChecked ?? false);
 
 			Close();
 		}
@@ -79,6 +89,29 @@ namespace BerryBoard2.View
 			AuthTextbox.Text = settings.ObsAuth;
 
 			SystemTrayCheckbox.IsChecked = settings.MinimizeToTray;
+			StartupCheckBox.IsChecked = checkMachineType(regKey, Assembly.GetExecutingAssembly().GetName().Name);
 		}
-    }
+
+		private void SetStartup(bool startup)
+		{
+			try
+			{
+				using (RegistryKey key = Registry.CurrentUser.OpenSubKey(regKey, true))
+				{
+					Assembly curAssembly = Assembly.GetExecutingAssembly();
+					if (startup) key.SetValue(curAssembly.GetName().Name, Process.GetCurrentProcess().MainModule.FileName);
+					else key.DeleteValue(curAssembly.GetName().Name);
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine("Error removing from startup: " + ex.Message);
+			}
+		}
+
+		public static bool checkMachineType(string key, string value)
+		{
+			return Registry.CurrentUser.OpenSubKey(key, false).GetValueNames().FirstOrDefault(x => x == value) != null;
+		}
+	}
 }
