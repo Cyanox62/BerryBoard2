@@ -89,7 +89,7 @@ namespace BerryBoard2.View
 			AuthTextbox.Text = settings.ObsAuth;
 
 			SystemTrayCheckbox.IsChecked = settings.MinimizeToTray;
-			StartupCheckBox.IsChecked = checkMachineType(regKey, Assembly.GetExecutingAssembly().GetName().Name);
+			StartupCheckBox.IsChecked = DoesRegistryPairExist(regKey, Assembly.GetExecutingAssembly().GetName().Name);
 		}
 
 		private void SetStartup(bool startup)
@@ -99,7 +99,7 @@ namespace BerryBoard2.View
 				using (RegistryKey key = Registry.CurrentUser.OpenSubKey(regKey, true))
 				{
 					Assembly curAssembly = Assembly.GetExecutingAssembly();
-					if (startup) key.SetValue(curAssembly.GetName().Name, Process.GetCurrentProcess().MainModule.FileName);
+					if (startup) key.SetValue(curAssembly.GetName().Name, $"\"{Process.GetCurrentProcess().MainModule.FileName}\" -minimized");
 					else key.DeleteValue(curAssembly.GetName().Name);
 				}
 			}
@@ -109,7 +109,7 @@ namespace BerryBoard2.View
 			}
 		}
 
-		public static bool checkMachineType(string key, string value)
+		public static bool DoesRegistryPairExist(string key, string value)
 		{
 			return Registry.CurrentUser.OpenSubKey(key, false).GetValueNames().FirstOrDefault(x => x == value) != null;
 		}

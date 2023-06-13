@@ -34,6 +34,14 @@ namespace BerryBoard2
 		{
 			ParamText.Text = paramText;
 			controller = new Controller(this, ButtonGrid);
+
+			string[] args = Environment.GetCommandLineArgs();
+
+			// args[0] is the file launch path
+			if (args.Length == 2 && args[1] == "-minimized")
+			{
+				Dispatcher.BeginInvoke(() => Hide(), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+			}
 		}
 
 		private void MinimizeButton_Click(object sender, RoutedEventArgs e)
