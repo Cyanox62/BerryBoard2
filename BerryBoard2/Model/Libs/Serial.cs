@@ -15,7 +15,9 @@ namespace BerryBoard2.Model.Libs
 		private List<SerialPort> serialPorts = new List<SerialPort>();
 		private Timer? portCheckTimer;
 
-		private SerialPort? senderPort = null;
+		private static SerialPort? senderPort = null;
+
+		public static string GetPortName() => senderPort?.PortName;
 
 		public void SetupPorts()
 		{

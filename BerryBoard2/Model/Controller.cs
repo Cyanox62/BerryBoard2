@@ -73,8 +73,8 @@ namespace BerryBoard2.Model
 		private CoreAudioController controller;
 		private const string configFile = "config.json";
 		private const string settingsFile = "settings.json";
-		private ButtonAction[]? buttons;
-		private SettingsData? settings;
+		private ButtonAction[] buttons;
+		private SettingsData settings;
 		private Dictionary<KeyAction, BitmapImage>? images;
 
 		// For shortcut creation
@@ -512,7 +512,7 @@ namespace BerryBoard2.Model
 			File.WriteAllText(settingsFile, JsonConvert.SerializeObject(settings, Formatting.Indented));
 			this.settings = settings;
 
-			if ((settings.ObsEnable ?? false))
+			if (settings.ObsEnable)
 			{
 				if (!isCheckingObs) Task.Run(() => ObsChecker());
 			}

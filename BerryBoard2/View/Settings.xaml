@@ -190,12 +190,23 @@
             </StackPanel>
 
             <Grid Grid.Column="1">
-                <StackPanel Margin="20 20 0 0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Margin="20 20 0 0" Grid.Row="0">
                     <TextBlock Text="General" Foreground="{StaticResource ButtonForeground}" FontSize="25" TextDecorations="Underline"/>
                     <CheckBox Content="Minimize to system tray" x:Name="SystemTrayCheckbox" Unchecked="ObsCheckbox_Unchecked" Style="{StaticResource ExtraCheckBoxStyle}" HorizontalAlignment="Left"
                               ToolTip="Minimizing this window will hide it in your system tray"/>
                     <CheckBox Content="Startup with Windows" x:Name="StartupCheckBox" Style="{StaticResource ExtraCheckBoxStyle}" HorizontalAlignment="Left"
                               ToolTip="This program will startup when Windows starts"/>
+                </StackPanel>
+
+                <StackPanel Margin="20 20 0 0" Grid.Row="1">
+                    <TextBlock Text="Device Status" Foreground="{StaticResource ButtonForeground}" FontSize="25" TextDecorations="Underline"/>
+                    <TextBlock x:Name="ConnectedText" Text="Disconnected" Foreground="{StaticResource ButtonForeground}" FontSize="15" VerticalAlignment="Center" Margin="0 0 5 0"/>
                 </StackPanel>
             </Grid>
 

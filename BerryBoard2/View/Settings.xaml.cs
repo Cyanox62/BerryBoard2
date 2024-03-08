@@ -1,4 +1,5 @@
 ﻿using BerryBoard2.Model;
+using BerryBoard2.Model.Libs;
 using BerryBoard2.Model.Objects;
 using Microsoft.Win32;
 using System;
@@ -34,19 +35,26 @@ namespace BerryBoard2.View
 				return;
 			}
 
-			if (PortTextbox.Text != string.Empty && !int.TryParse(PortTextbox.Text.Trim(), out int port))
+			int port = -1;
+			if (PortTextbox.Text != string.Empty)
 			{
-				new CustomMessageBox("Port must be a number") { Owner = this }.Show();
-				return;
+				if (int.TryParse(PortTextbox.Text.Trim(), out int p))
+				{
+					port = p;
+				}
+				else
+				{
+					new CustomMessageBox("Port must be a number") { Owner = this }.Show();
+					return;
+				}
 			}
-			else port = -1;
 
 			main.UpdateSettings(new SettingsData()
 			{
-				ObsEnable = ObsCheckbox.IsChecked,
+				ObsEnable = ObsCheckbox.IsChecked ?? false,
 				ObsPort = port,
 				ObsAuth = AuthTextbox.Text.Trim(),
-				MinimizeToTray = SystemTrayCheckbox.IsChecked
+				MinimizeToTray = SystemTrayCheckbox.IsChecked ?? false
 			});
 
 			SetStartup(StartupCheckBox.IsChecked ?? false);
@@ -87,6 +95,8 @@ namespace BerryBoard2.View
 			ObsCheckbox.IsChecked = settings.ObsEnable;
 			PortTextbox.Text = settings.ObsPort == -1 ? string.Empty : settings.ObsPort.ToString();
 			AuthTextbox.Text = settings.ObsAuth;
+			string portName = Serial.GetPortName();
+			ConnectedText.Text = portName == null ? "Disconnected" : "Connected: " + portName;
 
 			SystemTrayCheckbox.IsChecked = settings.MinimizeToTray;
 			StartupCheckBox.IsChecked = DoesRegistryPairExist(regKey, Assembly.GetExecutingAssembly().GetName().Name);
